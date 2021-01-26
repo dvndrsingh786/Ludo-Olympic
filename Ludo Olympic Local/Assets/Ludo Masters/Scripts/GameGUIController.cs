@@ -131,6 +131,9 @@ public class GameGUIController : PunBehaviour
         Debug.Log("requiredPlayers   " + GameManager.Instance.requiredPlayers + " isPlayingWithComputer  " + GameManager.Instance.isPlayingWithComputer);
 
         int rotation = GameManager.Instance.isColorSelected;
+        Debug.LogWarning("Old Rotation: " + rotation);
+        rotation = 0;
+        Debug.LogWarning("Setting color selected to default(zero)");
         StartCoroutine(pic());
 
         Sprite[] colors = null;

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
  using Photon;
+using TMPro;
 public class GameDiceController : PunBehaviour
 {
 
@@ -47,6 +48,19 @@ public class GameDiceController : PunBehaviour
         {
             SetSprite();
         }
+    }
+
+    public GameObject myScoreText;
+    public TextMeshProUGUI myScore;
+
+    private void OnEnable()
+    {
+        myScoreText.SetActive(true);
+    }
+
+    private void OnDisable()
+    {
+        myScoreText.SetActive(false);
     }
 
     private void SetSprite()
@@ -358,6 +372,10 @@ public class GameDiceController : PunBehaviour
             {
                 Debug.Log("Popup Call");
             }
+
+            int score = int.Parse(myScore.text);
+            score += steps;
+            myScore.text = score.ToString();
             // if (aa % 2 == 0) steps = 6;
             // else steps = 2;
             // aa++;

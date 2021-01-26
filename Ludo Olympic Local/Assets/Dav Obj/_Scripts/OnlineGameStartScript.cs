@@ -11,7 +11,7 @@ public class OnlineGameStartScript : MonoBehaviour
     {
         if (!ReferenceManager.refMngr.isOnlineBidSelected)
         {
-            ReferenceManager.refMngr.ShowError("Please select bid amount first");
+            ReferenceManager.refMngr.ShowError("Please select bid amount first", "Error");
             return;
         }
         ReferenceManager.refMngr.isOnlineBidSelected = false;

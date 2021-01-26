@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class EnterPrivateCodeDialogController : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
     public GameObject GameConfiguration;
     public GameObject failedDialog;
     public GameObject failedDialogSelectBet;
+
+    public TMP_InputField createAmount;
 
     void OnEnable()
     {
@@ -57,11 +60,17 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
 
     public void CreateRoom()
     {
-        if (!ReferenceManager.refMngr.isBidSelected)
+        if (createAmount.text == "")
         {
-            failedDialogSelectBet.SetActive(true);
+            ReferenceManager.refMngr.ShowError("Amount Should be more than 0", "Error");
             return;
         }
+        else if (int.Parse(createAmount.text) <= 0)
+        {
+            ReferenceManager.refMngr.ShowError("Amount Should be more than 0", "Error");
+            return;
+        }
+        FindObjectOfType<GameConfigrationController>().ChangeBettingAmountDav(int.Parse(createAmount.text));
         ReferenceManager.refMngr.isBidSelected = false;
         //Debug.LogError("Is master client: " + PhotonNetwork.isMasterClient) ;
         //Debug.LogError("Is connected: " + PhotonNetwork.connectionState) ;
@@ -77,7 +86,7 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
         }
         else
         {
-            ReferenceManager.refMngr.ShowError("Not Enough money");
+            ReferenceManager.refMngr.ShowError("Not Enough money", "Error");
         }
 
         //GameConfiguration.GetComponent<GameConfigrationController>().startGame();

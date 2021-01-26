@@ -144,7 +144,7 @@ public class WalletApiScript : MonoBehaviour
         }
         if (float.Parse(amount.text) < 10)
         {
-            ReferenceManager.refMngr.ShowError("Enter at least Rs.10");
+            ReferenceManager.refMngr.ShowError("Enter at least Rs.10", "Error");
             return;
         }
         Debug.Log("Id"+ GameManager.Uid);

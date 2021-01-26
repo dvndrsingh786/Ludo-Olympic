@@ -188,8 +188,8 @@ public class GoogleSignInDemo : MonoBehaviour
 
     public void SignInTesting()
     {
-        email.text = "919876152916";
-        playerName.text = "Davinder Singh";
+        apimngr.socialEmail = "919876152916";
+        apimngr.socialName = "Davinder Singh";
         apimngr.SocialMediaSignInStart();
     }
 

@@ -45,6 +45,16 @@ public class GameConfigrationController : MonoBehaviour
         
     }
 
+    public void ChangeBettingAmountDav(int amount)
+    {
+        GameManager.Instance.currentBettingIndex = 0;
+
+        //GameManager.Instance.currentBetting = GameManager.Instance.initMenuScript.twoPlayerBetting[GameManager.Instance.currentBettingIndex];
+        GameManager.Instance.currentBetAmount = amount;
+        GameManager.Instance.currentWinningAmount = amount * 4;
+        GameManager.Instance.payoutCoins = GameManager.Instance.currentWinningAmount;
+        ShowBettingText();
+    }
 
  public void ChangeBettingAmount(int x)
     {
@@ -133,6 +143,8 @@ public class GameConfigrationController : MonoBehaviour
 
         ShowBettingText();
  }
+
+
 
     public void ShowBettingText()
     {

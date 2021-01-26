@@ -31,6 +31,7 @@ public class ReferenceManager : MonoBehaviour
     [SerializeField]ReedemCoinsScript redeemCoinScript;
     int invokeCount = 0;
     public GameObject errordialogBox;
+    public Text errorTitle;
     public Text errorMsg;
 
     public TextMeshProUGUI onlineInvestmentText, onlineEarningText, privateInvestText, privateEarningText;
@@ -57,9 +58,10 @@ public class ReferenceManager : MonoBehaviour
         GetDate();
     }
 
-    public void ShowError(string error)
+    public void ShowError(string error, string errorTitlee)
     {
         errorMsg.text = error;
+        errorTitle.text = errorTitlee;
         errordialogBox.SetActive(true);
     }
 

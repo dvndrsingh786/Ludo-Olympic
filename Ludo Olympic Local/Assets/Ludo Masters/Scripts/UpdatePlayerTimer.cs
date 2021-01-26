@@ -20,7 +20,6 @@ public class UpdatePlayerTimer : MonoBehaviour
     public Transform autoMoveParent;
     public int maxAutoMove = 4;
     public TextMeshProUGUI secondsRemaining;
-    public GameObject timerObj;
 
     public PhotonView myview;
 
@@ -63,7 +62,7 @@ public class UpdatePlayerTimer : MonoBehaviour
         if (!myview) myview = GetComponent<PhotonView>();
         if (Gamedice != null)
             Gamedice.timer = this;
-        timerObj.SetActive(true);
+        //timerObj.SetActive(true);
         playerTime = GameManager.Instance.playerTime;
         secondsRemaining.text = "20s";
     }
@@ -109,7 +108,7 @@ public class UpdatePlayerTimer : MonoBehaviour
             misschance = false;
             playerTime = GameManager.Instance.playerTime;
             secondsRemaining.text = "20s";
-            timerObj.SetActive(false);
+            //timerObj.SetActive(false);
         }
     }
     public GameDiceController Gamedice;

@@ -643,4 +643,28 @@ public class InitMenuScript : MonoBehaviour
     {
         PlayerPrefs.SetInt("Finishing", num);
     }
+
+    #region New Functions
+
+    public void OpenSettings()
+    {
+        GameManager.Instance.playfabManager.apiManager.newOptionsPanel.SetActive(true);
+    }
+
+    public void OpenRules()
+    {
+        GameManager.Instance.playfabManager.apiManager.newRules.SetActive(true);
+    }
+
+    public void OpenNotifications()
+    {
+        GameManager.Instance.playfabManager.apiManager.newNotificationsPanel.SetActive(true);
+    }
+
+    public void OpenAddMoney()
+    {
+        GameManager.Instance.playfabManager.apiManager.newAddMoney.SetActive(true);
+    }
+
+    #endregion
 }
