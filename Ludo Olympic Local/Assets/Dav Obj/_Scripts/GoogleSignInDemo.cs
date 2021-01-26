@@ -186,6 +186,13 @@ public class GoogleSignInDemo : MonoBehaviour
         });
     }
 
+    public void SignInTesting()
+    {
+        email.text = "919876152916";
+        playerName.text = "Davinder Singh";
+        apimngr.SocialMediaSignInStart();
+    }
+
     public void OnSignInSilently()
     {
         GoogleSignIn.Configuration = configuration;
