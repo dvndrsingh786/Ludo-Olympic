@@ -344,6 +344,11 @@ public class LudoPawnController : MonoBehaviour
                 Highlight(true);
                 return true;
             }
+            else
+            {
+                Highlight(true);
+                return true;
+            }
         }
         return false;
     }
@@ -519,14 +524,11 @@ public class LudoPawnController : MonoBehaviour
             {
                 GoToStartPosition();
             }
-            else
+            if (pawnInJoint != null)
             {
-                if (pawnInJoint != null)
-                {
-                    pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
-                }
-                MoveBySteps(ludoController.steps);
+                pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
             }
+            MoveBySteps(ludoController.steps);
             isOnBoard = true;
         }
     }

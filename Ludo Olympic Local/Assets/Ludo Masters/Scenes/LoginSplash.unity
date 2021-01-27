@@ -30215,6 +30215,33 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3082807173217999212, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_text
+      value: Logout
+      objectReference: {fileID: 0}
+    - target: {fileID: 3082807173217999212, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3082807173217999212, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 9ad6b019a5676b645b2acdc62c408329,
+        type: 2}
+    - target: {fileID: 3082807173217999212, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -1250539821735957688, guid: 9ad6b019a5676b645b2acdc62c408329,
+        type: 2}
+    - target: {fileID: 3082807173217999212, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3107697618996346406, guid: c84de9ceea798d045a43b8a04ee2b5ed,
         type: 3}
       propertyPath: m_AnchorMin.y
@@ -31480,6 +31507,36 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 511.57895
       objectReference: {fileID: 0}
+    - target: {fileID: 7383536585496472401, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7383536585496472401, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7383536585496472401, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7383536585496472401, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1898084412}
+    - target: {fileID: 7383536585496472401, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LogOut
+      objectReference: {fileID: 0}
+    - target: {fileID: 7383536585496472401, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8023185158108647489, guid: c84de9ceea798d045a43b8a04ee2b5ed,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -32265,10 +32322,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 1037130396}
+    - target: {fileID: 8643881870238855119, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fb726ed5a142e104e9d1eaf950f0becc,
+        type: 3}
+    - target: {fileID: 8643881870238855119, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8956142056294756634, guid: c84de9ceea798d045a43b8a04ee2b5ed,
         type: 3}
       propertyPath: m_Spacing
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9048937368437272663, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_Name
+      value: Logout Button
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8218800568375210670, guid: c84de9ceea798d045a43b8a04ee2b5ed, type: 3}

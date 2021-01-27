@@ -517,12 +517,24 @@ public class InitMenuScript : MonoBehaviour
         GameManager.Instance.tableNumber = Int32.Parse(GameObject.Find("TextTableNumber").GetComponent<Text>().text);
     }
 
+    public void ShareMyCode()
+    {
+        ///GameManager.friendrefferalCode;
+        ///string shareSubject = "Game Link";
+        string abc = " invited you to play Ludo Olympics - First ever real money ludo game. Enter referral code '"; //'U7AZ47'
+        string def = " & get real 2 % direct income every time when they play by using your referral code.";
+        //string shareMessage = "Download Game from this"+ GameManager.friendrefferalCode+"code";
+        string shareMessage = GameManager.Instance.nameMy + abc + GameManager.friendrefferalCode + def;
+        NativeShare share = new NativeShare();
+        share.Share(shareMessage, null, null, "Share Via");
+    }
+
     public void ShareLink()
     {
         if (!Application.isEditor)
         {
             string shareSubject = "Game Link";
-            string abc = " invited you to play LudoCashWin - First ever real money ludo game.Enter referral code '"; //'U7AZ47'
+            string abc = " invited you to play Ludo Olympics - First ever real money ludo game.Enter referral code '"; //'U7AZ47'
             string def = "' & get real 2 % direct income every time when they play by using your referral code.";
             //string shareMessage = "Download Game from this"+ GameManager.friendrefferalCode+"code";
             string shareMessage = GameManager.Instance.nameMy + abc + GameManager.friendrefferalCode + def;
