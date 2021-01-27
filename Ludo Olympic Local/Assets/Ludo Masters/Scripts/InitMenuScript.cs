@@ -76,6 +76,9 @@ public class InitMenuScript : MonoBehaviour
     public RawImage pImage;
     public RawImage pImage2;
 
+    [Header("New Objects")]
+    public GameObject redeemPanel;
+
     string status;
 
     private string results;
@@ -391,14 +394,14 @@ public class InitMenuScript : MonoBehaviour
         if (PlayerPrefs.GetInt("Muted", 0) == 0)
         {
             AudioListener.volume = 1;
-            audioOnIcon.SetActive(true);
-            audioOffIcon.SetActive(false);
+            //audioOnIcon.SetActive(true);
+            //audioOffIcon.SetActive(false);
         }
         else
         {
             AudioListener.volume = 0;
-            audioOnIcon.SetActive(false);
-            audioOffIcon.SetActive(true);
+            //audioOnIcon.SetActive(false);
+            //audioOffIcon.SetActive(true);
         }
     }
 
@@ -665,6 +668,8 @@ public class InitMenuScript : MonoBehaviour
     {
         GameManager.Instance.playfabManager.apiManager.newAddMoney.SetActive(true);
     }
+
+    public GameObject newReferAFriendPanel;
 
     #endregion
 }

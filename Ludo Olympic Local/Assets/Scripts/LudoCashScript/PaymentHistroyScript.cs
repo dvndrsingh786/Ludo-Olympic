@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class PaymentHistroyScript : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class PaymentHistroyScript : MonoBehaviour
     public GameObject infoPanel;
     WWW w;
     string status;
+
 
     private string results;
     public string Results
@@ -136,16 +138,18 @@ public class PaymentHistroyScript : MonoBehaviour
                 for (int i = 0; i < jsonvale["result_push"].Count; i++)
                 {
                     PaymentScript paymentScript = Instantiate(transactionPrefab, contentPanel).GetComponent<PaymentScript>();
+
+                    paymentScript.newImage.sprite = redArrow;
                     transactionId = jsonvale["result_push"][i]["txn_id"].ToString();
-                    paymentScript.transactionId.text = transactionId;
-                    walletType = jsonvale["result_push"][i]["walletType"].ToString();
-                    paymentScript.transactionby.text = walletType;
+                    paymentScript.newPaymentId.text = "Payment Id -#" +  transactionId;
+                    //walletType = jsonvale["result_push"][i]["walletType"].ToString();
+                    //paymentScript.transactionby.text = walletType;
                     amount = jsonvale["result_push"][i]["amount"].ToString();
-                    paymentScript.transactionAmount.text = amount;
-                    disc = jsonvale["result_push"][i]["description"].ToString();
-                    paymentScript.status.text = disc;
+                    paymentScript.newAmountText.text = "Amount - " + amount;
+                    //disc = jsonvale["result_push"][i]["description"].ToString();
+                    //paymentScript.status.text = disc;
                     date = jsonvale["result_push"][i]["created_at"].ToString();
-                    paymentScript.date.text = date;
+                    paymentScript.newDate.text = date;
                     loadingPanel.SetActive(false);
                 }
 
@@ -172,16 +176,17 @@ public class PaymentHistroyScript : MonoBehaviour
             for (int i = 0; i < jsonvale["result_push"].Count; i++)
             {
                 PaymentScript paymentScript = Instantiate(credittransactionPrefab, creditcontentPanel).GetComponent<PaymentScript>();
+                paymentScript.newImage.sprite = greenArrow;
                 transactionId = jsonvale["result_push"][i]["txn_id"].ToString();
-                paymentScript.transactionId.text = transactionId;
-                walletType = jsonvale["result_push"][i]["walletType"].ToString();
-                paymentScript.transactionby.text = walletType;
+                paymentScript.newPaymentId.text = "Payment Id -#" + transactionId;
+                //walletType = jsonvale["result_push"][i]["walletType"].ToString();
+                //paymentScript.transactionby.text = walletType;
                 amount = jsonvale["result_push"][i]["amount"].ToString();
-                paymentScript.transactionAmount.text = amount;
-                disc = jsonvale["result_push"][i]["description"].ToString();
-                paymentScript.status.text = disc;
+                paymentScript.newAmountText.text = "Amount - " + amount;
+                //disc = jsonvale["result_push"][i]["description"].ToString();
+                //paymentScript.status.text = disc;
                 date = jsonvale["result_push"][i]["created_at"].ToString();
-                paymentScript.date.text = date;
+                paymentScript.newDate.text = date;
                 loadingPanel.SetActive(false);
             }
         }
@@ -200,21 +205,34 @@ public class PaymentHistroyScript : MonoBehaviour
             {
                 for (int i = 0; i < jsonvale["result_push"].Count; i++)
                 {
-                    DebitCardScript paymentScript = Instantiate(debittransactionPrefab, debitcontentPanel).GetComponent<DebitCardScript>();
+                    PaymentScript paymentScript = Instantiate(debittransactionPrefab, debitcontentPanel).GetComponent<PaymentScript>();
+
+                    paymentScript.newImage.sprite = redArrow;
                     transactionId = jsonvale["result_push"][i]["txn_id"].ToString();
-                    paymentScript.transactionId.text = transactionId;
-                    walletType = jsonvale["result_push"][i]["walletType"].ToString();
-                    paymentScript.transactionby.text = walletType;
+                    paymentScript.newPaymentId.text = "Payment Id -#" + transactionId;
+                    //walletType = jsonvale["result_push"][i]["walletType"].ToString();
+                    //paymentScript.transactionby.text = walletType;
                     amount = jsonvale["result_push"][i]["amount"].ToString();
-                    paymentScript.transactionAmount.text = amount;
-                    disc = jsonvale["result_push"][i]["description"].ToString();
-                    paymentScript.status.text = disc;
-                    nameP = jsonvale["result_push"][i]["transfer_to"].ToString();
-                    paymentScript.name.text = nameP;
+                    paymentScript.newAmountText.text = "Amount - " + amount;
+                    //disc = jsonvale["result_push"][i]["description"].ToString();
+                    //paymentScript.status.text = disc;
                     date = jsonvale["result_push"][i]["created_at"].ToString();
-                    Debug.Log(date);
-                    paymentScript.date.text = date;
+                    paymentScript.newDate.text = date;
                     loadingPanel.SetActive(false);
+                    //transactionId = jsonvale["result_push"][i]["txn_id"].ToString();
+                    //paymentScript.transactionId.text = transactionId;
+                    //walletType = jsonvale["result_push"][i]["walletType"].ToString();
+                    //paymentScript.transactionby.text = walletType;
+                    //amount = jsonvale["result_push"][i]["amount"].ToString();
+                    //paymentScript.transactionAmount.text = amount;
+                    //disc = jsonvale["result_push"][i]["description"].ToString();
+                    //paymentScript.status.text = disc;
+                    //nameP = jsonvale["result_push"][i]["transfer_to"].ToString();
+                    //paymentScript.name.text = nameP;
+                    //date = jsonvale["result_push"][i]["created_at"].ToString();
+                    //Debug.Log(date);
+                    //paymentScript.date.text = date;
+                    //loadingPanel.SetActive(false);
                 }
             }
             else
@@ -231,6 +249,17 @@ public class PaymentHistroyScript : MonoBehaviour
             value = value.Remove(value.IndexOf(","));
 
         return value;
+    }
+
+    public TextMeshProUGUI newCreditText, newDebitText, newWithdrawText;
+    public Sprite redArrow, greenArrow;
+
+    public void ChangeButtonColor(TextMeshProUGUI clickedButton)
+    {
+        newCreditText.color = Color.red;
+        newDebitText.color = Color.red;
+        newWithdrawText.color = Color.red;
+        clickedButton.color = Color.green;
     }
 
 }

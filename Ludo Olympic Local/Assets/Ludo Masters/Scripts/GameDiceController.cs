@@ -60,7 +60,11 @@ public class GameDiceController : PunBehaviour
 
     private void OnDisable()
     {
-        myScoreText.SetActive(false);
+        try
+        {
+            myScoreText.SetActive(false);
+        }
+        catch { }
     }
 
     private void SetSprite()

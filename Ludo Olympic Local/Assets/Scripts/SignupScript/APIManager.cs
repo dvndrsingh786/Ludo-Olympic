@@ -119,6 +119,11 @@ public class APIManager : MonoBehaviour
     public RawImage playerImage;
     public RawImage playerImage3;
 
+
+    [Header("My Wallet Attributes")]
+    public Text newTotalBalance;
+    public Text newAddedAmount;
+    public Text newWithdrawableAmount;
     
     int age;
     public string dob;
@@ -389,6 +394,10 @@ public class APIManager : MonoBehaviour
                 nameP.text = GameManager.playerName;
 
                 playername.text = GameManager.playerName;
+
+                newTotalBalance.text = GameManager.Instance.coinsCount.ToString();
+                newAddedAmount.text = GameManager.depositAmount;
+                newWithdrawableAmount.text = GameManager.withdraw;
                 SceneManager.LoadScene("MenuScene");
                
                 GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
@@ -649,6 +658,11 @@ public class APIManager : MonoBehaviour
                 nameP.text = GameManager.playerName;
 
                 playername.text = GameManager.playerName;
+
+                newTotalBalance.text = GameManager.Instance.coinsCount.ToString();
+                newAddedAmount.text = GameManager.depositAmount;
+                newWithdrawableAmount.text = GameManager.withdraw;
+
                 SceneManager.LoadScene("MenuScene");
 
                 GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
@@ -1067,6 +1081,11 @@ public class APIManager : MonoBehaviour
                 nameP.text = GameManager.playerName;
 
                 playername.text = GameManager.playerName;
+
+                newTotalBalance.text = GameManager.Instance.coinsCount.ToString();
+                newAddedAmount.text = GameManager.depositAmount;
+                newWithdrawableAmount.text = GameManager.withdraw;
+
                 SceneManager.LoadScene("MenuScene");
 
                 GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
@@ -1705,7 +1724,9 @@ public class APIManager : MonoBehaviour
         playername.text = GameManager.playerName;
         // kyc Verification...!!!!
 
-
+        newTotalBalance.text = GameManager.Instance.coinsCount.ToString();
+        newAddedAmount.text = GameManager.depositAmount;
+        newWithdrawableAmount.text = GameManager.withdraw;
         Debug.Log("Profile Plan"+GameManager.Uid);
         GameManager.Instance.nameMy = userName;
         GameManager.Instance.avatarMyIndex = UnityEngine.Random.Range(0, 22);
@@ -2774,5 +2795,27 @@ public class APIManager : MonoBehaviour
     public void OnMyProfile()
     {
         userDashboard.SetActive(true);
+    }
+
+
+
+    public void OpenReferAFriend()
+    {
+        FindObjectOfType<InitMenuScript>().newReferAFriendPanel.SetActive(true);
+    }
+
+    public void ToggleSound()
+    {
+        FindObjectOfType<InitMenuScript>().ToggleSound();
+    }
+
+    public void OpenMyWallet()
+    {
+        newMyWallet.SetActive(true);
+    }
+
+    public void OpenRedeemPanel()
+    {
+        FindObjectOfType<InitMenuScript>().redeemPanel.SetActive(true);
     }
 }
