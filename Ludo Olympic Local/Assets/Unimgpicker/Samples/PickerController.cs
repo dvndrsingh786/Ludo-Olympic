@@ -301,7 +301,9 @@ public class PickerController : MonoBehaviour
                 UIFlowHandler.uihandler.SetPlayerImage();
                 loadingPanel.SetActive(false);
                 playerProfile.SetActive(false);
-                notificationPanel.SetActive(true);
+                //notificationPanel.SetActive(true);
+                ReferenceManager.refMngr.ShowError("Profile Updated Successfully", "Success");
+
             }
         }
         else

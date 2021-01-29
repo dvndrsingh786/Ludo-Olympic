@@ -206,6 +206,7 @@ public class GameManager
     //Dav Variables
     public string privateRoomjoiningId;
     public bool doesContainBotMoves = false;
+    public static Sprite defaultSprite;
 
     public void resetAllData()
     {

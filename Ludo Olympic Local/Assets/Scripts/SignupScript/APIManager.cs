@@ -163,9 +163,13 @@ public class APIManager : MonoBehaviour
     public GameObject newReferAFriends;
     public GameObject newRules;
     public GameObject newTermsAndConditions;
+    public GameObject newUpdateProfilePage;
+
+    public bool isFirstTimeLogin = false;
 
     void Awake()
     {
+        isFirstTimeLogin = false;
         Debug.LogError("API Manager" + gameObject.name);
         StartCoroutine(OpenLogin());
         StartCoroutine (LoginMenu());
@@ -206,7 +210,7 @@ public class APIManager : MonoBehaviour
     }
     public GameObject LoadingPage;
     public GameObject splashCanvas;
-    IEnumerator LoginMenu()
+    public IEnumerator LoginMenu()
     {
         yield return new WaitForSeconds(3.1f);
         if (PlayerPrefs.HasKey("Logintoken"))
@@ -216,18 +220,19 @@ public class APIManager : MonoBehaviour
             GameManager.Instance.userID = PlayerPrefs.GetString("Logintoken");
             Debug.Log("has key");
            
-            Invoke("Delayforloading", 3f);
            
             LoginPanel.SetActive(false);
             choosePanel.SetActive(false);
            // yield return new WaitForSeconds(5f);
-            OnPlayerProfileData();
+            //OnPlayerProfileData();
             //CloseSplash();
+            Invoke("Delayforloading", 0.01f);
         }
         else
         {
+            FindObjectOfType<NewGameManager>().newLoginScreen.SetActive(true);
             //LoginPanel.SetActive(true);
-          // choosePanel.SetActive(true);
+            // choosePanel.SetActive(true);
         }
     }
     public void Delayforloading()
@@ -235,7 +240,7 @@ public class APIManager : MonoBehaviour
         LoadingPage.SetActive(false);
         splashCanvas.SetActive(false);
     }
-    IEnumerator OpenLogin()
+    public IEnumerator OpenLogin()
     {
         yield return new WaitForSeconds(3.1f);
         splashCanvas.SetActive(true);
@@ -398,6 +403,7 @@ public class APIManager : MonoBehaviour
                 newTotalBalance.text = GameManager.Instance.coinsCount.ToString();
                 newAddedAmount.text = GameManager.depositAmount;
                 newWithdrawableAmount.text = GameManager.withdraw;
+                LoadingPage.SetActive(true);
                 SceneManager.LoadScene("MenuScene");
                
                 GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
@@ -624,6 +630,10 @@ public class APIManager : MonoBehaviour
 
                 bank = (jsonvale["result_push"][0]["bank_name"].ToString());
                 GameManager.bankName = bank;
+                if(bank!="" && bank != null)
+                {
+                    bankeDetailIP.text = "Updated";
+                }
                 Debug.Log("bank" + GameManager.bankName);
 
 
@@ -662,7 +672,8 @@ public class APIManager : MonoBehaviour
                 newTotalBalance.text = GameManager.Instance.coinsCount.ToString();
                 newAddedAmount.text = GameManager.depositAmount;
                 newWithdrawableAmount.text = GameManager.withdraw;
-
+                LoadingPage.SetActive(true);
+                UIFlowHandler.uihandler.loadingPanel.SetActive(false);
                 SceneManager.LoadScene("MenuScene");
 
                 GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
@@ -766,6 +777,7 @@ public class APIManager : MonoBehaviour
                     FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                     FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
                     loadinPanel.SetActive(false);
+                    UIFlowHandler.uihandler.loadingPanel.SetActive(false);
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                 }
@@ -784,6 +796,7 @@ public class APIManager : MonoBehaviour
                 FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                 FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
                 loadinPanel.SetActive(false);
+                UIFlowHandler.uihandler.loadingPanel.SetActive(false);
                 StopCoroutine(ErrorClose());
                 StartCoroutine(ErrorClose());
             }
@@ -825,6 +838,7 @@ public class APIManager : MonoBehaviour
     public void SocialMediaSignInStart()
     {
         //AddSocialMediaSinupForm();
+        UIFlowHandler.uihandler.loadingPanel.SetActive(true);
         string loginurl = "https://api1.ludocashwin.com/public/api/login";
         WWWForm form = new WWWForm();
         form.AddField("username", socialEmail);
@@ -874,6 +888,7 @@ public class APIManager : MonoBehaviour
                     Debug.LogError("Registeration succesful");
                     SignupPanel.SetActive(false);
                     loadinPanel.SetActive(false);
+                    isFirstTimeLogin = true;
                     SocialMediaSignInStart();
 
                     //successPanel.SetActive(true);
@@ -917,6 +932,7 @@ public class APIManager : MonoBehaviour
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                 }
+                    UIFlowHandler.uihandler.loadingPanel.SetActive(false);
             }
             else
             {
@@ -925,6 +941,7 @@ public class APIManager : MonoBehaviour
                     canRegister = true;
                     errorMsg.text = "The mobile has already been taken.";
                     loadinPanel.SetActive(false);
+                    UIFlowHandler.uihandler.loadingPanel.SetActive(false);
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                     //FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
@@ -944,6 +961,7 @@ public class APIManager : MonoBehaviour
                 Debug.LogError("Should owrk");
                 canRegister = true;
                 loadinPanel.SetActive(false);
+                UIFlowHandler.uihandler.loadingPanel.SetActive(false);
                 FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                 FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
                 StopCoroutine(ErrorClose());
@@ -1048,8 +1066,10 @@ public class APIManager : MonoBehaviour
                 bank = (jsonvale["result_push"][0]["bank_name"].ToString());
                 GameManager.bankName = bank;
                 Debug.Log("bank" + GameManager.bankName);
-
-
+                if (bank != "" && bank != null)
+                {
+                    bankeDetailIP.text = "Updated";
+                }
 
                 ifscCode = (jsonvale["result_push"][0]["ifsc_code"].ToString());
                 GameManager.bankIfscCode = ifscCode;
@@ -1085,7 +1105,8 @@ public class APIManager : MonoBehaviour
                 newTotalBalance.text = GameManager.Instance.coinsCount.ToString();
                 newAddedAmount.text = GameManager.depositAmount;
                 newWithdrawableAmount.text = GameManager.withdraw;
-
+                LoadingPage.SetActive(true);
+                UIFlowHandler.uihandler.loadingPanel.SetActive(false);
                 SceneManager.LoadScene("MenuScene");
 
                 GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
@@ -1155,6 +1176,9 @@ public class APIManager : MonoBehaviour
                 }
                 else
                 {
+                    //GameManager.profileImge = GameManager.defaultSprite;
+                    //playerImage.texture = GameManager.defaultSprite.texture;
+                    //playerImage3.texture = GameManager.defaultSprite.texture;
                     playerImage.gameObject.SetActive(false);
                 }
 
@@ -1307,6 +1331,7 @@ public class APIManager : MonoBehaviour
                     Debug.LogError("Registeration succesful");
                     SignupPanel.SetActive(false);
                     loadinPanel.SetActive(false);
+                    isFirstTimeLogin = true;
                     PhoneMediaSignInStart();
 
                     //successPanel.SetActive(true);
@@ -1690,9 +1715,13 @@ public class APIManager : MonoBehaviour
 
             bank = (jsonvale["result_push"][0]["bank_name"].ToString());
             GameManager.bankName = bank;
-           // Debug.Log("bank" + GameManager.bankName);
+        // Debug.Log("bank" + GameManager.bankName);
+        if (bank != "" && bank != null)
+        {
+            bankeDetailIP.text = "Updated";
+        }
 
-            ifscCode = (jsonvale["result_push"][0]["ifsc_code"].ToString());
+        ifscCode = (jsonvale["result_push"][0]["ifsc_code"].ToString());
             GameManager.bankIfscCode = ifscCode;
            // Debug.Log("IFSC" + GameManager.bankIfscCode);
 
@@ -1794,6 +1823,7 @@ public class APIManager : MonoBehaviour
         }
 
         playerImageUrl = jsonvale["result_push"][0]["profile_pic"].ToString();
+        Debug.LogWarning("Checking pic");
         //Debug.LogWarning("Player img urllll: " + playerImageUrl);
         if (jsonvale["result_push"][0]["profile_pic"].ToString() != "0" && jsonvale["result_push"][0]["profile_pic"].ToString() != "")
         {
@@ -1812,6 +1842,9 @@ public class APIManager : MonoBehaviour
         }
         else
         {
+            //GameManager.profileImge = GameManager.defaultSprite;
+            //playerImage.texture = GameManager.defaultSprite.texture;
+            //playerImage3.texture = GameManager.defaultSprite.texture;
             Debug.LogError("NO PROFILE PIC");
             playerImage.gameObject.SetActive(false);
         }
@@ -2660,6 +2693,8 @@ public class APIManager : MonoBehaviour
             playerStatsPanel.SetActive(false);
             _name.text = "";
             _password.text = "";
+            isFirstTimeLogin = false;
+            newOptionsPanel.SetActive(false);
 
             CloseSplash();
             // SceneManager.LoadScene(0);
@@ -2797,7 +2832,16 @@ public class APIManager : MonoBehaviour
         userDashboard.SetActive(true);
     }
 
+    #region Ludo Olympic Script
 
+    public TMP_InputField referralCodeInputField;
+    public TextMeshProUGUI newCoinsText;
+    public TMP_InputField newbankName;
+    public TMP_InputField newAccountNumber;
+    public TMP_InputField newConfirmAccountNumber;
+    public TMP_InputField newIFSCCode;
+    public TextMeshProUGUI newBankDetailsError;
+    public TMP_InputField bankeDetailIP;
 
     public void OpenReferAFriend()
     {
@@ -2818,4 +2862,101 @@ public class APIManager : MonoBehaviour
     {
         FindObjectOfType<InitMenuScript>().redeemPanel.SetActive(true);
     }
+
+
+    public void OpenProfilePage()
+    {
+        newCoinsText.text = GameManager.Instance.coinsCount.ToString();
+        FindObjectOfType<RefferalCodeScript>().OnInviteFriendEnabled();
+        newProfilePanel.SetActive(true);
+    }
+
+    public void RefferalClaim()
+    {
+        FindObjectOfType<RefferalCodeScript>().OnClaimPrize();
+    }
+
+    public void OpenNewBankPanel()
+    {
+        newbankName.text = GameManager.bankName;
+        newIFSCCode.text = GameManager.bankIfscCode;
+        newAccountNumber.text = GameManager.accountNumber;
+        newConfirmAccountNumber.text = GameManager.accountNumber;
+        newBankDetails.SetActive(true);
+    }
+
+    public void UpdateBankDetails()
+    {
+        string url123 = FindObjectOfType<ReedemCoinsScript>().bankDetailUrl;
+        if (string.IsNullOrEmpty(newbankName.text))
+        {
+            newBankDetailsError.text = "Bank Name Can't be Blank";
+            StopCoroutine(ErrorClose());
+            StartCoroutine(ErrorClose());
+            return;
+        }
+        if (string.IsNullOrEmpty(newAccountNumber.text))
+        {
+            newBankDetailsError.text = "Bank Acount Can't be Blank";
+            StopCoroutine(ErrorClose());
+            StartCoroutine(ErrorClose());
+            return;
+        }
+        if (string.IsNullOrEmpty(newIFSCCode.text))
+        {
+            newBankDetailsError.text = "IFSC Can't be Blank";
+            StopCoroutine(ErrorClose());
+            StartCoroutine(ErrorClose());
+            return;
+        }
+        WWWForm form = new WWWForm();
+        form.AddField("user_id", GameManager.Uid);
+        form.AddField("bank_name", newbankName.text);
+        form.AddField("ifsc_code", newIFSCCode.text);
+        form.AddField("account", newAccountNumber.text);
+        WWW w = new WWW(url123, form);
+        ReferenceManager.refMngr.loadingPanel.SetActive(true);
+        StartCoroutine(bankDetailCheck(w));
+    }
+
+    IEnumerator bankDetailCheck(WWW w)
+    {
+        yield return w;
+
+
+        print("responce=" + w.text);
+        if (w.error == null)
+        {
+            string msg = w.text;
+            msg = msg.Replace("{", "");
+            msg = msg.Replace("}", "");
+            msg = msg.Replace("[", "");
+            msg = msg.Replace("]", "");
+            msg = msg.Replace(@"""", string.Empty);
+            results = GetDataValue(msg, "message:");
+            status = GetDataValue(msg, "status:");
+            if (results == "Updated Successfully" || status == "True")
+            {
+                ReferenceManager.refMngr.ShowError("Successfully Updated", "Message");
+                PlayerPrefs.SetString("Bank", "1");
+            }
+            else
+            {
+                newBankDetailsError.text = results;
+                StartCoroutine(DavMaster.EnableDisableWithDelay(newBankDetailsError.gameObject, 2, false));
+            }
+            ReferenceManager.refMngr.loadingPanel.SetActive(false);
+        }
+        else
+        {
+            StartCoroutine(DavMaster.EnableDisableWithDelay(newBankDetailsError.gameObject, 2, false));
+            ReferenceManager.refMngr.loadingPanel.SetActive(false);
+        }
+    }
+    public void OpenUpdateProfile()
+    {
+        newUpdateProfilePage.SetActive(true);
+    }
+
+    #endregion
 }

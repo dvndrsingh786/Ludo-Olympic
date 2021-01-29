@@ -38,6 +38,7 @@ public class WalletApiScript : MonoBehaviour
         offlineOnlineApiScript = FindObjectOfType<OfflineOnlineApiScript>();
         if (PlayerPrefs.HasKey("Logintoken"))
         {
+            FindObjectOfType<NewGameManager>().newLoginScreen.SetActive(false);
             GameManager.Instance.userID = PlayerPrefs.GetString("Logintoken");          
             GameManager.Instance.playfabManager.apiManager.OnPlayerProfileData();
             Debug.Log("Id" + GameManager.Uid);

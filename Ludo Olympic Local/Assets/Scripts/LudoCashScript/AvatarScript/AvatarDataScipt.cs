@@ -50,10 +50,17 @@ public class AvatarDataScipt : MonoBehaviour
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(bytes);
             Sprite profileImage = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
+            if (i == 0) SetDefaultSprite(profileImage);
             clone.boardImage.sprite = profileImage;
             screenid.Add(jsonvale["result_push"][i]["id"].ToString());
             clone.screenid = jsonvale["result_push"][i]["id"].ToString();
         }
+    }
+
+    public void SetDefaultSprite(Sprite sprt)
+    {
+        GameManager.defaultSprite = sprt;
+        Debug.LogWarning("Sprite Set");
     }
 
 }

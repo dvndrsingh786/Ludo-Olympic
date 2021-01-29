@@ -135,6 +135,9 @@ public class PaymentHistroyScript : MonoBehaviour
             print(jsonvale["result_push"].Count + "count data");
             if (jsonvale["result_push"].Count !=2)
             {
+                contentPanel.parent.GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
+                int length = jsonvale["result_push"].Count;
+                contentPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(contentPanel.GetComponent<RectTransform>().sizeDelta.x, 140 * length);
                 for (int i = 0; i < jsonvale["result_push"].Count; i++)
                 {
                     PaymentScript paymentScript = Instantiate(transactionPrefab, contentPanel).GetComponent<PaymentScript>();
@@ -157,7 +160,7 @@ public class PaymentHistroyScript : MonoBehaviour
             else
             {
                 loadingPanel.SetActive(false);
-                infoPanel.SetActive(true);
+                //infoPanel.SetActive(true);
             }
         }
 
@@ -172,7 +175,9 @@ public class PaymentHistroyScript : MonoBehaviour
         if (w.error == null)
         {
             JsonData jsonvale = JsonMapper.ToObject(w.text);
-
+            creditcontentPanel.parent.GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
+            int length = jsonvale["result_push"].Count;
+            creditcontentPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(creditcontentPanel.GetComponent<RectTransform>().sizeDelta.x, 140 * length);
             for (int i = 0; i < jsonvale["result_push"].Count; i++)
             {
                 PaymentScript paymentScript = Instantiate(credittransactionPrefab, creditcontentPanel).GetComponent<PaymentScript>();
@@ -203,6 +208,9 @@ public class PaymentHistroyScript : MonoBehaviour
             JsonData jsonvale = JsonMapper.ToObject(w.text);
             if (jsonvale["result_push"].Count != 2)
             {
+                debitcontentPanel.parent.GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
+                int length = jsonvale["result_push"].Count;
+                debitcontentPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(debitcontentPanel.GetComponent<RectTransform>().sizeDelta.x, 140 * length);
                 for (int i = 0; i < jsonvale["result_push"].Count; i++)
                 {
                     PaymentScript paymentScript = Instantiate(debittransactionPrefab, debitcontentPanel).GetComponent<PaymentScript>();
@@ -238,7 +246,7 @@ public class PaymentHistroyScript : MonoBehaviour
             else
             {
                 loadingPanel.SetActive(false);
-                infoPanel.SetActive(true);
+                //infoPanel.SetActive(true);
             }
         }
      }

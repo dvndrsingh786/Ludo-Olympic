@@ -189,5 +189,9 @@ public class DavMaster : MonoBehaviour
         popupObject.SetActive(false);
     }
 
-
+    public static IEnumerator EnableDisableWithDelay(GameObject target, float time, bool state)
+    {
+        yield return new WaitForSecondsRealtime(time);
+        target.SetActive(state);
+    }
 }

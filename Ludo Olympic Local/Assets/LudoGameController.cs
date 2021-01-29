@@ -335,6 +335,7 @@ public class LudoGameController : PunBehaviour, IMiniGame
             int pl = int.Parse(data[1]);
 
             GameManager.Instance.playerObjects[pl].dice.GetComponent<GameDiceController>().RollDiceStart(steps);
+            GameManager.Instance.playerObjects[pl].dice.GetComponent<GameDiceController>().IncreaseScore(steps);
         }
         else if (eventcode == (int)EnumGame.PawnMove)
         {

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using TMPro;
 
 public class RefferalCodeScript : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class RefferalCodeScript : MonoBehaviour
     [Header("Refferal Attribute")]
 
     public string refferalCodeURL;
-    public InputField _referalCode;
+    public TMP_InputField _referalCode;
 
 
     public Text popupText;
@@ -39,7 +40,7 @@ public class RefferalCodeScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        _referalCode = GameManager.Instance.playfabManager.apiManager.referralCodeInputField;
     }
 
     public GameObject inviteFriendPanel;
@@ -50,31 +51,34 @@ public class RefferalCodeScript : MonoBehaviour
         {
             _referalCode.text = PlayerPrefs.GetString(refCodePP);
             _referalCode.interactable = true;
-            inviteFriendPanel.SetActive(true);
+            //inviteFriendPanel.SetActive(true);
         }
         else
         {
             _referalCode.text = PlayerPrefs.GetString(refCodePP);
             _referalCode.interactable = false;
-            inviteFriendPanel.SetActive(true);
+            //inviteFriendPanel.SetActive(true);
         }
     }
 
     public void OnClaimPrize()
     {
-        if (string.IsNullOrEmpty(_referalCode.text))
+        if (_referalCode.interactable)
         {
-            errortext.text = "RefferalCode Can't be Blank";
-            StopCoroutine(ErrorClose());
-            StartCoroutine(ErrorClose());
-            return;
+            if (string.IsNullOrEmpty(_referalCode.text))
+            {
+                errortext.text = "RefferalCode Can't be Blank";
+                StopCoroutine(ErrorClose());
+                StartCoroutine(ErrorClose());
+                return;
+            }
+            WWWForm form = new WWWForm();
+            form.AddField("user_id", GameManager.Uid);
+            form.AddField("refer_code", _referalCode.text);
+            Debug.Log("Code" + _referalCode.text);
+            WWW w = new WWW(refferalCodeURL, form);
+            StartCoroutine(ClaimPrize(w));
         }
-        WWWForm form = new WWWForm();
-        form.AddField("user_id", GameManager.Uid);
-        form.AddField("refer_code", _referalCode.text);
-        Debug.Log("Code" + _referalCode.text);
-        WWW w = new WWW(refferalCodeURL, form);
-        StartCoroutine(ClaimPrize(w));
     }
 
     IEnumerator ClaimPrize(WWW w)

@@ -377,9 +377,8 @@ public class GameDiceController : PunBehaviour
                 Debug.Log("Popup Call");
             }
 
-            int score = int.Parse(myScore.text);
-            score += steps;
-            myScore.text = score.ToString();
+            IncreaseScore(steps);
+            
             // if (aa % 2 == 0) steps = 6;
             // else steps = 2;
             // aa++;
@@ -391,6 +390,13 @@ public class GameDiceController : PunBehaviour
             diceIndex++;
             Debug.Log("Value: " + steps);
         }
+    }
+
+    public void IncreaseScore(int incScore)
+    {
+        int score = int.Parse(myScore.text);
+        score += incScore;
+        myScore.text = score.ToString();
     }
 
     public void RollDiceMAnually()
@@ -420,7 +426,7 @@ public class GameDiceController : PunBehaviour
         {
             aa = 0;
         }
-
+        IncreaseScore(steps);
         //RollDiceStart(steps);
         GameManager.Instance.playerObjects[controller.gUIController.GetCurrentPlayerIndex()].dice.GetComponent<GameDiceController>().RollDiceStart(steps);
         string data = steps + ";" + controller.gUIController.GetCurrentPlayerIndex();

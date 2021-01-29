@@ -237,6 +237,7 @@ public class UpdatePlayerTimer : MonoBehaviour
         else
         {
             //Debug.LogError("MY New Else");
+            if(false)
             GUIController.GetComponent<GameGUIController>().SendingFinishSlowly(this);
         }
     }

@@ -199,6 +199,11 @@ public class InitMenuScript : MonoBehaviour
         newGameManager.mobileVerificationScreen.SetActive(false);
         newGameManager.EnterYourPinScreen.SetActive(false);
         UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+        //GameManager.Instance.playfabManager.apiManager.isFirstTimeLogin = true;
+        if (GameManager.Instance.playfabManager.apiManager.isFirstTimeLogin)
+        {
+            GameManager.Instance.playfabManager.apiManager.newUpdateProfilePage.SetActive(true);
+        }
     }
 
 

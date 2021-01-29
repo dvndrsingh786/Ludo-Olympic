@@ -39,7 +39,7 @@ public class LudoPawnController : MonoBehaviour
     //[HideInInspector]
     public int playerIndex;
     public AudioSource[] sound;
-    public Vector2 initPosition;
+    public RectTransform initPosition;
     private bool canMakeJoint = false;
 
     GameObject BoardParentobj;
@@ -54,7 +54,7 @@ public class LudoPawnController : MonoBehaviour
         ludoController = GameObject.Find("GameSpecific").GetComponent<LudoGameController>();
         rect = GetComponent<RectTransform>();
         initScale = rect.localScale;
-        initPosition = rect.anchoredPosition;
+        initPosition = rect;
 
         GetComponent<Button>().interactable = false;
 
@@ -357,7 +357,7 @@ public class LudoPawnController : MonoBehaviour
     {
         rect.SetAsLastSibling();
         currentPosition = 0;
-        StartCoroutine(MoveDelayed(0, initPosition, path[currentPosition].anchoredPosition, MoveToStartPositionSpeed, true, true));
+        StartCoroutine(MoveDelayed(0, initPosition, path[currentPosition], MoveToStartPositionSpeed, true, true));
 
         if (pawnInJoint != null)
         {
@@ -375,7 +375,7 @@ public class LudoPawnController : MonoBehaviour
         currentPosition = -1;
         //pawnTop.SetActive(true);
         pawnTopMultiple.SetActive(false);
-        StartCoroutine(MoveDelayed(0, rect.anchoredPosition, initPosition, MoveToStartPositionSpeed, true, false));
+        StartCoroutine(MoveDelayed(0, rect, initPosition, MoveToStartPositionSpeed, true, false));
         if (pawnInJoint != null)
         {
             pawnInJoint.GetComponent<LudoPawnController>().pawnInJoint = null;
@@ -438,7 +438,7 @@ public class LudoPawnController : MonoBehaviour
             }
             else
             {
-                StartCoroutine(MoveDelayedBackForth(i, path[currentPosition].anchoredPosition, path[currentPosition - 1].anchoredPosition, 0.0001f, last, true));
+                StartCoroutine(MoveDelayedBackForth(i, path[currentPosition].anchoredPosition, path[currentPosition - 1].anchoredPosition, 0.0001f, last, true, path[currentPosition-1]));
             }
 
             yield return new WaitForSeconds(0.05f);
@@ -462,7 +462,7 @@ public class LudoPawnController : MonoBehaviour
 
             currentPosition++;
             StartCoroutine("Particle");
-            yield return StartCoroutine(MoveDelayed(i, path[currentPosition - 1].anchoredPosition, path[currentPosition].anchoredPosition, singlePathSpeed, last, true));
+            yield return StartCoroutine(MoveDelayed(i, path[currentPosition - 1], path[currentPosition], singlePathSpeed, last, true));
 
 
             // yield return new WaitForSeconds(0.04f);
@@ -470,6 +470,66 @@ public class LudoPawnController : MonoBehaviour
             // rect.localScale = new Vector3 (initScale.x, initScale.y, initScale.z);
             // yield return new WaitForSeconds(0.01f);
         }
+    }
+
+    private IEnumerator MoveDelayed1(int delay, RectTransform from, RectTransform to, float time, bool last, bool playSound)
+    {
+
+        //  rect.localScale = new Vector3(initScale.x * 1.25f, initScale.y * 1.25f, initScale.z);
+        StartCoroutine("ScalingEffect");
+        yield return new WaitForSeconds(0);
+
+        if (playSound)
+        {
+            sound[currentAudioSource % sound.Length].Play();
+            currentAudioSource++;
+        }
+        StopCoroutine("UpScalingAnimation");
+        StopCoroutine("DeScalingAnimation");
+        rect.localScale = new Vector3(1f, 1f, 1);
+        DavMaster.CopyRectTransform(to, rect);
+        //rect = to;
+        Debug.LogError(rect + "rect");
+        Debug.LogError(to  + "to");
+
+        //Vector2 diff = to - from;
+        //float x = diff.x / .17f;
+        //float y = diff.y / .17f;
+        //float epsilon = 5f;
+
+        //Debug.Log("diff    " + diff + "  x    " + x + "   y  " + y);
+        //float lastValue = Vector2.Distance(to, rect.anchoredPosition);
+        //while (Vector2.Distance(to, rect.anchoredPosition) > (epsilon))
+        //{
+        //    rect.anchoredPosition += new Vector2(x * Time.deltaTime, y * Time.deltaTime);
+        //    float gap = Vector2.Distance(to, rect.anchoredPosition);
+        //    if (gap < lastValue)
+        //    {
+        //        lastValue = gap;
+        //    }
+        //    else
+        //        break;
+        //    yield return null;
+        //}
+        //StopCoroutine("UpScalingAnimation");
+        //StopCoroutine("DeScalingAnimation");
+        //rect.localScale = new Vector3(1f, 1f, 1);
+        //rect.anchoredPosition = to;
+        if (last)
+        {
+            MoveFinished();
+        }
+
+
+        // if (last)
+        // {
+        //     iTween.ValueTo(gameObject, iTween.Hash("from", from, "to", to, "time", time, "easetype", iTween.EaseType.linear, "onupdate", "UpdatePosition", "oncomplete", "MoveFinished"));
+        // }
+        // else
+        // {
+        //     iTween.ValueTo(gameObject, iTween.Hash("from", from, "to", to, "time", time, "easetype", iTween.EaseType.linear, "onupdate", "UpdatePosition"));
+        // }
+
     }
 
     IEnumerator Particle()
@@ -548,14 +608,14 @@ public class LudoPawnController : MonoBehaviour
         {
             GoToStartPosition();
         }
-        else
-        {
+        //else
+        //{
             if (pawnInJoint != null)
             {
                 pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(steps);
             }
             MoveBySteps(steps);
-        }
+        //}
         isOnBoard = true;
     }
 
@@ -570,36 +630,39 @@ public class LudoPawnController : MonoBehaviour
         {
             GoToStartPosition();
         }
-        else
-        {
+        
             if (pawnInJoint != null)
             {
                 pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
             }
             MoveBySteps(ludoController.steps);
-        }
 
         isOnBoard = true;
     }
 
-    private IEnumerator MoveDelayedBackForth(int delay, Vector2 from, Vector2 to, float time, bool last, bool playSound)
+    private IEnumerator MoveDelayedBackForth(int delay, Vector2 from, Vector2 to, float time, bool last, bool playSound, RectTransform targettransform)
     {
 
         rect.localScale = new Vector3(initScale.x * 1.15f, initScale.y * 1.15f, initScale.z);
+        DavMaster.CopyRectTransform(targettransform, rect);
+
         yield return new WaitForSeconds(0);
 
-        if (last)
+        if (false)
         {
-            iTween.ValueTo(gameObject, iTween.Hash("from", from, "to", to, "time", time, "easetype", iTween.EaseType.linear, "onupdate", "UpdatePosition", "oncomplete", "AddInJail"));
-        }
-        else
-        {
-            iTween.ValueTo(gameObject, iTween.Hash("from", from, "to", to, "time", time, "easetype", iTween.EaseType.linear, "onupdate", "UpdatePosition"));
+            if (last)
+            {
+                iTween.ValueTo(gameObject, iTween.Hash("from", from, "to", to, "time", time, "easetype", iTween.EaseType.linear, "onupdate", "UpdatePosition", "oncomplete", "AddInJail"));
+            }
+            else
+            {
+                iTween.ValueTo(gameObject, iTween.Hash("from", from, "to", to, "time", time, "easetype", iTween.EaseType.linear, "onupdate", "UpdatePosition"));
+            }
         }
 
     }
 
-    private IEnumerator MoveDelayed(int delay, Vector2 from, Vector2 to, float time, bool last, bool playSound)
+    private IEnumerator MoveDelayed(int delay, RectTransform from, RectTransform to, float time, bool last, bool playSound)
     {
 
         //  rect.localScale = new Vector3(initScale.x * 1.25f, initScale.y * 1.25f, initScale.z);
@@ -611,30 +674,36 @@ public class LudoPawnController : MonoBehaviour
             sound[currentAudioSource % sound.Length].Play();
             currentAudioSource++;
         }
-
-        Vector2 diff = to - from;
-        float x = diff.x / .17f;
-        float y = diff.y / .17f;
-        float epsilon = 5f;
-
-        Debug.Log("diff    " + diff + "  x    " + x + "   y  " + y);
-        float lastValue = Vector2.Distance(to, rect.anchoredPosition);
-        while (Vector2.Distance(to, rect.anchoredPosition) > (epsilon))
-        {
-            rect.anchoredPosition += new Vector2(x * Time.deltaTime, y * Time.deltaTime);
-            float gap = Vector2.Distance(to, rect.anchoredPosition);
-            if (gap < lastValue)
-            {
-                lastValue = gap;
-            }
-            else
-                break;
-            yield return null;
-        }
         StopCoroutine("UpScalingAnimation");
         StopCoroutine("DeScalingAnimation");
-        rect.localScale = new Vector3(0.58f, 0.58f, 1);
-        rect.anchoredPosition = to;
+        rect.localScale = new Vector3(1f, 1f, 1);
+        DavMaster.CopyRectTransform(to, rect);
+        //rect = to;
+        Debug.LogError(rect + "rect");
+        Debug.LogError(to + "to");
+        //Vector2 diff = to - from;
+        //float x = diff.x / .17f;
+        //float y = diff.y / .17f;
+        //float epsilon = 5f;
+
+        //Debug.Log("diff    " + diff + "  x    " + x + "   y  " + y);
+        //float lastValue = Vector2.Distance(to, rect.anchoredPosition);
+        //while (Vector2.Distance(to, rect.anchoredPosition) > (epsilon))
+        //{
+        //    rect.anchoredPosition += new Vector2(x * Time.deltaTime, y * Time.deltaTime);
+        //    float gap = Vector2.Distance(to, rect.anchoredPosition);
+        //    if (gap < lastValue)
+        //    {
+        //        lastValue = gap;
+        //    }
+        //    else
+        //        break;
+        //    yield return null;
+        //}
+        //StopCoroutine("UpScalingAnimation");
+        //StopCoroutine("DeScalingAnimation");
+        //rect.localScale = new Vector3(1f, 1f, 1);
+        //rect.anchoredPosition = to;
         if (last)
         {
             MoveFinished();
@@ -655,10 +724,10 @@ public class LudoPawnController : MonoBehaviour
     IEnumerator ScalingEffect()
     {
         yield return new WaitForSeconds(0.02f);
-        float value = 3f;
-        yield return (StartCoroutine(UpScalingAnimation(transform.gameObject, new Vector2(0.72f, 0.72f), value)));
+        float value = 1.5f;
+        yield return (StartCoroutine(UpScalingAnimation(transform.gameObject, new Vector2(1.2f, 1.2f), value)));
 
-        StartCoroutine(DeScalingAnimation(transform.gameObject, new Vector2(0.58f, 0.58f), value));
+        StartCoroutine(DeScalingAnimation(transform.gameObject, new Vector2(1f, 1f), value));
 
     }
 
@@ -682,7 +751,7 @@ public class LudoPawnController : MonoBehaviour
             yield return null;
         }
 
-        rect.localScale = new Vector3(0.58f, 0.58f, 1);
+        rect.localScale = new Vector3(1f, 1f, 1);
         Debug.Log("scaling Done   " + rect.localScale);
     }
 
@@ -713,7 +782,6 @@ public class LudoPawnController : MonoBehaviour
 
             if (pawnInJoint == null || (pawnInJoint != null && mainInJoint))
             {
-
                 Debug.Log("Main in joint");
                 int otherCount = pathController.pawns.Count;
 
