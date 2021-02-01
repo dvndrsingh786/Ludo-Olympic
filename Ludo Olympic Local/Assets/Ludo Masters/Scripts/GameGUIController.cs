@@ -871,7 +871,7 @@ public class GameGUIController : PunBehaviour
                     }
                     else if (GameManager.Instance.type == MyGameType.Private)
                     {
-                        Debug.LogError("Amount Changed here");
+                        Debug.Log("Amount Changed here");
                         //int finalAmount = firstPlacePrize - (int)(firstPlacePrize * 0.10f);
                         float finalAmount = firstPlacePrize;
                         Debug.Log(finalAmount);

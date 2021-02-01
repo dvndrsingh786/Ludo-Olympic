@@ -18,7 +18,7 @@ using System.Security.Authentication.ExtendedProtection;
 public class APIManager : MonoBehaviour
 {
     [Header("SignUp Object")]
-
+    
     public InputField _nameWithdraw;
     public InputField _amountWithdraw;
     public InputField _mobileNumberWithdraw;
@@ -166,6 +166,7 @@ public class APIManager : MonoBehaviour
     public GameObject newUpdateProfilePage;
 
     public bool isFirstTimeLogin = false;
+    public Sprite defaultPP;
 
     void Awake()
     {
@@ -174,7 +175,14 @@ public class APIManager : MonoBehaviour
         StartCoroutine(OpenLogin());
         StartCoroutine (LoginMenu());
         newGameManager = FindObjectOfType<NewGameManager>();
+        if (PlayerPrefs.GetInt("Muted", 0) == 0)
+        {
+            SetSoundButton(true);
+        }
+        else SetSoundButton(false);
     }
+
+
 
     void Update()
     {
@@ -632,7 +640,8 @@ public class APIManager : MonoBehaviour
                 GameManager.bankName = bank;
                 if(bank!="" && bank != null)
                 {
-                    bankeDetailIP.text = "Updated";
+                    bankeDetailIP.text = "Verified";
+                    bankDetailButtonText.text = "Edit";
                 }
                 Debug.Log("bank" + GameManager.bankName);
 
@@ -742,7 +751,10 @@ public class APIManager : MonoBehaviour
                 }
                 else
                 {
-                    playerImage.gameObject.SetActive(false);
+                    GameManager.profileImge = defaultPP;
+                    playerImage.texture = defaultPP.texture;
+                    playerImage3.texture = defaultPP.texture;
+                    //playerImage.gameObject.SetActive(false);
                 }
 
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
@@ -1068,7 +1080,8 @@ public class APIManager : MonoBehaviour
                 Debug.Log("bank" + GameManager.bankName);
                 if (bank != "" && bank != null)
                 {
-                    bankeDetailIP.text = "Updated";
+                    bankeDetailIP.text = "Verified";
+                    bankDetailButtonText.text = "Edit";
                 }
 
                 ifscCode = (jsonvale["result_push"][0]["ifsc_code"].ToString());
@@ -1176,10 +1189,10 @@ public class APIManager : MonoBehaviour
                 }
                 else
                 {
-                    //GameManager.profileImge = GameManager.defaultSprite;
-                    //playerImage.texture = GameManager.defaultSprite.texture;
-                    //playerImage3.texture = GameManager.defaultSprite.texture;
-                    playerImage.gameObject.SetActive(false);
+                    GameManager.profileImge = defaultPP;
+                    playerImage.texture = defaultPP.texture;
+                    playerImage3.texture = defaultPP.texture;
+                    //playerImage.gameObject.SetActive(false);
                 }
 
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
@@ -1718,7 +1731,8 @@ public class APIManager : MonoBehaviour
         // Debug.Log("bank" + GameManager.bankName);
         if (bank != "" && bank != null)
         {
-            bankeDetailIP.text = "Updated";
+            bankeDetailIP.text = "Verified";
+            bankDetailButtonText.text = "Edit";
         }
 
         ifscCode = (jsonvale["result_push"][0]["ifsc_code"].ToString());
@@ -1824,7 +1838,7 @@ public class APIManager : MonoBehaviour
 
         playerImageUrl = jsonvale["result_push"][0]["profile_pic"].ToString();
         Debug.LogWarning("Checking pic");
-        //Debug.LogWarning("Player img urllll: " + playerImageUrl);
+        Debug.LogWarning("Player img urllll: " + playerImageUrl);
         if (jsonvale["result_push"][0]["profile_pic"].ToString() != "0" && jsonvale["result_push"][0]["profile_pic"].ToString() != "")
         {
             playerImage.gameObject.SetActive(true);
@@ -1842,11 +1856,11 @@ public class APIManager : MonoBehaviour
         }
         else
         {
-            //GameManager.profileImge = GameManager.defaultSprite;
-            //playerImage.texture = GameManager.defaultSprite.texture;
-            //playerImage3.texture = GameManager.defaultSprite.texture;
+            GameManager.profileImge = defaultPP;
+            playerImage.texture = defaultPP.texture;
+            playerImage3.texture = defaultPP.texture;
             Debug.LogError("NO PROFILE PIC");
-            playerImage.gameObject.SetActive(false);
+            //playerImage.gameObject.SetActive(false);
         }
         GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
         nameP.text = GameManager.playerName;
@@ -2137,7 +2151,7 @@ public class APIManager : MonoBehaviour
     
     IEnumerator IncreaseCoins(float amount)
     {
-        Debug.LogError("Increase Coins");
+        Debug.Log("Increase Coins");
         url= "https://api1.ludocashwin.com/public/api/winning";
 
         WWWForm form = new WWWForm();
@@ -2728,6 +2742,7 @@ public class APIManager : MonoBehaviour
         ferrorText.text = "";
         cerrorText.text = "";
         withdrwal.text = "";
+        newBankDetailsError.text = "";
        yield return null;
     }
     public void OnBtn()
@@ -2836,16 +2851,26 @@ public class APIManager : MonoBehaviour
 
     public TMP_InputField referralCodeInputField;
     public TextMeshProUGUI newCoinsText;
+    public TextMeshProUGUI newNameinProfilePageText;
     public TMP_InputField newbankName;
     public TMP_InputField newAccountNumber;
     public TMP_InputField newConfirmAccountNumber;
     public TMP_InputField newIFSCCode;
     public TextMeshProUGUI newBankDetailsError;
     public TMP_InputField bankeDetailIP;
+    public TextMeshProUGUI bankDetailButtonText;
+    public GameObject musicOnBtn;
+    public GameObject musicOffBtn;
 
     public void OpenReferAFriend()
     {
         FindObjectOfType<InitMenuScript>().newReferAFriendPanel.SetActive(true);
+    }
+
+    public void SetSoundButton(bool state)
+    {
+        musicOnBtn.SetActive(state);
+        musicOffBtn.SetActive(!state);
     }
 
     public void ToggleSound()
@@ -2867,6 +2892,7 @@ public class APIManager : MonoBehaviour
     public void OpenProfilePage()
     {
         newCoinsText.text = GameManager.Instance.coinsCount.ToString();
+        newNameinProfilePageText.text = GameManager.playerName;
         FindObjectOfType<RefferalCodeScript>().OnInviteFriendEnabled();
         newProfilePanel.SetActive(true);
     }
@@ -2909,6 +2935,13 @@ public class APIManager : MonoBehaviour
             StartCoroutine(ErrorClose());
             return;
         }
+        if (newAccountNumber.text != newConfirmAccountNumber.text)
+        {
+            newBankDetailsError.text = "Account Numbers doesn't match";
+            StopCoroutine(ErrorClose());
+            StartCoroutine(ErrorClose());
+            return;
+        }
         WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
         form.AddField("bank_name", newbankName.text);
@@ -2938,6 +2971,11 @@ public class APIManager : MonoBehaviour
             if (results == "Updated Successfully" || status == "True")
             {
                 ReferenceManager.refMngr.ShowError("Successfully Updated", "Message");
+                bankeDetailIP.text = "Verified";
+                GameManager.bankName = newbankName.text;
+                GameManager.bankIfscCode = newIFSCCode.text;
+                GameManager.accountNumber = newAccountNumber.text;
+                bankDetailButtonText.text = "Edit";
                 PlayerPrefs.SetString("Bank", "1");
             }
             else

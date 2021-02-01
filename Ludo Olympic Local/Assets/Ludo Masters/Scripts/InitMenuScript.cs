@@ -194,12 +194,12 @@ public class InitMenuScript : MonoBehaviour
         // AdsManager.Instance.adsScript.ShowAd(AdLocation.GameStart);
         //  GameManager.Instance.playfabManager.apiManager.OnRequestPlans();
         NewGameManager newGameManager = FindObjectOfType<NewGameManager>();
-        Debug.LogError("Hiden");
+        //Debug.LogError("Hiden");
         newGameManager.newLoginScreen.SetActive(false);
         newGameManager.mobileVerificationScreen.SetActive(false);
         newGameManager.EnterYourPinScreen.SetActive(false);
         UIFlowHandler.uihandler.loadingPanel.SetActive(false);
-        //GameManager.Instance.playfabManager.apiManager.isFirstTimeLogin = true;
+        GameManager.Instance.playfabManager.apiManager.isFirstTimeLogin = true;
         if (GameManager.Instance.playfabManager.apiManager.isFirstTimeLogin)
         {
             GameManager.Instance.playfabManager.apiManager.newUpdateProfilePage.SetActive(true);
@@ -529,7 +529,7 @@ public class InitMenuScript : MonoBehaviour
         string abc = " invited you to play Ludo Olympics - First ever real money ludo game. Enter referral code '"; //'U7AZ47'
         string def = " & get real 2 % direct income every time when they play by using your referral code.";
         //string shareMessage = "Download Game from this"+ GameManager.friendrefferalCode+"code";
-        string shareMessage = GameManager.Instance.nameMy + abc + GameManager.friendrefferalCode + def;
+        string shareMessage = GameManager.playerName + abc + GameManager.friendrefferalCode + def;
         NativeShare share = new NativeShare();
         share.Share(shareMessage, null, null, "Share Via");
     }

@@ -679,8 +679,8 @@ public class LudoPawnController : MonoBehaviour
         rect.localScale = new Vector3(1f, 1f, 1);
         DavMaster.CopyRectTransform(to, rect);
         //rect = to;
-        Debug.LogError(rect + "rect");
-        Debug.LogError(to + "to");
+        //Debug.LogError(rect + "rect");
+        //Debug.LogError(to + "to");
         //Vector2 diff = to - from;
         //float x = diff.x / .17f;
         //float y = diff.y / .17f;
@@ -745,12 +745,12 @@ public class LudoPawnController : MonoBehaviour
 
     IEnumerator DeScalingAnimation(GameObject obj, Vector2 targetScale, float value)
     {
-        while (rect.localScale.x > targetScale.x)
-        {
-            rect.localScale = new Vector3(rect.localScale.x - (value * Time.deltaTime), rect.localScale.y - (value * Time.deltaTime), 1);
-            yield return null;
-        }
-
+        //while (rect.localScale.x > targetScale.x)
+        //{
+        //    rect.localScale = new Vector3(rect.localScale.x - (value * Time.deltaTime), rect.localScale.y - (value * Time.deltaTime), 1);
+        //    yield return null;
+        //}
+        yield return new WaitForSeconds(0);
         rect.localScale = new Vector3(1f, 1f, 1);
         Debug.Log("scaling Done   " + rect.localScale);
     }
@@ -945,7 +945,7 @@ public class LudoPawnController : MonoBehaviour
 
     private void RepositionPawns(int otherCount, int currentPosition)
     {
-
+        Debug.LogError("Reposiitoning: " + otherCount);
         LudoPathObjectController pathController = path[currentPosition].GetComponent<LudoPathObjectController>();
 
         float scale = 0.8f;
@@ -980,6 +980,7 @@ public class LudoPawnController : MonoBehaviour
         List<int> orderPawns = new List<int>();
         if (otherCount > 1)
         {
+            Debug.LogError("Repositioning fcukc");
             for (int i = 0; i < otherCount; i++)
             {
                 if (pathController.pawns[i].GetComponent<LudoPawnController>().playerIndex == GameManager.Instance.myPlayerIndex)
@@ -999,7 +1000,7 @@ public class LudoPawnController : MonoBehaviour
                 pathController.pawns[orderPawns[i]].GetComponent<RectTransform>().anchoredPosition = new Vector2(
                     path[currentPosition].GetComponent<RectTransform>().anchoredPosition.x + startPos + i * offset,
                     path[currentPosition].GetComponent<RectTransform>().anchoredPosition.y);
-                pathController.pawns[orderPawns[i]].GetComponent<RectTransform>().localScale = new Vector2(initScale.x * scale, initScale.y * scale);
+                pathController.pawns[orderPawns[i]].GetComponent<RectTransform>().localScale = new Vector2(initScale.x * 0.9f, initScale.y * 0.9f);
 
                 pathController.pawns[orderPawns[i]].GetComponent<RectTransform>().SetAsLastSibling();
 

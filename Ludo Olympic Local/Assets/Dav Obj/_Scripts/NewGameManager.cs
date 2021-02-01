@@ -15,7 +15,6 @@ public class NewGameManager : MonoBehaviour
     [SerializeField] GameObject splashScreen;
     public Image loadingBarFill;
     [SerializeField] float time;
-
     public GameObject newLoginScreen;
     public GameObject mobileVerificationScreen;
     public GameObject EnterYourPinScreen;
@@ -25,6 +24,7 @@ public class NewGameManager : MonoBehaviour
     private uint phoneAuthTimeoutMs;
     [SerializeField] TMP_InputField otpField;
     [SerializeField] APIManager apimngr;
+    
 
     string verificationId;
 
@@ -152,6 +152,13 @@ public class NewGameManager : MonoBehaviour
     public void EditorTestingDS()
     {
         apimngr.phoneEmail = "919876152916";
+        apimngr.phoneEmail.Replace("+", "");
+        apimngr.PhoneMediaSignInStart();
+    }
+
+    public void EditorSahilTesterLogin()
+    {
+        apimngr.phoneEmail = "919805101052";
         apimngr.phoneEmail.Replace("+", "");
         apimngr.PhoneMediaSignInStart();
     }

@@ -299,8 +299,12 @@ public class PickerController : MonoBehaviour
                 UIFlowHandler.uihandler.THETEXTURE = imageRenderer3.mainTexture;
                 GameManager.profileImge = UIFlowHandler.uihandler.TextureToSprite((Texture2D)imageRenderer3.mainTexture);
                 UIFlowHandler.uihandler.SetPlayerImage();
+                GameManager.playerName = playername.text;
+                FindObjectOfType<InitMenuScript>().playerName.GetComponent<Text>().text = GameManager.playerName;
                 loadingPanel.SetActive(false);
                 playerProfile.SetActive(false);
+                FindObjectOfType<APIManager>().playerImage.texture = GameManager.profileImge.texture;
+                FindObjectOfType<APIManager>().playerImage3.texture = GameManager.profileImge.texture;
                 //notificationPanel.SetActive(true);
                 ReferenceManager.refMngr.ShowError("Profile Updated Successfully", "Success");
 

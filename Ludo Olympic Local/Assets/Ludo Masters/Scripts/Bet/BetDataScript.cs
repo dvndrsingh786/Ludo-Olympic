@@ -64,7 +64,7 @@ public class BetDataScript : MonoBehaviour
                 string playerType = jsonvale["result_push"][i]["betting type"].ToString();
                 string date = jsonvale["result_push"][i]["game_date"].ToString();
                 string endDate = jsonvale["result_push"][i]["game_end_date"].ToString();
-                Debug.LogError(endDate);
+                //Debug.LogError(endDate);
                 string startTime = jsonvale["result_push"][i]["game_start_time"].ToString();
                 string endTime = jsonvale["result_push"][i]["game_end_time"].ToString();
                 if (isTwoplayer)
