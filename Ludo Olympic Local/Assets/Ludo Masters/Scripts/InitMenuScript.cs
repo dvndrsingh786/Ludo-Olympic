@@ -14,6 +14,7 @@ using UnityEngine.Advertisements;
 using AssemblyCSharp;
 using Random = System.Random;
 using LitJson;
+using TMPro;
 public class InitMenuScript : MonoBehaviour
 {
     public GameObject FacebookLinkReward;
@@ -121,7 +122,7 @@ public class InitMenuScript : MonoBehaviour
             Debug.Log(GameManager.playerName);
         }
         //offerPanel.SetActive(true);
-
+        StaticStrings.isFourPlayerModeEnabled = true;
         StartCoroutine(pic());
         if (PlayerPrefs.GetInt(StaticStrings.SoundsKey, 0) == 0)
         {
@@ -199,7 +200,7 @@ public class InitMenuScript : MonoBehaviour
         newGameManager.mobileVerificationScreen.SetActive(false);
         newGameManager.EnterYourPinScreen.SetActive(false);
         UIFlowHandler.uihandler.loadingPanel.SetActive(false);
-        GameManager.Instance.playfabManager.apiManager.isFirstTimeLogin = true;
+        //GameManager.Instance.playfabManager.apiManager.isFirstTimeLogin = true;
         if (GameManager.Instance.playfabManager.apiManager.isFirstTimeLogin)
         {
             GameManager.Instance.playfabManager.apiManager.newUpdateProfilePage.SetActive(true);
@@ -290,6 +291,29 @@ public class InitMenuScript : MonoBehaviour
         //AdsManager.Instance.adsScript.ShowAd(AdLocation.GamePropertiesWindow);
     }
 
+    public void SetPrivateFourPlayer(bool value)
+    {
+        StaticStrings.isFourPlayerModeEnabled = value;
+    }
+
+    [SerializeField] Transform private2PlayerTransform, private4PlayerTransform;
+    public void SetColorsOfNoOfPlayers(int NoOfPlayers)
+    {
+        if (NoOfPlayers == 2)
+        {
+            private2PlayerTransform.GetComponent<Image>().color = Color.yellow;
+            private2PlayerTransform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.yellow;
+            private4PlayerTransform.GetComponent<Image>().color = Color.white;
+            private4PlayerTransform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.white;
+        }
+        else
+        {
+            private4PlayerTransform.GetComponent<Image>().color = Color.yellow;
+            private4PlayerTransform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.yellow;
+            private2PlayerTransform.GetComponent<Image>().color = Color.white;
+            private2PlayerTransform.GetChild(0).GetComponent<TextMeshProUGUI>().color = Color.white;
+        }
+    }
 
     [SerializeField] Toggle local2PRadio, local4PRadio;
     public void SetNoOfPlayers(int index)
@@ -398,13 +422,15 @@ public class InitMenuScript : MonoBehaviour
     {
         if (PlayerPrefs.GetInt("Muted", 0) == 0)
         {
-            AudioListener.volume = 1;
+            //AudioListener.volume = 1;
+            Camera.main.GetComponent<AudioSource>().volume = 1;
             //audioOnIcon.SetActive(true);
             //audioOffIcon.SetActive(false);
         }
         else
         {
-            AudioListener.volume = 0;
+            Camera.main.GetComponent<AudioSource>().volume = 0;
+            //AudioListener.volume = 0;
             //audioOnIcon.SetActive(false);
             //audioOffIcon.SetActive(true);
         }

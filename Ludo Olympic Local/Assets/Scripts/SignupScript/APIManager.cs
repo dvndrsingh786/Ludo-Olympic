@@ -180,6 +180,7 @@ public class APIManager : MonoBehaviour
             SetSoundButton(true);
         }
         else SetSoundButton(false);
+        SetStates();
     }
 
 
@@ -630,6 +631,26 @@ public class APIManager : MonoBehaviour
                 GameManager.paytmNumber = pytmNumber;
                 Debug.Log("Pytm" + GameManager.paytmNumber);
 
+                KYCDob = jsonvale["result_push"][0]["dob"].ToString();
+                KYCadharNumber = jsonvale["result_push"][0]["aadhar"].ToString();
+                KYCpanNumber = jsonvale["result_push"][0]["pan"].ToString();
+                KYCState = jsonvale["result_push"][0]["state"].ToString();
+                if (KYCadharNumber == "0" || KYCadharNumber == "" || KYCadharNumber == null)
+                {
+                    KYCadhaarStatus = "Not Verified";
+                }
+                else KYCadhaarStatus = "Verified";
+                if (KYCpanNumber == "0" || KYCpanNumber == "" || KYCpanNumber == null)
+                {
+                    KYCpanStatus = "Not Verified";
+                }
+                else KYCpanStatus = "Verified";
+
+                string tempStatus = jsonvale["result_push"][0]["kyc_status"].ToString();
+                if (tempStatus == "0") KYCStatus = "Pending";
+                else if (tempStatus == "1") KYCStatus = "Verified";
+                else if (tempStatus == "2") KYCStatus = "Rejected";
+                else KYCStatus = "Not Verified";
 
                 upi = (jsonvale["result_push"][0]["upi"].ToString());
                 GameManager.upiID = upi;
@@ -1069,7 +1090,26 @@ public class APIManager : MonoBehaviour
                 GameManager.paytmNumber = pytmNumber;
                 Debug.Log("Pytm" + GameManager.paytmNumber);
 
+                KYCDob = jsonvale["result_push"][0]["dob"].ToString();
+                KYCadharNumber = jsonvale["result_push"][0]["aadhar"].ToString();
+                KYCpanNumber = jsonvale["result_push"][0]["pan"].ToString();
+                KYCState = jsonvale["result_push"][0]["state"].ToString();
+                if (KYCadharNumber == "0" || KYCadharNumber == "" || KYCadharNumber == null)
+                {
+                    KYCadhaarStatus = "Not Verified";
+                }
+                else KYCadhaarStatus = "Verified";
+                if (KYCpanNumber == "0" || KYCpanNumber == "" || KYCpanNumber == null)
+                {
+                    KYCpanStatus = "Not Verified";
+                }
+                else KYCpanStatus = "Verified";
 
+                string tempStatus = jsonvale["result_push"][0]["kyc_status"].ToString();
+                if (tempStatus == "0") KYCStatus = "Pending";
+                else if (tempStatus == "1") KYCStatus = "Verified";
+                else if (tempStatus == "2") KYCStatus = "Rejected";
+                else KYCStatus = "Not Verified";
                 upi = (jsonvale["result_push"][0]["upi"].ToString());
                 GameManager.upiID = upi;
                 Debug.Log("UPI" + GameManager.upiID);
@@ -1702,6 +1742,8 @@ public class APIManager : MonoBehaviour
         GameManager.onlineAmount= jsonvale["result_push"][0]["online_amount"].ToString();
         GameManager.offlineAmount= jsonvale["result_push"][0]["offline_amount"].ToString();
 
+        Debug.LogError("STATUS: " + jsonvale["result_push"][0]["status"].ToString());
+
         GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
         nameP.text = GameManager.playerName;
 
@@ -1716,6 +1758,26 @@ public class APIManager : MonoBehaviour
         Debug.Log("Mobile" + GameManager.mobileNumber);
         Debug.Log("Emaild" + GameManager.emailId);
 
+        KYCDob = jsonvale["result_push"][0]["dob"].ToString();
+        KYCadharNumber = jsonvale["result_push"][0]["aadhar"].ToString();
+        KYCpanNumber = jsonvale["result_push"][0]["pan"].ToString();
+        KYCState = jsonvale["result_push"][0]["state"].ToString();
+        if (KYCadharNumber == "0" || KYCadharNumber == "" || KYCadharNumber == null)
+        {
+            KYCadhaarStatus = "Not Verified";
+        }
+        else KYCadhaarStatus = "Verified";
+        if (KYCpanNumber == "0" || KYCpanNumber == "" || KYCpanNumber == null)
+        {
+            KYCpanStatus = "Not Verified";
+        }
+        else KYCpanStatus = "Verified";
+        string tempStatus = jsonvale["result_push"][0]["kyc_status"].ToString();
+        Debug.LogError("STATUSSSSS: " + tempStatus);
+        if (tempStatus == "0") KYCStatus = "Pending";
+        else if (tempStatus == "1") KYCStatus = "Verified";
+        else if (tempStatus == "2") KYCStatus = "Rejected";
+        else KYCStatus = "Not Verified";
         // Reedem Amount Data...!!!
 
         pytmNumber = (jsonvale["result_push"][0]["paytm"].ToString());
@@ -1801,7 +1863,8 @@ public class APIManager : MonoBehaviour
             Sprite adharF = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
             adharFront.texture = adharF.texture;
         }
-        else {
+        else 
+        {
             adharFront.gameObject.SetActive(false);
         }
         GameManager.adharcardBack = jsonvale["result_push"][0]["aadhar_second"].ToString();
@@ -1816,7 +1879,8 @@ public class APIManager : MonoBehaviour
             Sprite adharB = Sprite.Create(tex1, new Rect(0.0f, 0.0f, tex1.width, tex1.height), new Vector2(0.5f, 0.5f), 100.0f);
             pancard.texture  = adharB.texture;
         }
-        else {
+        else 
+        {
             adharBack.gameObject.SetActive(false);
         }
 
@@ -1832,7 +1896,8 @@ public class APIManager : MonoBehaviour
             Sprite panC = Sprite.Create(tex2, new Rect(0.0f, 0.0f, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), 100.0f);
             adharBack.texture = panC.texture;
         }
-        else {
+        else 
+        {
             pancard.gameObject.SetActive(false);
         }
 
@@ -2849,6 +2914,7 @@ public class APIManager : MonoBehaviour
 
     #region Ludo Olympic Script
 
+    [Header("New Ludo Olympic Variables")]
     public TMP_InputField referralCodeInputField;
     public TextMeshProUGUI newCoinsText;
     public TextMeshProUGUI newNameinProfilePageText;
@@ -2859,8 +2925,43 @@ public class APIManager : MonoBehaviour
     public TextMeshProUGUI newBankDetailsError;
     public TMP_InputField bankeDetailIP;
     public TextMeshProUGUI bankDetailButtonText;
+    public TMP_InputField kycInputField;
     public GameObject musicOnBtn;
     public GameObject musicOffBtn;
+
+    [Header("New Kyc Variables")]
+    public TMP_Dropdown kycDocumentType;
+    public TMP_InputField kycDocumentNumber;
+    public TMP_InputField kycFirstName;
+    public TMP_InputField kycLastName;
+    public TMP_InputField kycDateOfBirth;
+    public TMP_Dropdown kycState;
+    public TMP_InputField kycDocumentFront;
+    public TMP_InputField kycDocumentBack;
+    public GameObject KYCAdhaarButton;
+    public GameObject KYCPanButton;
+    public string KYCStatus;
+    public string KYCadhaarStatus;
+    public string KYCpanStatus;
+    public string KYCpanNumber;
+    public string KYCadharNumber;
+    public string KYCDob;
+    public string KYCState;
+
+
+    [SerializeField] List<string> statesName = new List<string>() { "Andaman and Nicobar Islands",
+    "Andhra Pradesh","Arunachal Pradesh","Assam", "Bihar", "Chandigarh", "Chhattisgarh",
+    "Dadra and Nagar Haveli and Daman and Diu", "Delhi","Goa", "Gujarat", "Haryana","Himachal Pradesh"
+    ,"Jammu and Kashmir", "Jharkhand", "Karnataka","Kerala", "Ladakh", "Lakshadweep",
+    "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
+    "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
+    "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"};
+
+    public void SetStates()
+    {
+        kycState.options.Clear();
+        kycState.AddOptions(statesName);
+    }
 
     public void OpenReferAFriend()
     {
@@ -2891,6 +2992,11 @@ public class APIManager : MonoBehaviour
 
     public void OpenProfilePage()
     {
+        if (KYCadhaarStatus == "Verified" || KYCpanStatus == "Verified")
+        {
+            kycInputField.text = KYCStatus;
+        }
+        else kycInputField.text = "Not Verified";
         newCoinsText.text = GameManager.Instance.coinsCount.ToString();
         newNameinProfilePageText.text = GameManager.playerName;
         FindObjectOfType<RefferalCodeScript>().OnInviteFriendEnabled();
@@ -2994,6 +3100,67 @@ public class APIManager : MonoBehaviour
     public void OpenUpdateProfile()
     {
         newUpdateProfilePage.SetActive(true);
+    }
+
+    public void OnDocumentTypeChange()
+    {
+        //If Adhaar Card Selected
+        if (kycDocumentType.value == 0)
+        {
+            kycDocumentBack.transform.parent.gameObject.SetActive(true);
+            KYCAdhaarButton.SetActive(true);
+            KYCPanButton.SetActive(false);
+            kycDocumentNumber.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = "Adhaar Number";
+            if (KYCadhaarStatus == "Verified")
+            {
+                kycDocumentNumber.text = KYCadharNumber;
+            }
+            kycDocumentFront.text = KYCStatus;
+            kycDocumentBack.text = KYCStatus;
+        }
+        //If Pan Card Selected
+        else
+        {
+            kycDocumentBack.transform.parent.gameObject.SetActive(false);
+            KYCAdhaarButton.SetActive(false);
+            KYCPanButton.SetActive(true);
+            kycDocumentNumber.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = "Pan Number";
+            if (KYCpanStatus == "Verified")
+            {
+                kycDocumentNumber.text = KYCpanNumber;
+            }
+            kycDocumentFront.text = KYCStatus;
+        }
+    }
+
+    public void OpenKYCPanel()
+    {
+        if(KYCadhaarStatus=="Verified" || KYCpanStatus == "Verified")
+        {
+            kycDateOfBirth.text = KYCDob;
+            for (int i = 0; i < kycState.options.Count; i++)
+            {
+                if (kycState.options[i].text == KYCState)
+                {
+                    kycState.value = i;
+                }
+                else kycState.value = 0;
+            }
+        }
+        string[] abc = GameManager.playerName.Split(' ');
+        kycFirstName.text = abc[0];
+        if (abc.Length > 1)
+        {
+            kycLastName.text = abc[1];
+        }
+        kycDocumentType.value = 0;
+        if (KYCadhaarStatus == "Verified")
+        {
+            kycDocumentNumber.text = KYCadharNumber;
+        }
+        kycDocumentFront.text = KYCStatus;
+        kycDocumentBack.text = KYCStatus;
+        newCompleteYourKYCPanel.SetActive(true);
     }
 
     #endregion

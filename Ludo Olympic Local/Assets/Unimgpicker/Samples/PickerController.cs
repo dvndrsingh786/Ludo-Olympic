@@ -162,16 +162,32 @@ public class PickerController : MonoBehaviour
         string adhar = CallFunctionByte(imageRenderer.mainTexture);
         string adharsecond = CallFunctionByte(imageRenderer2.mainTexture);
         string pancard = CallFunctionByte(imageRenderer1.mainTexture);
-
+        //GameManager.Instance.playfabManager.apiManager
         // Create a Web Form, this will be our POST method's data
         var form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
         form.AddField("aadhar_first", adhar.ToString());
         form.AddField("aadhar_second", adharsecond.ToString());
         form.AddField("pan_card", pancard.ToString());
+        bool adhaaarBool = false;
+        if (GameManager.Instance.playfabManager.apiManager.kycDocumentBack.gameObject.activeInHierarchy)
+        {
+            form.AddField("aadhar", GameManager.Instance.playfabManager.apiManager.kycDocumentNumber.text);
+            adhaaarBool = true;
+        }
+        else
+        {
+            form.AddField("pan", GameManager.Instance.playfabManager.apiManager.kycDocumentNumber.text);
+        }
+        string fullName = GameManager.Instance.playfabManager.apiManager.kycFirstName.text + GameManager.Instance.playfabManager.apiManager.kycLastName.text;
+        form.AddField("fullname", fullName);
+        form.AddField("dob", GameManager.Instance.playfabManager.apiManager.kycDateOfBirth.text);
+        form.AddField("state", GameManager.Instance.playfabManager.apiManager.kycState.options[GameManager.Instance.playfabManager.apiManager.kycState.value].text);
+        //Debug.LogError("state: " + GameManager.Instance.playfabManager.apiManager.kycState);
         //POST the screenshot to GameSparks
         WWW w = new WWW(uploadUrl, form);
-        loadingPanel.SetActive(true);
+        //loadingPanel.SetActive(true);
+        ReferenceManager.refMngr.loadingPanel.SetActive(true);
         yield return w;
 
         Debug.Log(w.text);
@@ -188,17 +204,37 @@ public class PickerController : MonoBehaviour
             results = GetDataValue(msg, "message:");
             status = GetDataValue(msg, "status:");
             Debug.Log(results + "ff");
-            if (results == "Uploaded Successfully" || status == "True")
+            if (results == "Uploaded Successfully" || status == "True" || results == "Updated Successfully")
             {
-                loadingPanel.SetActive(false);
+                //loadingPanel.SetActive(false);
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
                 kycPanel.SetActive(false);
-                popupPanel.SetActive(true);
+                //popupPanel.SetActive(true);
+                GameManager.Instance.playfabManager.apiManager.kycInputField.text = "Verified";
+                if (adhaaarBool)
+                {
+                    GameManager.Instance.playfabManager.apiManager.KYCadhaarStatus = "Verified";
+                    GameManager.Instance.playfabManager.apiManager.KYCadharNumber = GameManager.Instance.playfabManager.apiManager.kycDocumentNumber.text;
+                }
+                else
+                {
+                    GameManager.Instance.playfabManager.apiManager.KYCpanStatus = "Verified";
+                    GameManager.Instance.playfabManager.apiManager.KYCpanNumber = GameManager.Instance.playfabManager.apiManager.kycDocumentNumber.text;
+                }
+                GameManager.Instance.playfabManager.apiManager.KYCDob = GameManager.Instance.playfabManager.apiManager.kycDateOfBirth.text;
+                GameManager.Instance.playfabManager.apiManager.KYCState = GameManager.Instance.playfabManager.apiManager.kycState.options[GameManager.Instance.playfabManager.apiManager.kycState.value].text;
+                ReferenceManager.refMngr.ShowError(results, "Success");
             }
-
+            else
+            {
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                ReferenceManager.refMngr.ShowError(results, "Failed to Upload");
+            }
         }
         else
         {
-
+            ReferenceManager.refMngr.loadingPanel.SetActive(false);
+            ReferenceManager.refMngr.ShowError(w.error, "Failed to Uploaded");
         }
     }
 
@@ -278,7 +314,8 @@ public class PickerController : MonoBehaviour
         Debug.Log("BB" + profile.ToString());
         //POST the screenshot to GameSparks
         WWW w = new WWW(url, form);
-        loadingPanel.SetActive(true);
+        //loadingPanel.SetActive(true);
+        ReferenceManager.refMngr.loadingPanel.SetActive(true);
         yield return w;
         Debug.Log(w.text);
         if (w.error == null)
@@ -301,7 +338,8 @@ public class PickerController : MonoBehaviour
                 UIFlowHandler.uihandler.SetPlayerImage();
                 GameManager.playerName = playername.text;
                 FindObjectOfType<InitMenuScript>().playerName.GetComponent<Text>().text = GameManager.playerName;
-                loadingPanel.SetActive(false);
+                //loadingPanel.SetActive(false);
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
                 playerProfile.SetActive(false);
                 FindObjectOfType<APIManager>().playerImage.texture = GameManager.profileImge.texture;
                 FindObjectOfType<APIManager>().playerImage3.texture = GameManager.profileImge.texture;
