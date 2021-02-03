@@ -1069,6 +1069,7 @@ GameObject:
   - component: {fileID: 486975168445671227}
   - component: {fileID: 486975168445671225}
   - component: {fileID: 486975168445671226}
+  - component: {fileID: 5923408874892704686}
   m_Layer: 5
   m_Name: Pub 1
   m_TagString: Untagged
@@ -1096,10 +1097,10 @@ RectTransform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.92577803, y: 0.13143861}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 1000, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &486975168445671225
 CanvasRenderer:
@@ -1129,6 +1130,45 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5923408874892704686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486975168445671220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f374ed621f88fae46a01ef91fbdfbf06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamePriceText: {fileID: 486975167290469163}
+  winPriceText: {fileID: 486975167162157339}
+  firstPrizeAmountText: {fileID: 0}
+  secondPrizeAmountText: {fileID: 0}
+  thirdPrizeAmountText: {fileID: 0}
+  fourthPrizeAmountText: {fileID: 0}
+  totalJoinedPlayersText: {fileID: 486975167653417232}
+  timeLeftText: {fileID: 486975167780094958}
+  gameId: 
+  noOfPlayer: 
+  startDate: 
+  startTime: 
+  endDate: 
+  endTime: 
+  gamePrice: 
+  winPrice: 
+  gameDuration: 
+  firstPrize: 
+  secondPrize: 
+  thirdPrize: 
+  fourthPrize: 
+  playerCount: 
+  timeLeft: 
+  Callingfunction: 0
+  hr: 0
+  mns: 0
+  secs: 0
 --- !u!1 &486975168666412926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,7 +1205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.799, y: 0.2866667}
   m_AnchorMax: {x: 0.96900004, y: 0.7866667}
-  m_AnchoredPosition: {x: 0, y: -0.00016784668}
+  m_AnchoredPosition: {x: 0, y: -0.00015258789}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.49999985, y: 0.5000004}
 --- !u!222 &486975168666412898
@@ -1352,7 +1392,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 41.5
+  m_fontSize: 41.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

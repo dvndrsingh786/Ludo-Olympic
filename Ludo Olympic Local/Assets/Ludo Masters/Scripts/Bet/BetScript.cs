@@ -2,30 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 public class BetScript : MonoBehaviour
 {
+    public Text gamePriceText;
+    public Text winPriceText;
+    public Text firstPrizeAmountText;
+    public Text secondPrizeAmountText;
+    public Text thirdPrizeAmountText;
+    public Text fourthPrizeAmountText;
+    public TextMeshProUGUI totalJoinedPlayersText;
+    public TextMeshProUGUI timeLeftText;
 
-    public Text betAmount;
-    public Text winningAmount;
-    public Text betTime;
-    public string id;
-    public string betType;
-    public string playerNum;
+    
+    public string gameId;
+    public string noOfPlayer;
+    public string startDate;
+    public string startTime;
+    public string endDate;
+    public string endTime;
+    public string gamePrice;
+    public string winPrice;
+    public string gameDuration;
+    public string firstPrize;
+    public string secondPrize;
+    public string thirdPrize;
+    public string fourthPrize;
+    public string playerCount;
+
+    public string timeLeft;
+    
     public int Callingfunction;
-    public Image ThisButton;
-    public Toggle myToggle;
-    //public bool isClockTimer = false;
     public int hr, mns, secs;
 
-    public string startTime, endTime, startDate, endDate;
-
-    public Transform openParent;
-
-    private void Start()
+    public void SetTexts()
     {
-        ThisButton = GetComponent<Image>();
+        Debug.LogError("9");
+        gamePriceText.text = gamePrice;
+        winPriceText.text = winPrice;
+        totalJoinedPlayersText.text = playerCount;
+        Debug.LogError("10");
+        timeLeftText.text = gameDuration;
     }
 
     public void ToggleButtonPower(Toggle theToggle)
@@ -35,40 +53,9 @@ public class BetScript : MonoBehaviour
 
     public void ButtonPOwer()
     {
-        if (ThisButton.color != Color.green)
-        {
-            ReferenceManager.refMngr.isOnlineBidSelected = true;
-            Debug.LogError("Check");
-            DisableAllButton();
-            ThisButton.color = Color.green;
-            if (!myToggle.isOn) myToggle.isOn = true;
-            FindObjectOfType<GameConfigrationController>().ChangeBettingAmount(Callingfunction);
-            ReferenceManager.refMngr.ShowOnlineInvestment(GameManager.Instance.currentBetAmount, GameManager.Instance.currentWinningAmount);
-            Debug.Log("Amount" + Callingfunction);
-        }
-        else
-        {
-            ReferenceManager.refMngr.isOnlineBidSelected = false;
-            ThisButton.color = Color.white;
-            if (myToggle.isOn) myToggle.isOn = false;
-            ReferenceManager.refMngr.ShowOnlineInvestment(0, 0);
-        }
-    }
- 
-    public void DisableAllButton()
-    {
-        Debug.LogError("Disabling" + gameObject.name);
-        var findingButton = FindObjectsOfType<BetScript>();
-        foreach (var item in findingButton)
-        {
-            item.ThisButton.color = Color.white;
-            if(item != this) item.myToggle.isOn = false;
-        }
-    }
-
-    public void CheckTableStatus()
-    {
-
+        ReferenceManager.refMngr.isOnlineBidSelected = true;
+        FindObjectOfType<GameConfigrationController>().ChangeBettingAmount(Callingfunction);
+        ReferenceManager.refMngr.ShowOnlineInvestment(GameManager.Instance.currentBetAmount, GameManager.Instance.currentWinningAmount);
     }
 
     //public void UpdateClock()
@@ -93,14 +80,6 @@ public class BetScript : MonoBehaviour
     //    {
     //        SetAsOpenTable();
     //    }
-    //}
-
-    //void SetAsOpenTable()
-    //{
-    //    transform.parent = openParent;
-    //    betTime.gameObject.SetActive(false);
-    //    GetComponent<Button>().interactable = true;
-    //    myToggle.interactable = true;
     //}
 
 }

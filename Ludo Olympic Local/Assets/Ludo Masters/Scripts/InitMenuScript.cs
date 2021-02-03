@@ -157,7 +157,8 @@ public class InitMenuScript : MonoBehaviour
         playerName.GetComponent<Text>().text = GameManager.playerName;
         coinsText.GetComponent<Text>().text = GameManager.Instance.coinsCount.ToString();
       //  playerAvatar.GetComponent<RawImage>().texture =  GameManager.Instance.playfabManager.staticGameVariables.avatars[UnityEngine.Random.Range(0,22)].texture;
-        GameManager.Instance.playfabManager.apiManager.Betting();
+        //GameManager.Instance.playfabManager.apiManager.Betting();
+        Debug.LogWarning("GET Betting disabled here");
         if (!StaticStrings.isFourPlayerModeEnabled)
         {
             FourPlayerMenuButton.SetActive(false);

@@ -15,10 +15,9 @@ public class BetDataScript : MonoBehaviour
 
     string betURL;
 
-    public GameObject betdataPrefab;
     public GameObject onlinebetdataPrefab;
     public Transform betdataPublic;
-    public Transform betdataScheduled;
+    //public Transform betdataScheduled;
     public GameObject betscrollPanel;
 
     [Header("PivateBet Attribute")]
@@ -34,7 +33,7 @@ public class BetDataScript : MonoBehaviour
         betURL = GameManager.apiBase + "betting";
         Debug.Log("BEt data script: " + gameObject.name);
         StartCoroutine(GetBetting());
-        StartCoroutine(privateBetting());
+        //StartCoroutine(privateBetting());
     }
     public void OnPlan(bool istwo)
     {
@@ -42,11 +41,16 @@ public class BetDataScript : MonoBehaviour
         {
             Destroy(betdataPublic.GetChild(i).gameObject);
         }
-        for (int i = 0; i < betdataScheduled.childCount; i++)
-        {
-            Destroy(betdataScheduled.GetChild(i).gameObject);
-        }
+        //for (int i = 0; i < betdataScheduled.childCount; i++)
+        //{
+        //    Destroy(betdataScheduled.GetChild(i).gameObject);
+        //}
         isTwoplayer = istwo;
+        //StartCoroutine(GetBetting());
+    }
+
+    public void TestCallBetting()
+    {
         StartCoroutine(GetBetting());
     }
 
@@ -55,72 +59,77 @@ public class BetDataScript : MonoBehaviour
         string nowTime, nowDate;
         using (WWW www = new WWW(betURL))
         {
+            Debug.LogError("0");
             yield return www;
             int twoplayerac = 0;
             nowTime = ReferenceManager.refMngr.GetTime();
             nowDate = ReferenceManager.refMngr.GetDate();
-            Debug.LogError("DUH");
-            Debug.LogError(www.text);
             JsonData jsonvale = JsonMapper.ToObject(www.text);
-            Debug.LogError(jsonvale.ToString());
-            Debug.LogError(jsonvale.Count);
-            Debug.LogError("DUH ENDS");
+            string gameId, noOfPlayer, startDate, startTime, endDate, endTime, gamePrice, winPrice, gameDuration,
+            firstPrize, secondPrize, thirdPrize, fourthPrize, playerCount;
             for (int i = 0; i < jsonvale["result_push"].Count; i++)
             {
-                string playerType = jsonvale["result_push"][i]["betting type"].ToString();
-                string date = jsonvale["result_push"][i]["game_date"].ToString();
-                string endDate = jsonvale["result_push"][i]["game_end_date"].ToString();
-                //Debug.LogError(endDate);
-                string startTime = jsonvale["result_push"][i]["game_start_time"].ToString();
-                string endTime = jsonvale["result_push"][i]["game_end_time"].ToString();
-                if (isTwoplayer)
+                Debug.LogError("1");
+                gameId = jsonvale["result_push"][i]["game_id"].ToString();
+                noOfPlayer = jsonvale["result_push"][i]["no_of_player"].ToString();
+                startDate = jsonvale["result_push"][i]["game_start_date"].ToString();
+                startTime = jsonvale["result_push"][i]["game_start_time"].ToString();
+                endDate = jsonvale["result_push"][i]["game_end_date"].ToString();
+                Debug.LogError("2");
+                endTime = jsonvale["result_push"][i]["game_end_time"].ToString();
+                gamePrice = jsonvale["result_push"][i]["game_price "].ToString();
+                winPrice = jsonvale["result_push"][i]["win_price"].ToString();
+                gameDuration = jsonvale["result_push"][i]["game_duration"].ToString();
+                firstPrize = jsonvale["result_push"][i]["first_prize"].ToString();
+                secondPrize = jsonvale["result_push"][i]["second_prize"].ToString();
+                Debug.LogError("3");
+                thirdPrize = jsonvale["result_push"][i]["third_prize"].ToString();
+                fourthPrize = jsonvale["result_push"][i]["fourth_prize"].ToString();
+                playerCount = jsonvale["result_push"][i]["public_table_count"].ToString();
+                Debug.LogError("4");
+                BetScript betScript;
+                if (true)
                 {
-                    if (playerType == "2")
+                    if (true)
                     {
                         //if (ReferenceManager.refMngr.CheckDate(date, nowDate))
                         //{
                         //    if (ReferenceManager.refMngr.CheckTime(startTime, endTime, nowTime))
                         //    {
                         bool isSameDate, isRightTime, isLessThanADay;
+                        Debug.LogError("5");
                         string bidTime = "";
-                        isSameDate = ReferenceManager.refMngr.CheckDate(date, endDate, nowDate);
+                        isSameDate = ReferenceManager.refMngr.CheckDate(startDate, endDate, nowDate);
                         isRightTime = ReferenceManager.refMngr.CheckTime(startTime, endTime, nowTime);
-                        isLessThanADay = ReferenceManager.refMngr.IsLessThanADay(date, nowDate, nowTime, startTime);
-                        BetScript betScript;
-                        if (isSameDate && isRightTime)
-                        {
-                            betScript = Instantiate(onlinebetdataPrefab, betdataPublic).GetComponent<BetScript>();
-                        }
-                        else if (isSameDate)
-                        {
-                            betScript = Instantiate(onlinebetdataPrefab, betdataScheduled).GetComponent<BetScript>();
-                        }
-                        else betScript = null;
+                        isLessThanADay = ReferenceManager.refMngr.IsLessThanADay(startDate, nowDate, nowTime, startTime);
+                        //if (isSameDate && isRightTime)
+                        //{
+                        betScript = Instantiate(onlinebetdataPrefab, betdataPublic).GetComponent<BetScript>();
+                        //}
+                        //else if (isSameDate)
+                        //{
+                        //    betScript = Instantiate(onlinebetdataPrefab, betdataScheduled).GetComponent<BetScript>();
+                        //}
+                        //else betScript = null;
                         if (betScript != null)
                         {
-                            betScript.id = jsonvale["result_push"][i]["table_id"].ToString();
-                            betScript.betType = jsonvale["result_push"][i]["betting type"].ToString();
-                            float bettingValue = float.Parse(jsonvale["result_push"][i]["betting value "].ToString());
-                            float winningAmount = float.Parse(jsonvale["result_push"][i]["winning amount"].ToString());
-                            //betScript.betAmount.text = "Entry Fee:" + bettingValue.ToString();
-                            betScript.betAmount.text = bettingValue.ToString();
-                            if (isSameDate && isRightTime)
-                            {
-                                bidTime = "Table opened from: " + startTime + " to " + endTime;
-                                //betScript.betTime.GetComponent<Text>().fontStyle = FontStyle.Bold;
-                                betScript.GetComponent<Button>().interactable = true;
-                                betScript.myToggle.interactable = true;
-                                betScript.betTime.transform.parent.gameObject.SetActive(true);
-                                //betScript.UpdateClock();
-                            }
-                            else if (isSameDate)
-                            {
-                                bidTime = "Table will Open at: " + startTime + " to " + endTime;
-                                betScript.GetComponent<Button>().interactable = false;
-                                betScript.myToggle.interactable = false;
-                                betScript.betTime.gameObject.SetActive(true);
-                                //betScript.UpdateClock();
-                            }
+                            betScript.gameId = gameId;
+                            betScript.noOfPlayer = noOfPlayer;
+                            Debug.LogError("6");
+                            betScript.startDate = startDate;
+                            betScript.endDate = endDate;
+                            betScript.endTime = endTime;
+                            betScript.gamePrice = gamePrice;
+                            betScript.winPrice = winPrice;
+                            betScript.gameDuration = gameDuration;
+                            betScript.firstPrize = firstPrize;
+                            betScript.secondPrize = secondPrize;
+                            Debug.LogError("7");
+                            betScript.thirdPrize = thirdPrize;
+                            betScript.fourthPrize = fourthPrize;
+                            betScript.playerCount = playerCount;
+                            Debug.LogError("8");
+                            betScript.SetTexts();
                             //For countdown
                             //else
                             //{
@@ -141,9 +150,6 @@ public class BetDataScript : MonoBehaviour
                             //    betScript.myToggle.interactable = false;
                             //    betScript.betTime.gameObject.SetActive(true);
                             //}
-                            betScript.openParent = betdataPublic;
-                            betScript.betTime.text = bidTime;
-                            betScript.winningAmount.text = "Winning Fee:" + winningAmount.ToString();
                             betScript.Callingfunction = twoplayerac;
                         }
                         twoplayerac++;
@@ -151,22 +157,22 @@ public class BetDataScript : MonoBehaviour
                         //}
                     }
                 }
-                else
-                {
-                    if (playerType == "4")
-                    {
-                        BetScript betScript = Instantiate(betdataPrefab, betdataPublic).GetComponent<BetScript>();
-                        betScript.id = jsonvale["result_push"][i]["table_id"].ToString();
-                        betScript.betType = jsonvale["result_push"][i]["betting type"].ToString();
+                //else
+                //{
+                //    if (playerType == "4")
+                //    {
+                //        BetScript betScript = Instantiate(betdataPrefab, betdataPublic).GetComponent<BetScript>();
+                //        betScript.id = jsonvale["result_push"][i]["table_id"].ToString();
+                //        betScript.betType = jsonvale["result_push"][i]["betting type"].ToString();
 
-                        float bettingValue = float.Parse(jsonvale["result_push"][i]["betting value "].ToString());
-                        float winningAmount = float.Parse(jsonvale["result_push"][i]["winning amount"].ToString());
-                        betScript.betAmount.text = "Entry Fee:" + bettingValue.ToString();
-                        betScript.winningAmount.text = "Winning Fee:" + winningAmount.ToString();
-                        betScript.Callingfunction = twoplayerac;
-                        twoplayerac++;
-                    }
-                }
+                //        float bettingValue = float.Parse(jsonvale["result_push"][i]["betting value "].ToString());
+                //        float winningAmount = float.Parse(jsonvale["result_push"][i]["winning amount"].ToString());
+                //        betScript.betAmount.text = "Entry Fee:" + bettingValue.ToString();
+                //        betScript.winningAmount.text = "Winning Fee:" + winningAmount.ToString();
+                //        betScript.Callingfunction = twoplayerac;
+                //        twoplayerac++;
+                //    }
+                //}
             }
         }
     }
