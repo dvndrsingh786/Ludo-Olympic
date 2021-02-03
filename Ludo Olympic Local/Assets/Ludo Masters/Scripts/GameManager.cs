@@ -208,6 +208,8 @@ public class GameManager
     public bool doesContainBotMoves = false;
     public static Sprite defaultSprite;
 
+    public static string apiBase = "http://ludolympic.knickglobal.co.in/api/";
+
     public void resetAllData()
     {
         type = MyGameType.TwoPlayer;

@@ -136,7 +136,7 @@ public class APIManager : MonoBehaviour
 
     NewGameManager newGameManager;
     
-    private string getBettingApi = "https://api1.ludocashwin.com/public/api/betting";
+    private string getBettingApi = GameManager.apiBase + "betting";
 
     private string getBotDifficulty = "https://onlystore.in/ludomoney/api/gamedifficulty.php";
 
@@ -181,6 +181,17 @@ public class APIManager : MonoBehaviour
         }
         else SetSoundButton(false);
         SetStates();
+
+        if (PlayerPrefs.GetInt("IsSoundEffect", 1) == 1)
+        {
+            SetEffectButton(true);
+            SetEffectToMute(false);
+        }
+        else
+        {
+            SetEffectButton(false);
+            SetEffectToMute(true);
+        }
     }
 
 
@@ -204,7 +215,6 @@ public class APIManager : MonoBehaviour
             else
             {
                 Application.Quit();
-               
             }
       
     }
@@ -259,7 +269,7 @@ public class APIManager : MonoBehaviour
     {
 
        // url = "http://onlystore.in/ludomoney/api/login_user.php?mobile=" + _emailId.text + "&password=" + _password.text;
-        url = "https://api1.ludocashwin.com/public/api/login";
+        url = GameManager.apiBase + "login";
 
         if (string.IsNullOrEmpty(_emailId.text))
         {
@@ -840,7 +850,7 @@ public class APIManager : MonoBehaviour
     public void AddSocialMediaSinupForm()
     {
         Debug.LogError("Social Media Signup Form");
-        string uurl = "https://api1.ludocashwin.com/public/api/signup";
+        string uurl = GameManager.apiBase + "signup";
         //Debug.Log(url);
 
         WWWForm form = new WWWForm();
@@ -872,7 +882,7 @@ public class APIManager : MonoBehaviour
     {
         //AddSocialMediaSinupForm();
         UIFlowHandler.uihandler.loadingPanel.SetActive(true);
-        string loginurl = "https://api1.ludocashwin.com/public/api/login";
+        string loginurl = GameManager.apiBase + "login";
         WWWForm form = new WWWForm();
         form.AddField("username", socialEmail);
         form.AddField("password", "QAZWSX");
@@ -1302,7 +1312,7 @@ public class APIManager : MonoBehaviour
     public void AddPhoneMediaSinupForm()
     {
         Debug.LogError("Phone Media Signup Form");
-        string uurl = "https://api1.ludocashwin.com/public/api/signup";
+        string uurl = GameManager.apiBase + "signup";
         //Debug.Log(url);
 
         WWWForm form = new WWWForm();
@@ -1336,7 +1346,7 @@ public class APIManager : MonoBehaviour
     {
         UIFlowHandler.uihandler.loadingPanel.SetActive(true);
         //AddSocialMediaSinupForm();
-        string loginurl = "https://api1.ludocashwin.com/public/api/login";
+        string loginurl = GameManager.apiBase + "login";
         WWWForm form = new WWWForm();
         form.AddField("username", phoneEmail);
         form.AddField("password", "QAZWSX");
@@ -1602,7 +1612,7 @@ public class APIManager : MonoBehaviour
             return;
         }
       
-        url = "https://api1.ludocashwin.com/public/api/signup";
+        url = GameManager.apiBase + "signup";
         Debug.Log(url);
 
         WWWForm form = new WWWForm();
@@ -1721,7 +1731,7 @@ public class APIManager : MonoBehaviour
     IEnumerator GetPlayerData()
     {
         Dictionary<string, string> headers = new Dictionary<string, string>();
-        string url = "https://api1.ludocashwin.com/public/api/client_details/my_referral_code=" + GameManager.Instance.userID;
+        string url = GameManager.apiBase + "client_details/my_referral_code=" + GameManager.Instance.userID;
         Debug.Log(url);
         WWW www = new WWW(url);
         yield return www;
@@ -2156,7 +2166,7 @@ public class APIManager : MonoBehaviour
     }
     IEnumerator DecreaseCoins(float amount)
     {
-        url= "https://api1.ludocashwin.com/public/api/deduction";
+        url= GameManager.apiBase + "deduction";
         Debug.Log(url);
         WWWForm form = new WWWForm();
         form.AddField("user_id",GameManager.Uid);
@@ -2179,7 +2189,7 @@ public class APIManager : MonoBehaviour
 
     IEnumerator DecreasePrivateTableCoins(int amount)
     {
-        url = "https://api1.ludocashwin.com/public/api/private-deduction";
+        url = GameManager.apiBase + "private-deduction";
         Debug.Log(url);
         WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
@@ -2217,7 +2227,7 @@ public class APIManager : MonoBehaviour
     IEnumerator IncreaseCoins(float amount)
     {
         Debug.Log("Increase Coins");
-        url= "https://api1.ludocashwin.com/public/api/winning";
+        url= GameManager.apiBase + "winning";
 
         WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
@@ -2484,7 +2494,7 @@ public class APIManager : MonoBehaviour
     
     public void ResetPassword()
     {
-        string url = "https://api1.ludocashwin.com/public/api/forgot-password";
+        string url = GameManager.apiBase + "forgot-password";
         Debug.Log(url);
         if (string.IsNullOrEmpty(_forgotPasswordEmail.text))
         {
@@ -2568,7 +2578,7 @@ public class APIManager : MonoBehaviour
             StartCoroutine(ErrorClose());
             return;
         }
-        string curl = "https://api1.ludocashwin.com/public/api/reset-password";
+        string curl = GameManager.apiBase + "reset-password";
         Debug.Log(curl);
         WWWForm form = new WWWForm();
         form.AddField("email", changeForgetPasswordEmail.text);
@@ -2820,7 +2830,7 @@ public class APIManager : MonoBehaviour
 
     IEnumerator waut()
     {
-        string url = "https://api1.ludocashwin.com/public/api/client_details/my_referral_code=" + GameManager.Instance.userID;
+        string url = GameManager.apiBase + "client_details/my_referral_code=" + GameManager.Instance.userID;
         Debug.Log(url);
         WWW www = new WWW(url);
 
@@ -2928,6 +2938,8 @@ public class APIManager : MonoBehaviour
     public TMP_InputField kycInputField;
     public GameObject musicOnBtn;
     public GameObject musicOffBtn;
+    public GameObject effectOnBtn;
+    public GameObject effectOffBtn;
 
     [Header("New Kyc Variables")]
     public TMP_Dropdown kycDocumentType;
@@ -2947,6 +2959,7 @@ public class APIManager : MonoBehaviour
     public string KYCadharNumber;
     public string KYCDob;
     public string KYCState;
+    public AudioSource[] soundEffects;
 
 
     [SerializeField] List<string> statesName = new List<string>() { "Andaman and Nicobar Islands",
@@ -2972,6 +2985,36 @@ public class APIManager : MonoBehaviour
     {
         musicOnBtn.SetActive(state);
         musicOffBtn.SetActive(!state);
+    }
+
+    public void SetEffectButton(bool state)
+    {
+        effectOnBtn.SetActive(state);
+        effectOffBtn.SetActive(!state);
+    }
+
+    public void ToggleEffect()
+    {
+        if (PlayerPrefs.GetInt("IsSoundEffect") == 1)
+        {
+            PlayerPrefs.SetInt("IsSoundEffect", 0);
+            SetEffectToMute(true);
+            FindObjectOfType<InitMenuScript>().SetEffectToMute(true);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("IsSoundEffect", 1);
+            SetEffectToMute(false);
+            FindObjectOfType<InitMenuScript>().SetEffectToMute(false);
+        }
+    }
+
+    public void SetEffectToMute(bool state)
+    {
+        for (int i = 0; i < soundEffects.Length; i++)
+        {
+            soundEffects[i].mute = state;
+        }
     }
 
     public void ToggleSound()
@@ -3160,6 +3203,7 @@ public class APIManager : MonoBehaviour
         }
         kycDocumentFront.text = KYCStatus;
         kycDocumentBack.text = KYCStatus;
+        kycDocumentNumber.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = "Adhaar Number";
         newCompleteYourKYCPanel.SetActive(true);
     }
 

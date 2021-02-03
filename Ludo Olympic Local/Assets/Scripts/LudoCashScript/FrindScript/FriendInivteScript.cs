@@ -12,7 +12,7 @@ public class FriendInivteScript : MonoBehaviour
 {
     [Header("Friend Notification")]
 
-    public string notificationUrl;
+    string notificationUrl;
 
 
     [Header("GameObjet Attribute")]
@@ -40,7 +40,7 @@ public class FriendInivteScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        notificationUrl = GameManager.apiBase + "refer_info";
     }
 
 

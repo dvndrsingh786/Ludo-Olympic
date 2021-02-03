@@ -13,7 +13,7 @@ public class BetDataScript : MonoBehaviour
 
     [Header("Bet Attribute")]
 
-    public string betURL;
+    string betURL;
 
     public GameObject betdataPrefab;
     public GameObject onlinebetdataPrefab;
@@ -31,6 +31,7 @@ public class BetDataScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        betURL = GameManager.apiBase + "betting";
         Debug.Log("BEt data script: " + gameObject.name);
         StartCoroutine(GetBetting());
         StartCoroutine(privateBetting());
@@ -58,7 +59,12 @@ public class BetDataScript : MonoBehaviour
             int twoplayerac = 0;
             nowTime = ReferenceManager.refMngr.GetTime();
             nowDate = ReferenceManager.refMngr.GetDate();
+            Debug.LogError("DUH");
+            Debug.LogError(www.text);
             JsonData jsonvale = JsonMapper.ToObject(www.text);
+            Debug.LogError(jsonvale.ToString());
+            Debug.LogError(jsonvale.Count);
+            Debug.LogError("DUH ENDS");
             for (int i = 0; i < jsonvale["result_push"].Count; i++)
             {
                 string playerType = jsonvale["result_push"][i]["betting type"].ToString();

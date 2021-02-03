@@ -569,9 +569,11 @@ public class LudoPawnController : MonoBehaviour
         //Debug.Log(GameManager.Instance.);
         if (playerIndex == GameManager.Instance.myPlayerIndex || (GameManager.Instance.isLocalMultiplayer && ludoController.gUIController.GetCurrentPlayerIndex()  == playerIndex))
         {
+            dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
            // Debug.Log("Make move button");
            // string data = index + ";" + ludoController.gUIController.GetCurrentPlayerIndex() + ";" + ludoController.steps;
            // Debug.Log("data   " + data);
+
             PhotonNetwork.RaiseEvent((int)EnumGame.PawnMove, data, true, null);
 
             if (pawnInJoint != null) ludoController.steps /= 2;

@@ -12,7 +12,7 @@ public class PaymentHistroyScript : MonoBehaviour
 {
     [Header("String Attribute")]
 
-    public string paymentHistoryScript;
+    string paymentHistoryScript;
 
     [Header("WithDraw String Attribute")]
 
@@ -65,7 +65,7 @@ public class PaymentHistroyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        paymentHistoryScript= GameManager.apiBase + "transaction_history";
     }
 
     public void OnPaymentHistory()

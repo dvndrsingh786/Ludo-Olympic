@@ -14,7 +14,7 @@ public class OfflineOnlineApiScript : MonoBehaviour
 
     [Header("Online Attribute")]
 
-    public string onlineAmountURL;
+    string onlineAmountURL;
     public string totalOnlineAmount;
     public Text onlineAmount;
     public Text RedemText;
@@ -24,7 +24,7 @@ public class OfflineOnlineApiScript : MonoBehaviour
 
     [Header("Reach us")]
 
-    public string reachusURL;
+    string reachusURL;
     public InputField nameText;
     public InputField messageText;
     public Text errorMsg;
@@ -44,7 +44,8 @@ public class OfflineOnlineApiScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        onlineAmountURL = GameManager.apiBase + "get-wallet/user_id=";
+        reachusURL = GameManager.apiBase + "reachus";
         OnlineCash();
     }
 

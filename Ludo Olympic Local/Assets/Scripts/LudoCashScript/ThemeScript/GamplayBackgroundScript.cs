@@ -39,9 +39,9 @@ public class GamplayBackgroundScript : MonoBehaviour
     IEnumerator ThemeConvertor()
     {
         Debug.LogError("Game Manager Uid" + GameManager.Uid);
-        string check= "https://api1.ludocashwin.com/public/api/fetch-screen/user_id="+GameManager.Uid;
+        string check= GameManager.apiBase + "fetch-screen/user_id="+GameManager.Uid;
         Debug.Log(check+"check ");
-        WWW www = new WWW("https://api1.ludocashwin.com/public/api/fetch-screen/user_id="+GameManager.Uid);
+        WWW www = new WWW(GameManager.apiBase + "fetch-screen/user_id="+GameManager.Uid);
         yield return www;
         LoadingPanel.SetActive(true);
         Debug.Log(www.text);

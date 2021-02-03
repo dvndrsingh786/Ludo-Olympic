@@ -71,7 +71,7 @@ public class InitMenuScript : MonoBehaviour
 
     [Header("Refferal Attribute")]
 
-    public string refferalCodeURL;
+    string refferalCodeURL;
     public InputField mobileNumber;
     public Text error;
     public RawImage pImage;
@@ -94,8 +94,11 @@ public class InitMenuScript : MonoBehaviour
     public List<Betting> twoPlayerBetting = new List<Betting>();
     public List<Betting> fourPlayerBetting = new List<Betting>();
 
+    public AudioSource[] soundEffects;
+
     void Start()
     {
+        refferalCodeURL = GameManager.apiBase + "share-code";
         if (PlayerPrefs.HasKey("Logintoken"))
         {
             referalcode.text = GameManager.friendrefferalCode;
@@ -124,14 +127,14 @@ public class InitMenuScript : MonoBehaviour
         //offerPanel.SetActive(true);
         StaticStrings.isFourPlayerModeEnabled = true;
         StartCoroutine(pic());
-        if (PlayerPrefs.GetInt(StaticStrings.SoundsKey, 0) == 0)
-        {
-            AudioListener.volume = 1;
-        }
-        else
-        {
-            AudioListener.volume = 0;
-        }
+        //if (PlayerPrefs.GetInt(StaticStrings.SoundsKey, 0) == 0)
+        //{
+        //    AudioListener.volume = 1;
+        //}
+        //else
+        //{
+        //    AudioListener.volume = 0;
+        //}
         //if (PlayerPrefs.GetInt("Muted") == 1)
         //{
         //    AudioListener.volume = 0;
@@ -140,7 +143,14 @@ public class InitMenuScript : MonoBehaviour
         //{
         //    AudioListener.volume = 1;
         //}
-
+        if (PlayerPrefs.GetInt("IsSoundEffect", 1) == 1)
+        {
+            SetEffectToMute(false);
+        }
+        else
+        {
+            SetEffectToMute(true);
+        }
         SetSoundState();
 
         FacebookLinkReward.GetComponent<Text>().text = "+ " + StaticStrings.CoinsForLinkToFacebook;
@@ -207,6 +217,7 @@ public class InitMenuScript : MonoBehaviour
             GameManager.Instance.playfabManager.apiManager.newUpdateProfilePage.SetActive(true);
         }
     }
+
 
 
     public void QuitApp()
@@ -437,6 +448,14 @@ public class InitMenuScript : MonoBehaviour
         }
     }
 
+    public void SetEffectToMute(bool state)
+    {
+        for (int i = 0; i < soundEffects.Length; i++)
+        {
+            soundEffects[i].mute = state;
+        }
+    }
+
     public void TakeScreenshot()
     {
         ScreenCapture.CaptureScreenshot("TestScreenshot.png");
@@ -600,7 +619,7 @@ public class InitMenuScript : MonoBehaviour
 
     IEnumerator pic()
     {
-        string url = "https://api1.ludocashwin.com/public/api/client_details/my_referral_code=" + GameManager.Instance.userID;
+        string url = GameManager.apiBase + "client_details/my_referral_code=" + GameManager.Instance.userID;
         Debug.Log(url);
         WWW www = new WWW(url);
 

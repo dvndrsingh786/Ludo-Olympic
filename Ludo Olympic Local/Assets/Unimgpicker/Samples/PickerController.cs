@@ -27,7 +27,7 @@ public class PickerController : MonoBehaviour
 
     [Header("String Attribute")]
 
-    public string imagePostURL;
+    string imagePostURL;
     public GameObject loadingPanel;
     public GameObject popupPanel;
     public GameObject kycPanel;
@@ -35,7 +35,7 @@ public class PickerController : MonoBehaviour
 
     [Header("Player Profile Attribute")]
 
-    public string playerprofileURL;
+    string playerprofileURL;
     public InputField playername;
     public GameObject playerProfile;
     public GameObject notificationPanel;
@@ -56,6 +56,8 @@ public class PickerController : MonoBehaviour
     void Awake()
     {
         imagePicker = FindObjectOfType<Unimgpicker>();
+        imagePostURL = GameManager.apiBase + "kyc-verification";
+        playerprofileURL = GameManager.apiBase + "profile-update";
         setintialize();
 
     }

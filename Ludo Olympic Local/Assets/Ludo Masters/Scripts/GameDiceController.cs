@@ -376,8 +376,6 @@ public class GameDiceController : PunBehaviour
             {
                 Debug.Log("Popup Call");
             }
-
-            IncreaseScore(steps);
             
             // if (aa % 2 == 0) steps = 6;
             // else steps = 2;

@@ -15,14 +15,14 @@ public class ThemeScript : MonoBehaviour
 
     [Header("Theme Attribute")]
 
-    public string themeiconUrl;
+    string themeiconUrl;
     public GameObject themeIconPrefab;
     public Transform themeContainer;
     public List<string> screenid = new List<string>();
 
     [Header("Preview Attribute")]
 
-    public string preveiwUrl;
+    string preveiwUrl;
     public string imgeUrl;
     public Image boardPreview;
     public Transform imgeHolder;
@@ -44,6 +44,8 @@ public class ThemeScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        themeiconUrl = GameManager.apiBase + "get-screen";
+        preveiwUrl = GameManager.apiBase + "set-screen";
         //StartCoroutine(ThemeConvertor());      
         Invoke(nameof(ThemeConverter), 0.1f);
     }

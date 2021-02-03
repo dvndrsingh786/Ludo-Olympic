@@ -8,7 +8,7 @@ public class AmountTransferScript : MonoBehaviour
 
     [Header("Amount Attribute")]
 
-    public string amounttransferURL;
+    string amounttransferURL;
     public InputField transferAmount;
     public InputField searchfeild;
     public Text errorText, amountText;
@@ -30,6 +30,7 @@ public class AmountTransferScript : MonoBehaviour
     OfflineOnlineApiScript offlineOnlineApiScript;
     void Start()
     {
+        amounttransferURL = GameManager.apiBase + "transfer-wallet";
         offlineOnlineApiScript = FindObjectOfType<OfflineOnlineApiScript>();
     }
 

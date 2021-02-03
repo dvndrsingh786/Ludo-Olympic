@@ -11,11 +11,11 @@ public class ReedemCoinsScript : MonoBehaviour
 {
     [Header("URL String Attribute")]
 
-    public string payTmUrl;
+    string payTmUrl;
     public string bankDetailUrl;
-    public string upiUrl;
-    public string withdrawUrl;
-    public string UpdateMobileNumberUrl;
+    string upiUrl;
+    string withdrawUrl;
+    string UpdateMobileNumberUrl;
 
     [Header("UI Attribute")]
 
@@ -64,8 +64,8 @@ public class ReedemCoinsScript : MonoBehaviour
     [Header("OTP Attribute")]
 
 
-    public string OtpURL;
-    public string setOtpURL;
+    string OtpURL;
+    string setOtpURL;
     public InputField otpVerify;
     public InputField bankVerify;
     public InputField UpiVerify;
@@ -88,6 +88,13 @@ public class ReedemCoinsScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        payTmUrl = GameManager.apiBase + "paytm-detail";
+        bankDetailUrl = GameManager.apiBase + "bank-detail";
+        upiUrl = GameManager.apiBase + "upi-detail";
+        withdrawUrl =  GameManager.apiBase + "withdrawal";
+        UpdateMobileNumberUrl = GameManager.apiBase + "profile-update";
+        OtpURL = GameManager.apiBase + "send_otp";
+        setOtpURL = GameManager.apiBase + "send_otp";
         if (PlayerPrefs.GetString("Pytm") == "1") {
             pytmsubmitBtn.SetActive(false);
             pytmwithdrawlBtn.SetActive(true);

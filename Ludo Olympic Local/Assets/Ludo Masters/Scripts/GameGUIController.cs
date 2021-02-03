@@ -1512,7 +1512,7 @@ public class GameGUIController : PunBehaviour
     }
     IEnumerator pic()
     {
-        string url = "https://api1.ludocashwin.com/public/api/client_details/my_referral_code=" + GameManager.Instance.userID;
+        string url = GameManager.apiBase + "client_details/my_referral_code=" + GameManager.Instance.userID;
         Debug.Log(url);
         WWW www = new WWW(url);
 

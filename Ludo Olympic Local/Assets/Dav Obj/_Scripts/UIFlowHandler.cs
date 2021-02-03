@@ -28,6 +28,8 @@ public class UIFlowHandler : MonoBehaviour
         {3,"0"},  {4,"1"},{5,"1"},{6,"1"}
     };
 
+    public List<GameObject> allPanels;
+
     void Start()
     {
         if (uihandler == null) uihandler = this;

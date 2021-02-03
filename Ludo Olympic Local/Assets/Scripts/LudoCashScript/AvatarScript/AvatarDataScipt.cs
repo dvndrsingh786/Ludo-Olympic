@@ -13,13 +13,15 @@ public class AvatarDataScipt : MonoBehaviour
 {
     [Header("Player Attribute")]
 
-    public string avataronUrl;
+    string avataronUrl;
     public GameObject avatarIconPrefab;
     public Transform avatarContainer;
     public GameObject avatarScrollBar;
     public List<string> screenid = new List<string>();
 
+    [HideInInspector]
     public string preveiwUrl;
+
     public string imgeUrl;
     public RawImage boardPreview;
     public GameObject loadinPanel;
@@ -28,7 +30,8 @@ public class AvatarDataScipt : MonoBehaviour
 
     void Start()
     {
-
+        avataronUrl = GameManager.apiBase + "get-avatar";
+        preveiwUrl = GameManager.apiBase + "set-avatar";
         StartCoroutine(AvatarConvertor());
     }
 
