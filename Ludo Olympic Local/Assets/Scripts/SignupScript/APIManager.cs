@@ -1773,7 +1773,7 @@ public class APIManager : MonoBehaviour
         }
         else KYCpanStatus = "Verified";
         string tempStatus = jsonvale["result_push"][0]["kyc_status"].ToString();
-        Debug.LogError("STATUSSSSS: " + tempStatus);
+        
         if (tempStatus == "0") KYCStatus = "Pending";
         else if (tempStatus == "1") KYCStatus = "Verified";
         else if (tempStatus == "2") KYCStatus = "Rejected";

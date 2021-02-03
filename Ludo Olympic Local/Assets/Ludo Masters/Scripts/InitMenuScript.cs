@@ -132,15 +132,16 @@ public class InitMenuScript : MonoBehaviour
         {
             AudioListener.volume = 0;
         }
-        if (PlayerPrefs.GetInt("Muted") == 1)
-        {
-            AudioListener.volume = 0;
-        }
-        if (PlayerPrefs.GetInt("Muted") == 0)
-        {
-            AudioListener.volume = 1;
-        }
+        //if (PlayerPrefs.GetInt("Muted") == 1)
+        //{
+        //    AudioListener.volume = 0;
+        //}
+        //if (PlayerPrefs.GetInt("Muted") == 0)
+        //{
+        //    AudioListener.volume = 1;
+        //}
 
+        SetSoundState();
 
         FacebookLinkReward.GetComponent<Text>().text = "+ " + StaticStrings.CoinsForLinkToFacebook;
         playerName.GetComponent<Text>().text = GameManager.playerName;
@@ -418,7 +419,7 @@ public class InitMenuScript : MonoBehaviour
         }
         SetSoundState();
     }
-    private void SetSoundState()
+    public void SetSoundState()
     {
         if (PlayerPrefs.GetInt("Muted", 0) == 0)
         {
