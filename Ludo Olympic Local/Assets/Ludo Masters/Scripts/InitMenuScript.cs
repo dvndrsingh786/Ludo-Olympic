@@ -96,9 +96,12 @@ public class InitMenuScript : MonoBehaviour
 
     public AudioSource[] soundEffects;
 
+    public GameObject prizeDistributionPopUp;
+    public Text rupeeText;
+
     void Start()
     {
-        refferalCodeURL = GameManager.apiBase + "share-code";
+        refferalCodeURL = GameManager.apiBase1 + "share-code";
         if (PlayerPrefs.HasKey("Logintoken"))
         {
             referalcode.text = GameManager.friendrefferalCode;
@@ -219,7 +222,19 @@ public class InitMenuScript : MonoBehaviour
         }
     }
 
+    public void OpenPrizeDistributionPopup(bool isFourr, string entryFeee, string playerCountt, string firstt, string secondd, string thirdd)
+    {
+        PrizeDistributionInfo info = prizeDistributionPopUp.GetComponent<PrizeDistributionInfo>();
+        info.thirdPrize.SetActive(isFourr);
+        info.fourthPrize.SetActive(isFourr);
 
+        info.entryFee.text = rupeeText.text + entryFeee;
+        info.playerCount.text = "Player(" + playerCountt + ")";
+        info.firstPrizeText.text = rupeeText.text + firstt;
+        info.secondPrizeText.text = rupeeText.text + secondd;
+        if(isFourr) info.thirdPrizeText.text = rupeeText.text + thirdd;
+        prizeDistributionPopUp.SetActive(true);
+    }
 
     public void QuitApp()
     {
@@ -620,7 +635,7 @@ public class InitMenuScript : MonoBehaviour
 
     IEnumerator pic()
     {
-        string url = GameManager.apiBase + "client_details/my_referral_code=" + GameManager.Instance.userID;
+        string url = GameManager.apiBase1 + "client_details/my_referral_code=" + GameManager.Instance.userID;
         Debug.Log(url);
         WWW www = new WWW(url);
 

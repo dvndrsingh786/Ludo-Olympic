@@ -65,7 +65,7 @@ public class PaymentHistroyScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        paymentHistoryScript= GameManager.apiBase + "transaction_history";
+        paymentHistoryScript= GameManager.apiBase1 + "transaction_history";
     }
 
     public void OnPaymentHistory()

@@ -2519,7 +2519,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.5
+      value: 9.499998
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -10038,7 +10038,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.5
+      value: 9.499998
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -53142,6 +53142,30 @@ MonoBehaviour:
   view: {fileID: 1011231416}
   controller: {fileID: 1623801274}
   iamalive: 1
+  soundEffects:
+  - {fileID: 806638582}
+  - {fileID: 1040318658}
+  - {fileID: 1695593072}
+  - {fileID: 1774499975}
+  - {fileID: 851839485}
+  - {fileID: 1623801277}
+  pawns:
+  - {fileID: 256744665}
+  - {fileID: 54084130}
+  - {fileID: 1005345649}
+  - {fileID: 679419393}
+  - {fileID: 392610050}
+  - {fileID: 812867459}
+  - {fileID: 1912307791}
+  - {fileID: 1557905889}
+  - {fileID: 738884721}
+  - {fileID: 326277962}
+  - {fileID: 1669793589}
+  - {fileID: 2030021591}
+  - {fileID: 1159222537}
+  - {fileID: 2065667583}
+  - {fileID: 1687955347}
+  - {fileID: 285930483}
 --- !u!4 &1011231415
 Transform:
   m_ObjectHideFlags: 0

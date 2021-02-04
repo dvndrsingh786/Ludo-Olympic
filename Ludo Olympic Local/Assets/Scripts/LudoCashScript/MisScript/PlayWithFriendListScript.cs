@@ -30,7 +30,7 @@ public class PlayWithFriendListScript : MonoBehaviour
 
     void Start()
     {
-        friendSearchUrl = GameManager.apiBase + "get-user";
+        friendSearchUrl = GameManager.apiBase1 + "get-user";
         OnGetFriend();
     }
     public void OnGetFriend()
@@ -124,7 +124,7 @@ public class PlayWithFriendListScript : MonoBehaviour
     }
     IEnumerator GetPlayerData()
     {
-        string url = GameManager.apiBase + "client_details/my_referral_code=" + SearchPlayerCheck.reference_Uid;
+        string url = GameManager.apiBase1 + "client_details/my_referral_code=" + SearchPlayerCheck.reference_Uid;
         Debug.Log(url);
         WWW www = new WWW(url);
         yield return www;

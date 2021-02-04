@@ -30,7 +30,7 @@ public class AmountTransferScript : MonoBehaviour
     OfflineOnlineApiScript offlineOnlineApiScript;
     void Start()
     {
-        amounttransferURL = GameManager.apiBase + "transfer-wallet";
+        amounttransferURL = GameManager.apiBase1 + "transfer-wallet";
         offlineOnlineApiScript = FindObjectOfType<OfflineOnlineApiScript>();
     }
 

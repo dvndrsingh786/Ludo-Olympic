@@ -44,8 +44,8 @@ public class OfflineOnlineApiScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        onlineAmountURL = GameManager.apiBase + "get-wallet/user_id=";
-        reachusURL = GameManager.apiBase + "reachus";
+        onlineAmountURL = GameManager.apiBase1 + "get-wallet/user_id=";
+        reachusURL = GameManager.apiBase1 + "reachus";
         OnlineCash();
     }
 

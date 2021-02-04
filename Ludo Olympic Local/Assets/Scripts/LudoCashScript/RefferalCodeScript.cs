@@ -40,7 +40,7 @@ public class RefferalCodeScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        refferalCodeURL = GameManager.apiBase + "share-code";
+        refferalCodeURL = GameManager.apiBase1 + "share-code";
         _referalCode = GameManager.Instance.playfabManager.apiManager.referralCodeInputField;
     }
 

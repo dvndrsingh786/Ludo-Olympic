@@ -28,7 +28,7 @@ public class UIFlowHandler : MonoBehaviour
         {3,"0"},  {4,"1"},{5,"1"},{6,"1"}
     };
 
-    public List<GameObject> allPanels;
+    public GameObject currentPanel;
 
     void Start()
     {
@@ -85,6 +85,7 @@ public class UIFlowHandler : MonoBehaviour
                 keyboard1.closeButton.SetActive(false);
                 keyboard1.openedLayout.SetActive(false);
             }
+            //currentPanel.SetActive(false);
         }
         if (Input.GetMouseButtonUp(0))
         {

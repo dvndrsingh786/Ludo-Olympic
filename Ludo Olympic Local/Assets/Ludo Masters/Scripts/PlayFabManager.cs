@@ -268,7 +268,11 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             {
                 ReferenceManager.refMngr.ChangeWinningAmountManually(GameManager.Instance.currentBetAmount, GameManager.Instance.currentPlayersCount);
                 //   GameManager.Instance.coinsCount -= GameManager.Instance.currentBetAmount;
-                apiManager.DeductCoins(GameManager.Instance.currentBetAmount);
+
+                if (GameManager.Instance.type == MyGameType.Private)
+                {
+                    apiManager.DeductCoins(GameManager.Instance.currentBetAmount);
+                }
             }
             if (GameManager.Instance.type == MyGameType.Private) {
                 if (GameManager.Instance.isLocalMultiplayer == false)
@@ -1297,7 +1301,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public void GetReferCode()
     {
-        string url = "https://app.ludocashwin.com/public/api/test-notification";
+        string url = GameManager.apiBase1 + "test-notification";
         WWWForm form = new WWWForm();
         //form.AddField("device_token",);
         form.AddField("title","Reffer Code");
@@ -1315,7 +1319,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public void GetAccountCode()
     {
-        string url = "https://app.ludocashwin.com/public/api/test-notification";
+        string url = GameManager.apiBase1 + "test-notification";
         WWWForm form = new WWWForm();
       //  form.AddField("device_token",token.Token);
         form.AddField("title", "Reffer Code");

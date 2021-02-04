@@ -27,7 +27,7 @@ public class ProfilePicScript : MonoBehaviour
     IEnumerator ThemeConvertor()
     {
         if (GameManager.Uid != null) {
-            string check = GameManager.apiBase + "fetch-avatar/user_id=" + GameManager.Uid;
+            string check = GameManager.apiBase1 + "fetch-avatar/user_id=" + GameManager.Uid;
             WWW www = new WWW(check);
             yield return www;
 

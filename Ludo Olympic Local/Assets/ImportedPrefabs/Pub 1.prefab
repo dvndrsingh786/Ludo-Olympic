@@ -413,7 +413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.132, y: 0.19100001}
   m_AnchorMax: {x: 0.8207898, y: 0.7947179}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 1.1421051}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &486975167290469162
@@ -1047,9 +1047,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 5923408874892704686}
+        m_MethodName: ShowPrizeDIstribution
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1144,12 +1144,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gamePriceText: {fileID: 486975167290469163}
   winPriceText: {fileID: 486975167162157339}
-  firstPrizeAmountText: {fileID: 0}
-  secondPrizeAmountText: {fileID: 0}
-  thirdPrizeAmountText: {fileID: 0}
-  fourthPrizeAmountText: {fileID: 0}
   totalJoinedPlayersText: {fileID: 486975167653417232}
   timeLeftText: {fileID: 486975167780094958}
+  myJoiningButton: {fileID: 486975168666412924}
   gameId: 
   noOfPlayer: 
   startDate: 
@@ -1163,7 +1160,8 @@ MonoBehaviour:
   secondPrize: 
   thirdPrize: 
   fourthPrize: 
-  playerCount: 
+  totalPlayerJoined: 
+  pubTitle: {fileID: 486975168735376212}
   timeLeft: 
   Callingfunction: 0
   hr: 0
@@ -1182,7 +1180,7 @@ GameObject:
   - component: {fileID: 486975168666412899}
   - component: {fileID: 486975168666412924}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Join Game
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1205,7 +1203,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.799, y: 0.2866667}
   m_AnchorMax: {x: 0.96900004, y: 0.7866667}
-  m_AnchoredPosition: {x: 0, y: -0.00015258789}
+  m_AnchoredPosition: {x: 0, y: -0.00018310547}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.49999985, y: 0.5000004}
 --- !u!222 &486975168666412898
@@ -1252,7 +1250,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 486975168666412926}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -1288,8 +1286,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: LoadGame
+      - m_Target: {fileID: 5923408874892704686}
+        m_MethodName: EnterTable
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1491,7 +1489,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.252, y: 0.6}
   m_AnchorMax: {x: 0.294, y: 0.6766631}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.22787476}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.49999994, y: 0.5}
 --- !u!222 &2951880077852457085
@@ -1574,9 +1572,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 5923408874892704686}
+        m_MethodName: ShowPrizeDIstribution
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

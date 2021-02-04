@@ -13,6 +13,8 @@ public class TempGameManager : MonoBehaviour
     public PhotonView view;
     public GameGUIController controller;
     public bool iamalive = true;
+    public AudioSource[] soundEffects;
+    public LudoPawnController[] pawns;
 
     void Start()
     {
@@ -34,29 +36,52 @@ public class TempGameManager : MonoBehaviour
                 }
             }
         }
-        Invoke(nameof(SetTimerNames), 0.8f);
-    }
-
-    void SetTimerNames()
-    {
-        GameGUIController contrlr = FindObjectOfType<GameGUIController>();
-        UpdatePlayerTimer timr1 = contrlr.PlayersTimers[0].GetComponent<UpdatePlayerTimer>();
-        UpdatePlayerTimer timr2 = contrlr.PlayersTimers[1].GetComponent<UpdatePlayerTimer>();
-        UpdatePlayerTimer timr3 = contrlr.PlayersTimers[2].GetComponent<UpdatePlayerTimer>();
-        UpdatePlayerTimer timr4 = contrlr.PlayersTimers[3].GetComponent<UpdatePlayerTimer>();
-        if (contrlr.playerObjects.Count > 2)
+        if (PlayerPrefs.GetInt("IsSoundEffect", 1) == 1)
         {
-            timr1.myPlayerName = contrlr.playerName.text;
-            timr2.myPlayerName = contrlr.playerName2.text;
-            timr3.myPlayerName = contrlr.playerName3.text;
-            timr4.myPlayerName = contrlr.playerName4.text;
+            SetEffectToMute(false);
         }
         else
         {
-            timr1.myPlayerName = contrlr.playerName.text;
-            timr3.myPlayerName = contrlr.playerName3.text;
+            SetEffectToMute(true);
+        }
+        //Invoke(nameof(SetTimerNames), 0.8f);
+    }
+
+    public void SetEffectToMute(bool state)
+    {
+        for (int i = 0; i < soundEffects.Length; i++)
+        {
+            soundEffects[i].mute = state;
+        }
+        for (int i = 0; i < pawns.Length; i++)
+        {
+            for (int j = 0; j < pawns[i].sound.Length; j++)
+            {
+                pawns[i].sound[j].mute = state;
+            } 
         }
     }
+
+    //void SetTimerNames()
+    //{
+    //    GameGUIController contrlr = FindObjectOfType<GameGUIController>();
+    //    UpdatePlayerTimer timr1 = contrlr.PlayersTimers[0].GetComponent<UpdatePlayerTimer>();
+    //    UpdatePlayerTimer timr2 = contrlr.PlayersTimers[1].GetComponent<UpdatePlayerTimer>();
+    //    UpdatePlayerTimer timr3 = contrlr.PlayersTimers[2].GetComponent<UpdatePlayerTimer>();
+    //    UpdatePlayerTimer timr4 = contrlr.PlayersTimers[3].GetComponent<UpdatePlayerTimer>();
+    //    if (contrlr.playerObjects.Count > 2)
+    //    {
+    //        timr1.myPlayerName = contrlr.playerName.text;
+    //        timr2.myPlayerName = contrlr.playerName2.text;
+    //        timr3.myPlayerName = contrlr.playerName3.text;
+    //        timr4.myPlayerName = contrlr.playerName4.text;
+    //    }
+    //    else
+    //    {
+    //        timr1.myPlayerName = contrlr.playerName.text;
+    //        timr3.myPlayerName = contrlr.playerName3.text;
+    //    }
+    //}
 
     [PunRPC]
     public void SetAliveState(bool state)

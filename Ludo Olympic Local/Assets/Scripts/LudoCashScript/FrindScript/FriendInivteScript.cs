@@ -40,7 +40,7 @@ public class FriendInivteScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        notificationUrl = GameManager.apiBase + "refer_info";
+        notificationUrl = GameManager.apiBase1 + "refer_info";
     }
 
 

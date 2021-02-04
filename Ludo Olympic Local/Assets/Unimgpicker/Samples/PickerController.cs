@@ -56,8 +56,8 @@ public class PickerController : MonoBehaviour
     void Awake()
     {
         imagePicker = FindObjectOfType<Unimgpicker>();
-        imagePostURL = GameManager.apiBase + "kyc-verification";
-        playerprofileURL = GameManager.apiBase + "profile-update";
+        imagePostURL = GameManager.apiBase1 + "kyc-verification";
+        playerprofileURL = GameManager.apiBase1 + "profile-update";
         setintialize();
 
     }
@@ -183,10 +183,20 @@ public class PickerController : MonoBehaviour
         }
         string fullName = GameManager.Instance.playfabManager.apiManager.kycFirstName.text + GameManager.Instance.playfabManager.apiManager.kycLastName.text;
         form.AddField("fullname", fullName);
+        //form.AddField("dob", "01-02-1990");
         form.AddField("dob", GameManager.Instance.playfabManager.apiManager.kycDateOfBirth.text);
         form.AddField("state", GameManager.Instance.playfabManager.apiManager.kycState.options[GameManager.Instance.playfabManager.apiManager.kycState.value].text);
+        Debug.LogError(GameManager.Uid);
+        Debug.LogError(adhar.ToString());
+        Debug.LogError(adharsecond.ToString());
+        Debug.LogError(pancard.ToString());
+        Debug.LogError(GameManager.Instance.playfabManager.apiManager.kycDocumentNumber.text);
+        Debug.LogError(fullName);
+        Debug.LogError(GameManager.Instance.playfabManager.apiManager.kycState.options[GameManager.Instance.playfabManager.apiManager.kycState.value].text);
+        //Debug.LogError(GameManager.Instance.playfabManager.apiManager.kycDateOfBirth.text);
         //Debug.LogError("state: " + GameManager.Instance.playfabManager.apiManager.kycState);
         //POST the screenshot to GameSparks
+        Debug.LogError(uploadUrl);
         WWW w = new WWW(uploadUrl, form);
         //loadingPanel.SetActive(true);
         ReferenceManager.refMngr.loadingPanel.SetActive(true);
@@ -236,7 +246,7 @@ public class PickerController : MonoBehaviour
         else
         {
             ReferenceManager.refMngr.loadingPanel.SetActive(false);
-            ReferenceManager.refMngr.ShowError(w.error, "Failed to Uploaded");
+            ReferenceManager.refMngr.ShowError(w.error, "Failed to Upload");
         }
     }
 
@@ -308,13 +318,17 @@ public class PickerController : MonoBehaviour
         yield return new WaitForEndOfFrame();
         string profile = CallFunctionByte(imageRenderer3.mainTexture);
         print(profile + "string profile");
-        var form = new WWWForm();
+        WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
         form.AddField("fullname", playername.text);
         form.AddField("gender", val);
         form.AddField("profile_pic", profile.ToString());
-        Debug.Log("BB" + profile.ToString());
+        //form.AddField("user_id", GameManager.Uid);
+        //form.AddField("fullname", "HAHAHA");
+        //form.AddField("gender", "0");
+        //form.AddField("profile_pic", "sgfsdfdsffdsf");
         //POST the screenshot to GameSparks
+        Debug.LogError(url);
         WWW w = new WWW(url, form);
         //loadingPanel.SetActive(true);
         ReferenceManager.refMngr.loadingPanel.SetActive(true);
@@ -335,6 +349,7 @@ public class PickerController : MonoBehaviour
             Debug.Log(results + "ff");
             if (results == "Profile Updated Successfull" || status == "True")
             {
+                Debug.LogError("OH MY GOD");
                 UIFlowHandler.uihandler.THETEXTURE = imageRenderer3.mainTexture;
                 GameManager.profileImge = UIFlowHandler.uihandler.TextureToSprite((Texture2D)imageRenderer3.mainTexture);
                 UIFlowHandler.uihandler.SetPlayerImage();
@@ -349,10 +364,16 @@ public class PickerController : MonoBehaviour
                 ReferenceManager.refMngr.ShowError("Profile Updated Successfully", "Success");
 
             }
+            else
+            {
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                ReferenceManager.refMngr.ShowError(results, "Failed");
+            }
         }
         else
         {
-
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                ReferenceManager.refMngr.ShowError(w.error, "Failed");
         }
     }
 

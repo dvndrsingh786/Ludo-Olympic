@@ -21543,7 +21543,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &553134676
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21606,8 +21606,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 870314952}
-        m_MethodName: SignInTesting
+      - m_Target: {fileID: 198224338}
+        m_MethodName: EditorSahilTesterLogin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26637,6 +26637,11 @@ PrefabInstance:
     - target: {fileID: 2618073974111785828, guid: c84de9ceea798d045a43b8a04ee2b5ed,
         type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2618073975782739182, guid: c84de9ceea798d045a43b8a04ee2b5ed,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2739938635574938646, guid: c84de9ceea798d045a43b8a04ee2b5ed,
@@ -70292,7 +70297,7 @@ MonoBehaviour:
   updateAppPopup: {fileID: 395007753}
   loadingPanel: {fileID: 343499151}
   THETEXTURE: {fileID: 0}
-  allPanels: []
+  currentPanel: {fileID: 0}
 --- !u!4 &1374591429
 Transform:
   m_ObjectHideFlags: 0
@@ -93422,6 +93427,8 @@ MonoBehaviour:
   phoneEmail: 
   uu: {fileID: 738428116}
   tablevalue: 
+  clickedPubButton: {fileID: 0}
+  isClickedPubButton: 0
   referralCodeInputField: {fileID: 627202075}
   newCoinsText: {fileID: 627202067}
   newNameinProfilePageText: {fileID: 627202068}

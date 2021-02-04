@@ -30,8 +30,9 @@ public class AvatarDataScipt : MonoBehaviour
 
     void Start()
     {
-        avataronUrl = GameManager.apiBase + "get-avatar";
-        preveiwUrl = GameManager.apiBase + "set-avatar";
+    
+        avataronUrl = GameManager.apiBase1 + "get-avatar";
+        preveiwUrl = GameManager.apiBase1 + "set-avatar";
         StartCoroutine(AvatarConvertor());
     }
 
@@ -41,6 +42,8 @@ public class AvatarDataScipt : MonoBehaviour
         yield return www;
         Debug.Log(www.text);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
+        if (www.error == null) Debug.LogError("ERROR NULLLLLLLLLL");
+        else Debug.LogError("ERROR NOTTTTT NULLLLLLLLLL");
         for (int i = 0; i < jsonvale["result_push"].Count; i++)
         {
             AvatarData clone = Instantiate(avatarIconPrefab, avatarContainer).GetComponent<AvatarData>();
@@ -53,7 +56,7 @@ public class AvatarDataScipt : MonoBehaviour
             Texture2D tex = new Texture2D(2, 2);
             tex.LoadImage(bytes);
             Sprite profileImage = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
-            if (i == 0) SetDefaultSprite(profileImage);
+            //if (i == 0) SetDefaultSprite(profileImage);
             clone.boardImage.sprite = profileImage;
             screenid.Add(jsonvale["result_push"][i]["id"].ToString());
             clone.screenid = jsonvale["result_push"][i]["id"].ToString();

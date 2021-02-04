@@ -208,7 +208,8 @@ public class GameManager
     public bool doesContainBotMoves = false;
     public static Sprite defaultSprite;
 
-    public static string apiBase = "http://ludolympic.knickglobal.co.in/api/";
+    //public static string apiBase = "http://ludolympic.knickglobal.com/api/";
+    public static string apiBase1 = "http://ludolympic.knickglobal.com/api/";
 
     public void resetAllData()
     {

@@ -88,13 +88,13 @@ public class ReedemCoinsScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        payTmUrl = GameManager.apiBase + "paytm-detail";
-        bankDetailUrl = GameManager.apiBase + "bank-detail";
-        upiUrl = GameManager.apiBase + "upi-detail";
-        withdrawUrl =  GameManager.apiBase + "withdrawal";
-        UpdateMobileNumberUrl = GameManager.apiBase + "profile-update";
-        OtpURL = GameManager.apiBase + "send_otp";
-        setOtpURL = GameManager.apiBase + "send_otp";
+        payTmUrl = GameManager.apiBase1 + "paytm-detail";
+        bankDetailUrl = GameManager.apiBase1 + "bank-detail";
+        upiUrl = GameManager.apiBase1 + "upi-detail";
+        withdrawUrl =  GameManager.apiBase1 + "withdrawal";
+        UpdateMobileNumberUrl = GameManager.apiBase1 + "profile-update";
+        OtpURL = GameManager.apiBase1 + "send_otp";
+        setOtpURL = GameManager.apiBase1 + "send_otp";
         if (PlayerPrefs.GetString("Pytm") == "1") {
             pytmsubmitBtn.SetActive(false);
             pytmwithdrawlBtn.SetActive(true);

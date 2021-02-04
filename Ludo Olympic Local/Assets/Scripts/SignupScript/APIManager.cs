@@ -136,7 +136,7 @@ public class APIManager : MonoBehaviour
 
     NewGameManager newGameManager;
     
-    private string getBettingApi = GameManager.apiBase + "betting";
+    private string getBettingApi = GameManager.apiBase1 + "betting";
 
     private string getBotDifficulty = "https://onlystore.in/ludomoney/api/gamedifficulty.php";
 
@@ -269,7 +269,7 @@ public class APIManager : MonoBehaviour
     {
 
        // url = "http://onlystore.in/ludomoney/api/login_user.php?mobile=" + _emailId.text + "&password=" + _password.text;
-        url = GameManager.apiBase + "login";
+        url = GameManager.apiBase1 + "login";
 
         if (string.IsNullOrEmpty(_emailId.text))
         {
@@ -850,7 +850,7 @@ public class APIManager : MonoBehaviour
     public void AddSocialMediaSinupForm()
     {
         Debug.LogError("Social Media Signup Form");
-        string uurl = GameManager.apiBase + "signup";
+        string uurl = GameManager.apiBase1 + "signup";
         //Debug.Log(url);
 
         WWWForm form = new WWWForm();
@@ -882,7 +882,7 @@ public class APIManager : MonoBehaviour
     {
         //AddSocialMediaSinupForm();
         UIFlowHandler.uihandler.loadingPanel.SetActive(true);
-        string loginurl = GameManager.apiBase + "login";
+        string loginurl = GameManager.apiBase1 + "login";
         WWWForm form = new WWWForm();
         form.AddField("username", socialEmail);
         form.AddField("password", "QAZWSX");
@@ -1312,7 +1312,7 @@ public class APIManager : MonoBehaviour
     public void AddPhoneMediaSinupForm()
     {
         Debug.LogError("Phone Media Signup Form");
-        string uurl = GameManager.apiBase + "signup";
+        string uurl = GameManager.apiBase1 + "signup";
         //Debug.Log(url);
 
         WWWForm form = new WWWForm();
@@ -1346,7 +1346,7 @@ public class APIManager : MonoBehaviour
     {
         UIFlowHandler.uihandler.loadingPanel.SetActive(true);
         //AddSocialMediaSinupForm();
-        string loginurl = GameManager.apiBase + "login";
+        string loginurl = GameManager.apiBase1 + "login";
         WWWForm form = new WWWForm();
         form.AddField("username", phoneEmail);
         form.AddField("password", "QAZWSX");
@@ -1612,7 +1612,7 @@ public class APIManager : MonoBehaviour
             return;
         }
       
-        url = GameManager.apiBase + "signup";
+        url = GameManager.apiBase1 + "signup";
         Debug.Log(url);
 
         WWWForm form = new WWWForm();
@@ -1731,7 +1731,7 @@ public class APIManager : MonoBehaviour
     IEnumerator GetPlayerData()
     {
         Dictionary<string, string> headers = new Dictionary<string, string>();
-        string url = GameManager.apiBase + "client_details/my_referral_code=" + GameManager.Instance.userID;
+        string url = GameManager.apiBase1 + "client_details/my_referral_code=" + GameManager.Instance.userID;
         Debug.Log(url);
         WWW www = new WWW(url);
         yield return www;
@@ -2166,7 +2166,7 @@ public class APIManager : MonoBehaviour
     }
     IEnumerator DecreaseCoins(float amount)
     {
-        url= GameManager.apiBase + "deduction";
+        url= GameManager.apiBase1 + "deduction";
         Debug.Log(url);
         WWWForm form = new WWWForm();
         form.AddField("user_id",GameManager.Uid);
@@ -2183,13 +2183,20 @@ public class APIManager : MonoBehaviour
         if (status == "True")
         {
              GameManager.Instance.coinsCount -= amount;
-           
+            if (isClickedPubButton)
+            {
+                isClickedPubButton = false;
+                clickedPubButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
+            }
         }
     }
 
+    public Button clickedPubButton;
+    public bool isClickedPubButton = false;
+
     IEnumerator DecreasePrivateTableCoins(int amount)
     {
-        url = GameManager.apiBase + "private-deduction";
+        url = GameManager.apiBase1 + "private-deduction";
         Debug.Log(url);
         WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
@@ -2227,7 +2234,7 @@ public class APIManager : MonoBehaviour
     IEnumerator IncreaseCoins(float amount)
     {
         Debug.Log("Increase Coins");
-        url= GameManager.apiBase + "winning";
+        url= GameManager.apiBase1 + "winning";
 
         WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
@@ -2353,7 +2360,8 @@ public class APIManager : MonoBehaviour
      {
         if (!GameManager.Instance.userID.Contains("Guest"))
         {
-            url = "http://ludo-cash.knickglobal.co.in/public/api/withdrawal";
+            //url = "http://ludo-cash.knickglobal.co.in/public/api/withdrawal";
+            url = "http://ludolympic.knickglobal.com/api/withdrawal";
 
             if (string.IsNullOrEmpty(_amountWithdraw.text))
             {
@@ -2494,7 +2502,7 @@ public class APIManager : MonoBehaviour
     
     public void ResetPassword()
     {
-        string url = GameManager.apiBase + "forgot-password";
+        string url = GameManager.apiBase1 + "forgot-password";
         Debug.Log(url);
         if (string.IsNullOrEmpty(_forgotPasswordEmail.text))
         {
@@ -2578,7 +2586,7 @@ public class APIManager : MonoBehaviour
             StartCoroutine(ErrorClose());
             return;
         }
-        string curl = GameManager.apiBase + "reset-password";
+        string curl = GameManager.apiBase1 + "reset-password";
         Debug.Log(curl);
         WWWForm form = new WWWForm();
         form.AddField("email", changeForgetPasswordEmail.text);
@@ -2830,7 +2838,7 @@ public class APIManager : MonoBehaviour
 
     IEnumerator waut()
     {
-        string url = GameManager.apiBase + "client_details/my_referral_code=" + GameManager.Instance.userID;
+        string url = GameManager.apiBase1 + "client_details/my_referral_code=" + GameManager.Instance.userID;
         Debug.Log(url);
         WWW www = new WWW(url);
 

@@ -44,8 +44,8 @@ public class ThemeScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        themeiconUrl = GameManager.apiBase + "get-screen";
-        preveiwUrl = GameManager.apiBase + "set-screen";
+        themeiconUrl = GameManager.apiBase1 + "get-screen";
+        preveiwUrl = GameManager.apiBase1 + "set-screen";
         //StartCoroutine(ThemeConvertor());      
         Invoke(nameof(ThemeConverter), 0.1f);
     }

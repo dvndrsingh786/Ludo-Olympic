@@ -8,12 +8,9 @@ public class BetScript : MonoBehaviour
 {
     public Text gamePriceText;
     public Text winPriceText;
-    public Text firstPrizeAmountText;
-    public Text secondPrizeAmountText;
-    public Text thirdPrizeAmountText;
-    public Text fourthPrizeAmountText;
     public TextMeshProUGUI totalJoinedPlayersText;
     public TextMeshProUGUI timeLeftText;
+    [SerializeField] Button myJoiningButton;
 
     
     public string gameId;
@@ -29,7 +26,8 @@ public class BetScript : MonoBehaviour
     public string secondPrize;
     public string thirdPrize;
     public string fourthPrize;
-    public string playerCount;
+    public string totalPlayerJoined;
+    public TextMeshProUGUI pubTitle;
 
     public string timeLeft;
     
@@ -38,12 +36,16 @@ public class BetScript : MonoBehaviour
 
     public void SetTexts()
     {
-        Debug.LogError("9");
-        gamePriceText.text = gamePrice;
-        winPriceText.text = winPrice;
-        totalJoinedPlayersText.text = playerCount;
-        Debug.LogError("10");
-        timeLeftText.text = gameDuration;
+        string rupeee = FindObjectOfType<InitMenuScript>().rupeeText.text;
+        gamePriceText.text = rupeee + gamePrice;
+        winPriceText.text = rupeee + winPrice;
+        totalJoinedPlayersText.text = "Players Joined: " + totalPlayerJoined;
+        //timeLeftText.text = gameDuration;
+        if (noOfPlayer == "2")
+        {
+            pubTitle.text = "1v1 Battle";
+        }
+        else pubTitle.text = "3 Winners";
     }
 
     public void ToggleButtonPower(Toggle theToggle)
@@ -58,28 +60,59 @@ public class BetScript : MonoBehaviour
         ReferenceManager.refMngr.ShowOnlineInvestment(GameManager.Instance.currentBetAmount, GameManager.Instance.currentWinningAmount);
     }
 
-    //public void UpdateClock()
-    //{
-    //    betTime.text = hr.ToString() + ":" + mns.ToString() + ":" + secs.ToString();
-    //    secs--;
-    //    if (secs < 0)
-    //    {
-    //        mns--;
-    //        secs = 59;
-    //        if (mns < 0)
-    //        {
-    //            hr--;
-    //            mns = 59;
-    //        }
-    //    }
-    //    if (hr != 0 || mns != 0 || secs != 0)
-    //    {
-    //        Invoke(nameof(UpdateClock), 1);
-    //    }
-    //    else
-    //    {
-    //        SetAsOpenTable();
-    //    }
-    //}
+    public void EnterTable()
+    {
+        GameManager.Instance.playfabManager.apiManager.isClickedPubButton = true;
+        GameManager.Instance.playfabManager.apiManager.clickedPubButton = myJoiningButton;
+        GameManager.Instance.playfabManager.apiManager.DeductCoins(int.Parse(gamePrice));
+    }
+
+    public void ShowPrizeDIstribution()
+    {
+        if (noOfPlayer == "2")
+        {
+            FindObjectOfType<InitMenuScript>().OpenPrizeDistributionPopup(false, gamePrice, noOfPlayer, firstPrize, secondPrize, thirdPrize);
+        }
+        else
+        {
+            FindObjectOfType<InitMenuScript>().OpenPrizeDistributionPopup(true, gamePrice, noOfPlayer, firstPrize, secondPrize, thirdPrize);
+        }
+    }
+
+    private void OnEnable()
+    {
+        UpdateClock();
+    }
+
+    public void UpdateClock()
+    {
+        if (hr <= 0)
+        {
+            timeLeftText.text = mns.ToString() + "m:" + secs.ToString() + "s";
+        }
+        else
+        {
+            timeLeftText.text = hr.ToString() + "h:" + mns.ToString() + "m:" + secs.ToString() + "s";
+        }
+        secs--;
+        if (secs < 0)
+        {
+            mns--;
+            secs = 59;
+            if (mns < 0)
+            {
+                hr--;
+                mns = 59;
+            }
+        }
+        if (hr != 0 || mns != 0 || secs != 0)
+        {
+            Invoke(nameof(UpdateClock), 1);
+        }
+        else
+        {
+            Debug.LogError("Table Opened");
+        }
+    }
 
 }

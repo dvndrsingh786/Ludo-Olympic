@@ -54,7 +54,7 @@ public class WalletApiScript : MonoBehaviour
 
     public void OnWalletButtonClick()
     {
-        string walletURL = GameManager.apiBase + "add-wallet";
+        string walletURL = GameManager.apiBase1 + "add-wallet";
         if (string.IsNullOrEmpty(amount.text))
         {
             errorMsg.text = "Please Enter the Amount.!!";
