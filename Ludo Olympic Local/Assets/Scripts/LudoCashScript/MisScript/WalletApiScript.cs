@@ -39,7 +39,8 @@ public class WalletApiScript : MonoBehaviour
         if (PlayerPrefs.HasKey("Logintoken"))
         {
             FindObjectOfType<NewGameManager>().newLoginScreen.SetActive(false);
-            GameManager.Instance.userID = PlayerPrefs.GetString("Logintoken");          
+            GameManager.Instance.userID = PlayerPrefs.GetString("Logintoken");
+            Debug.LogError("LOGIN TOKEN: " + GameManager.Instance.userID);
             GameManager.Instance.playfabManager.apiManager.OnPlayerProfileData();
             Debug.Log("Id" + GameManager.Uid);
           //  GameManager.Instance.playfabManager.coinsBuyUrl = "https://ludocashwin.com/razorpay/pay.php?user_id=" + GameManager.Uid + "&amount=" + amount.text;
@@ -64,6 +65,7 @@ public class WalletApiScript : MonoBehaviour
         }
         WWWForm form = new WWWForm();
         form.AddField("user_id",GameManager.Uid);
+        form.AddField("walletType", "1");
         form.AddField("amount",amount.text);
         WWW w = new WWW(walletURL, form);
         Debug.Log("URL" + walletURL);

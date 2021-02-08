@@ -118,6 +118,7 @@ public class BetDataScript : MonoBehaviour
                                 betScript.noOfPlayer = noOfPlayer;
                                 betScript.startDate = startDate;
                                 betScript.endDate = endDate;
+                                betScript.startTime = startTime;
                                 betScript.endTime = endTime;
                                 betScript.gamePrice = gamePrice;
                                 betScript.winPrice = winPrice;

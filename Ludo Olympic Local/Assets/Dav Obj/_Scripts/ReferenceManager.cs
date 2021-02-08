@@ -390,7 +390,7 @@ public class ReferenceManager : MonoBehaviour
 
     public int hour, minutes, seconds;
 
-    void SecondsToTime(int secondss)
+    public void SecondsToTime(int secondss)
     {
         int hr, mnts, scnds;
         hr = secondss / 3600;
@@ -399,6 +399,24 @@ public class ReferenceManager : MonoBehaviour
         hour = hr;
         minutes = mnts;
         seconds = scnds;
+    }
+
+    public int timeToSeconds(string time, char charToDiffer)
+    {
+        string[] theTime = time.Split(charToDiffer);
+        int hr, mns, secs;
+        int totalSeconds;
+        if (theTime.Length == 2)
+        {
+            mns = int.Parse(theTime[0]) * 60;
+            secs = int.Parse(theTime[1]);
+            totalSeconds = mns + secs;
+            return totalSeconds;
+        }
+        else
+        {
+            return -1;
+        }
     }
 
     public bool IsLessThanADay(string requiredDate, string currentDate, string currentTimee, string startTimee)

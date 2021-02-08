@@ -207,6 +207,9 @@ public class GameManager
     public string privateRoomjoiningId;
     public bool doesContainBotMoves = false;
     public static Sprite defaultSprite;
+    public static bool isOnline4Player = false;
+    public static string gameDuration;
+    public static string currentRoomID;
 
     //public static string apiBase = "http://ludolympic.knickglobal.com/api/";
     public static string apiBase1 = "http://ludolympic.knickglobal.com/api/";

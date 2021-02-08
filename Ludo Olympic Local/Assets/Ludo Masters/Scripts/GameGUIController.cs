@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameGUIController : PunBehaviour
 {
@@ -118,6 +119,8 @@ public class GameGUIController : PunBehaviour
     public Text playerName, playerName2, playerName3, playerName4;
 
     public TempGameManager tempGame;
+    public TextMeshProUGUI gameDuration;
+
 
     // Use this for initialization
     void Start()
@@ -607,6 +610,48 @@ public class GameGUIController : PunBehaviour
         //GameManager.Instance.needToKillOpponentToEnterHome = false;
 
         // END LUDO
+        ReferenceManager reff = FindObjectOfType<ReferenceManager>();
+        int seconds = reff.timeToSeconds(GameManager.gameDuration,':');
+        reff.SecondsToTime(seconds);
+        hr = reff.hour;
+        mns = reff.minutes;
+        seconds = reff.seconds;
+        if (GameManager.Instance.type == MyGameType.TwoPlayer)
+        {
+            Invoke(nameof(UpdateGameDuration), 1);
+        }
+    }
+
+    public int hr, mns, secs;
+    public void UpdateGameDuration()
+    {
+        if (hr <= 0)
+        {
+            gameDuration.text = mns.ToString() + "m:" + secs.ToString() + "s";
+        }
+        else
+        {
+            gameDuration.text = hr.ToString() + "h:" + mns.ToString() + "m:" + secs.ToString() + "s";
+        }
+        secs--;
+        if (secs < 0)
+        {
+            mns--;
+            secs = 59;
+            if (mns < 0)
+            {
+                hr--;
+                mns = 59;
+            }
+        }
+        if (hr != 0 || mns != 0 || secs != 0)
+        {
+            Invoke(nameof(UpdateGameDuration), 1);
+        }
+        else
+        {
+            Debug.LogError("Table Opened");
+        }
     }
 
     void LoadPreviousGame(string key)

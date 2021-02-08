@@ -98,6 +98,7 @@ public class InitMenuScript : MonoBehaviour
 
     public GameObject prizeDistributionPopUp;
     public Text rupeeText;
+    public Button onlineGamePlayButton;
 
     void Start()
     {

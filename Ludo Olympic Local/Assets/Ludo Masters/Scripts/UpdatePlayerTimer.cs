@@ -22,6 +22,7 @@ public class UpdatePlayerTimer : MonoBehaviour
     public TextMeshProUGUI secondsRemaining;
 
     public PhotonView myview;
+    bool isPrivate = false;
 
     // Use this for initialization
     List<LudoPawnController> activemyPawn = new List<LudoPawnController>();
@@ -38,6 +39,16 @@ public class UpdatePlayerTimer : MonoBehaviour
         {
             if (item.isMinePawn)
                 activemyPawn.Add(item);
+        }
+        if (GameManager.Instance.type == MyGameType.Private)
+        {
+            timer.enabled = false;
+            isPrivate = true;
+        }
+        else 
+        {
+            timer.enabled = true;
+            isPrivate = false;
         }
     }
 
@@ -79,12 +90,21 @@ public class UpdatePlayerTimer : MonoBehaviour
     void FixedUpdate()
     {
         if (!paused)
-            if (!IsInvoking(nameof(updateClock)))
+        {
+            if (isPrivate)
             {
-                playerTime = GameManager.Instance.playerTime;
-                secondsRemaining.text = "20s";
-                updateClock();
+                if (!IsInvoking(nameof(updateClock)))
+                {
+                    playerTime = GameManager.Instance.playerTime;
+                    secondsRemaining.text = "20s";
+                    updateClock();
+                }
             }
+            else
+            {
+                updateClockOnline();
+            }
+        }
     }
 
     public void restartTimer()
@@ -174,6 +194,58 @@ public class UpdatePlayerTimer : MonoBehaviour
         }
 
     }
+
+    private void updateClockOnline()
+    {
+        //Debug.LogError("Updating Clock");
+        float minus;
+
+        playerTime = GameManager.Instance.playerTime;
+        if (GameManager.Instance.offlineMode)
+            playerTime = GameManager.Instance.playerTime + GameManager.Instance.cueTime;
+        minus = 1.0f / playerTime * Time.deltaTime;
+
+        timer.fillAmount -= minus;
+
+        if (timer.fillAmount < 0.05f)
+        {
+            //Debug.LogError("Inside");
+            audioSources[0].Play();
+            // timeSoundsStarted = true;
+
+            if (!misschance)
+            {
+                misschance = true;
+                turnCount++;
+                Debug.Log("TurnCount" + turnCount);
+                //SynchrozeTurnCount();
+                //  FindObjectOfType<GameGUIController>().playerCount.text = "Auto turn Chance" + turnCount;
+                playerchnaceLeft.text = "Auto Move: " + turnCount.ToString();
+                if (turnCount == 5)
+                {
+                    FindObjectOfType<GameGUIController>().LeaveGame(false);
+                }
+                else
+                {
+                    //  Gamedice.RollDice();
+                    if (!ismyTurn)
+                    {
+                        ismyTurn = true;
+                    }
+                }
+                //   Gamedice.RollDice();
+            }
+        }
+
+        if (timer.fillAmount <= 0.0f)
+        {
+            Pause();
+            StartCoroutine(autoMove());
+        }
+
+    }
+
+
     List<LudoPawnController> InBoard = new List<LudoPawnController>();
     bool ismyTurn = false;
 

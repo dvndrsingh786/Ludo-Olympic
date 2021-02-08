@@ -10,7 +10,7 @@ public class BetScript : MonoBehaviour
     public Text winPriceText;
     public TextMeshProUGUI totalJoinedPlayersText;
     public TextMeshProUGUI timeLeftText;
-    [SerializeField] Button myJoiningButton;
+    public Button myJoiningButton;
 
     
     public string gameId;
@@ -28,6 +28,9 @@ public class BetScript : MonoBehaviour
     public string fourthPrize;
     public string totalPlayerJoined;
     public TextMeshProUGUI pubTitle;
+    public string myRoomId;
+
+    public bool isJoined = false;
 
     public string timeLeft;
     
@@ -62,9 +65,24 @@ public class BetScript : MonoBehaviour
 
     public void EnterTable()
     {
-        GameManager.Instance.playfabManager.apiManager.isClickedPubButton = true;
-        GameManager.Instance.playfabManager.apiManager.clickedPubButton = myJoiningButton;
-        GameManager.Instance.playfabManager.apiManager.DeductCoins(int.Parse(gamePrice));
+        if (!isJoined)
+        {
+            float tempfloat = float.Parse(gamePrice);
+            Debug.LogError("Amount: " + tempfloat);
+            if (GameManager.Instance.coinsCount >= tempfloat)
+            {
+                GameManager.Instance.playfabManager.apiManager.isClickedPubButton = true;
+                GameManager.Instance.playfabManager.apiManager.clickedBet = this;
+                FindObjectOfType<APIManager>().tablevalue = gameId;
+                GameManager.Instance.playfabManager.apiManager.DeductCoins(tempfloat);
+            }
+        }
+        else ReferenceManager.refMngr.ShowError("Already Joined Game", "Error");
+    }
+
+    public void StartTable()
+    {
+        FindObjectOfType<InitMenuScript>().onlineGamePlayButton.onClick.Invoke();
     }
 
     public void ShowPrizeDIstribution()
@@ -111,6 +129,7 @@ public class BetScript : MonoBehaviour
         }
         else
         {
+            StartTable();
             Debug.LogError("Table Opened");
         }
     }

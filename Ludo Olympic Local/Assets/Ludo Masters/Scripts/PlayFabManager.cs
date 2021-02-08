@@ -929,6 +929,16 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         //PhotonNetwork.JoinRandomRoom(expectedCustomRoomProperties, 0);
     }
 
+    public void JoinOnlineRoom()
+    {
+        PhotonNetwork.JoinRoom(GameManager.currentRoomID);
+    }
+
+    public void CreateOnlineRoom()
+    {
+        PhotonNetwork.CreateRoom(GameManager.currentRoomID);
+    }
+
     public IEnumerator TryToJoinRandomRoom(ExitGames.Client.Photon.Hashtable roomOptions)
     {
         Debug.LogError("WTF");
@@ -971,15 +981,15 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
             roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "m", GameManager.Instance.mode.ToString () + GameManager.Instance.type.ToString () + GameManager.Instance.payoutCoins.ToString () }
             };
-            if (GameManager.Instance.type == MyGameType.TwoPlayer)
-            {
-                roomOptions.MaxPlayers = 2;
+            //if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            //{
+            //    roomOptions.MaxPlayers = 2;
 
-            }
-            else
-            {
-                roomOptions.MaxPlayers = 4;
-            }
+            //}
+            //else
+            //{
+            //    roomOptions.MaxPlayers = 4;
+            //}
 
             GameManager.Instance.requiredPlayers = roomOptions.MaxPlayers;
             Debug.Log(roomOptions.CustomRoomProperties["m"]);
@@ -1238,6 +1248,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public override void OnPhotonCreateRoomFailed(object[] codeAndMsg)
     {
         Debug.Log("Failed to create room");
+
         // CreatePrivateRoom();
     }
 
@@ -1254,7 +1265,8 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         }
         else
         {
-            GameManager.Instance.facebookManager.startRandomGame();
+            CreateOnlineRoom();
+            //GameManager.Instance.facebookManager.startRandomGame();
         }
     }
 

@@ -312,7 +312,7 @@ public class GameConfigrationController : MonoBehaviour
     {
         ReferenceManager.refMngr.loadingPanel.SetActive(true);
         betCoins = GameManager.Instance.currentBetAmount;
-        if (betCoins <= GameManager.Instance.coinsCount)
+        if (betCoins <= GameManager.Instance.coinsCount || GameManager.Instance.type != MyGameType.Private)
         {
             
             if (GameManager.Instance.type != MyGameType.Private)

@@ -820,6 +820,7 @@ public class ReedemCoinsScript : MonoBehaviour
             otpNotificatonPanel.SetActive(true);
             StartCoroutine(Notify());
         }
+        else loadingPanel.SetActive(false);
     }
     IEnumerator Notify()
     {

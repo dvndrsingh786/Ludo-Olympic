@@ -28,7 +28,8 @@ public class UIFlowHandler : MonoBehaviour
         {3,"0"},  {4,"1"},{5,"1"},{6,"1"}
     };
 
-    public GameObject currentPanel;
+    public List<GameObject> openedPanels;
+    [SerializeField]GameObject exitGamePopUp;
 
     void Start()
     {
@@ -39,6 +40,44 @@ public class UIFlowHandler : MonoBehaviour
             return;
         }
         DontDestroyOnLoad(gameObject);
+        List<int> a = new List<int>();
+    }
+
+    void Update()
+    {
+        if (GameManager.Instance!=null)
+        {
+            //Debug.LogError("1"+GameManager.playerName);
+            //Debug.LogError("2"+GameManager.Instance.nameMy);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (keyboard1.IsAnyLayoutOpened() != null)
+            {
+                keyboard1.closeButton.SetActive(false);
+                keyboard1.openedLayout.SetActive(false);
+            }
+            bool isAnyOpened = false;
+            for (int i = openedPanels.Count - 1; i >= 0; i--)
+            {
+                if (openedPanels[i].activeInHierarchy)
+                {
+                    openedPanels[i].SetActive(false);
+                    isAnyOpened = true;
+                    break;
+                }
+            }
+            if (!isAnyOpened) exitGamePopUp.SetActive(true);
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            Invoke(nameof(CustomUpdate), 0.2f);
+        }
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 
     public void SetPlayerImage()
@@ -71,27 +110,6 @@ public class UIFlowHandler : MonoBehaviour
         CancelInvoke();
     }
 
-    void Update()
-    {
-        if (GameManager.Instance!=null)
-        {
-            //Debug.LogError("1"+GameManager.playerName);
-            //Debug.LogError("2"+GameManager.Instance.nameMy);
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (keyboard1.IsAnyLayoutOpened() != null)
-            {
-                keyboard1.closeButton.SetActive(false);
-                keyboard1.openedLayout.SetActive(false);
-            }
-            //currentPanel.SetActive(false);
-        }
-        if (Input.GetMouseButtonUp(0))
-        {
-            Invoke(nameof(CustomUpdate), 0.2f);
-        }
-    }
 
     void CustomUpdate()
     {

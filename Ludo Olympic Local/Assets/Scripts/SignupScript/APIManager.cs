@@ -15,6 +15,13 @@ using TMPro;
 
 using System.Security.Authentication.ExtendedProtection;
 
+[Serializable]
+public class LiveGameInfo
+{
+    public string game_id;
+    public string game_room_id;
+}
+
 public class APIManager : MonoBehaviour
 {
     [Header("SignUp Object")]
@@ -208,13 +215,13 @@ public class APIManager : MonoBehaviour
                 {
 
                     // Quit the application
-                    Application.Quit();
+                    //Application.Quit();
                  
                 }
             }
             else
             {
-                Application.Quit();
+                //Application.Quit();
             }
       
     }
@@ -1751,6 +1758,11 @@ public class APIManager : MonoBehaviour
         GameManager.friendrefferalCode = jsonvale["result_push"][0]["reference_code"].ToString();
         GameManager.onlineAmount= jsonvale["result_push"][0]["online_amount"].ToString();
         GameManager.offlineAmount= jsonvale["result_push"][0]["offline_amount"].ToString();
+        string activePlayer = jsonvale["result_push"][0]["active_game_info"].ToJson();
+        Debug.LogError(activePlayer);
+        /*LiveGameInfo myobj = */
+         JsonUtility.FromJson<LiveGameInfo>(activePlayer);
+        //Debug.LogError("YAYYY WORKINGGGG : :  : : " + myobj.gameId[0]);
 
         Debug.LogError("STATUS: " + jsonvale["result_push"][0]["status"].ToString());
 
@@ -2179,19 +2191,22 @@ public class APIManager : MonoBehaviour
         //Debug.Log(www.error);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
         status = jsonvale["result_push"][0]["status"].ToString();
-       // Debug.Log(status);
+        string roomId = jsonvale["result_push"][0]["game_room_id"].ToString();
+        // Debug.Log(status);
         if (status == "True")
         {
              GameManager.Instance.coinsCount -= amount;
             if (isClickedPubButton)
             {
                 isClickedPubButton = false;
-                clickedPubButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
+                clickedBet.myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
+                clickedBet.isJoined = true;
+                clickedBet.myRoomId = roomId;
             }
         }
     }
 
-    public Button clickedPubButton;
+    public BetScript clickedBet;
     public bool isClickedPubButton = false;
 
     IEnumerator DecreasePrivateTableCoins(int amount)
