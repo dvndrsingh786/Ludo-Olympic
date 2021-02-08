@@ -210,6 +210,7 @@ public class GameManager
     public static bool isOnline4Player = false;
     public static string gameDuration;
     public static string currentRoomID;
+    public static List<ActiveGamInfo> activeGameInfo = new List<ActiveGamInfo>();
 
     //public static string apiBase = "http://ludolympic.knickglobal.com/api/";
     public static string apiBase1 = "http://ludolympic.knickglobal.com/api/";
@@ -275,4 +276,10 @@ public class GameManager
     }
 
   
+}
+
+public class ActiveGamInfo
+{
+    public string game_id;
+    public string game_room_id;
 }

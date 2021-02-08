@@ -15,13 +15,6 @@ using TMPro;
 
 using System.Security.Authentication.ExtendedProtection;
 
-[Serializable]
-public class LiveGameInfo
-{
-    public string game_id;
-    public string game_room_id;
-}
-
 public class APIManager : MonoBehaviour
 {
     [Header("SignUp Object")]
@@ -256,6 +249,7 @@ public class APIManager : MonoBehaviour
         }
         else
         {
+            //PlayerPrefs.SetString("Logintoken", "CL614221");
             FindObjectOfType<NewGameManager>().newLoginScreen.SetActive(true);
             //LoginPanel.SetActive(true);
             // choosePanel.SetActive(true);
@@ -1760,8 +1754,17 @@ public class APIManager : MonoBehaviour
         GameManager.offlineAmount= jsonvale["result_push"][0]["offline_amount"].ToString();
         string activePlayer = jsonvale["result_push"][0]["active_game_info"].ToJson();
         Debug.LogError(activePlayer);
-        /*LiveGameInfo myobj = */
-         JsonUtility.FromJson<LiveGameInfo>(activePlayer);
+        activePlayer = "{\"result_push\":" + activePlayer + "}";
+        ///*LiveGameInfo myobj = */
+        // JsonUtility.FromJson<LiveGameInfo>(activePlayer);
+        JsonData jsonvale1 = JsonMapper.ToObject(activePlayer);
+        for (int i = 0; i < jsonvale1["result_push"].Count; i++)
+        {
+            ActiveGamInfo temp = new ActiveGamInfo();
+            temp.game_id= jsonvale1["result_push"][i]["game_id"].ToString();
+            temp.game_room_id= jsonvale1["result_push"][i]["game_room_id"].ToString();
+            GameManager.activeGameInfo.Add(temp);
+        }
         //Debug.LogError("YAYYY WORKINGGGG : :  : : " + myobj.gameId[0]);
 
         Debug.LogError("STATUS: " + jsonvale["result_push"][0]["status"].ToString());
