@@ -44,6 +44,10 @@ public class TempGameManager : MonoBehaviour
         {
             SetEffectToMute(true);
         }
+        if (FindObjectOfType<ReferenceManager>().onlineGameWaitingPanel.activeInHierarchy)
+        {
+            FindObjectOfType<ReferenceManager>().onlineGameWaitingPanel.SetActive(false);
+        }
         //Invoke(nameof(SetTimerNames), 0.8f);
     }
 

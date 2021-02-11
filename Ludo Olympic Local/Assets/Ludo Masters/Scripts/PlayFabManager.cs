@@ -292,7 +292,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     IEnumerator waitForPlayerCo()
     {
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(15f);
         //yield return new WaitForSeconds(1f);
         if (PhotonNetwork.isMasterClient && GameManager.Instance.type != MyGameType.Private)
         {
@@ -911,7 +911,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public void JoinRoomAndStartGame()
     {
-        if (GameManager.Instance.currentBetAmount <= GameManager.Instance.coinsCount)
+        if (GameManager.Instance.currentBetAmount <= GameManager.Instance.coinsCount || GameManager.Instance.type != MyGameType.Private)
         {
             ExitGames.Client.Photon.Hashtable expectedCustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "m", GameManager.Instance.mode.ToString () + GameManager.Instance.type.ToString () + GameManager.Instance.payoutCoins.ToString () }
             };
@@ -919,7 +919,8 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             Debug.Log(expectedCustomRoomProperties["m"]);
             // PhotonNetwork.player.NickName = GameManager.Instance.nameMy;
 
-            StartCoroutine(TryToJoinRandomRoom(expectedCustomRoomProperties));
+            //StartCoroutine(TryToJoinRandomRoom(expectedCustomRoomProperties));
+            CreateOnlineRoom();
         }
         else
         {
@@ -929,15 +930,25 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         //PhotonNetwork.JoinRandomRoom(expectedCustomRoomProperties, 0);
     }
 
-    public void JoinOnlineRoom()
+    void CreateOnlineRoom()
     {
-        PhotonNetwork.JoinRoom(GameManager.currentRoomID);
+        PhotonNetwork.CreateRoom(ReferenceManager.refMngr.onlineRoomId);
     }
 
-    public void CreateOnlineRoom()
+    void JoinOnlineRoom()
     {
-        PhotonNetwork.CreateRoom(GameManager.currentRoomID);
+        PhotonNetwork.JoinRoom(ReferenceManager.refMngr.onlineRoomId);
     }
+
+    //public void JoinOnlineRoom()
+    //{
+    //    PhotonNetwork.JoinRoom(GameManager.currentRoomID);
+    //}
+
+    //public void CreateOnlineRoom()
+    //{
+    //    PhotonNetwork.CreateRoom(GameManager.currentRoomID);
+    //}
 
     public IEnumerator TryToJoinRandomRoom(ExitGames.Client.Photon.Hashtable roomOptions)
     {
@@ -1116,7 +1127,17 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public override void OnJoinedRoom()
     {
         //Debug.LogError("Joined room");
-        if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy) ReferenceManager.refMngr.CloseLoadingPanel();
+        if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy)
+        {
+            ReferenceManager.refMngr.CloseLoadingPanel();
+        }
+        if (!ReferenceManager.refMngr.onlineGameWaitingPanel.activeInHierarchy)
+        {
+            if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            {
+                ReferenceManager.refMngr.onlineGameWaitingPanel.SetActive(true);
+            }
+        }
         if (PhotonNetwork.room.CustomProperties.ContainsKey("bt"))
         {
             Debug.Log("room proper   " + PhotonNetwork.room.CustomProperties["bt"].ToString());
@@ -1201,7 +1222,17 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public override void OnCreatedRoom()
     {
         Debug.Log("OnCreatedRoom");
-        if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy) ReferenceManager.refMngr.CloseLoadingPanel();
+        if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy)
+        {
+            ReferenceManager.refMngr.CloseLoadingPanel();
+        }
+        if (!ReferenceManager.refMngr.onlineGameWaitingPanel.activeInHierarchy)
+        {
+            if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            {
+                ReferenceManager.refMngr.onlineGameWaitingPanel.SetActive(true);
+            }
+        }
         roomOwner = true;
         GameManager.Instance.roomOwner = true;
         GameManager.Instance.currentPlayersCount = 1;
@@ -1248,7 +1279,10 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public override void OnPhotonCreateRoomFailed(object[] codeAndMsg)
     {
         Debug.Log("Failed to create room");
-
+        if (GameManager.Instance.type != MyGameType.Private)
+        {
+            JoinOnlineRoom();
+        }
         // CreatePrivateRoom();
     }
 

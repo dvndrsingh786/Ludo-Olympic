@@ -28,6 +28,7 @@ public class ReferenceManager : MonoBehaviour
     public bool isOnlineBidSelected = false;
     public List<Bets> bets = new List<Bets>();
     public GameObject loadingPanel;
+    public GameObject onlineGameWaitingPanel;
     [SerializeField]ReedemCoinsScript redeemCoinScript;
     int invokeCount = 0;
     public GameObject errordialogBox;
@@ -35,6 +36,9 @@ public class ReferenceManager : MonoBehaviour
     public Text errorMsg;
 
     public TextMeshProUGUI onlineInvestmentText, onlineEarningText, privateInvestText, privateEarningText;
+    public int onlineNoOfPlayer;
+    public string onlineRoomId;
+
 
     void Start()
     {

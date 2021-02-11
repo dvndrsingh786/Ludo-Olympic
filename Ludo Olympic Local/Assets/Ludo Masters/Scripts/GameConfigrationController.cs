@@ -236,6 +236,11 @@ public class GameConfigrationController : MonoBehaviour
         GameManager.Instance.JoinedByID = false;
     }
 
+    public void SetTwoPlayerGameDav()
+    {
+        GameManager.Instance.type = MyGameType.TwoPlayer;
+    }
+
     public void SetNoOfPlayers(int index)
     {
         indexxx = index;

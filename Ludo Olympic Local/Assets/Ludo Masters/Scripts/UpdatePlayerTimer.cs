@@ -75,6 +75,7 @@ public class UpdatePlayerTimer : MonoBehaviour
             Gamedice.timer = this;
         //timerObj.SetActive(true);
         playerTime = GameManager.Instance.playerTime;
+        if(isPrivate)
         secondsRemaining.text = "20s";
     }
 
@@ -112,6 +113,7 @@ public class UpdatePlayerTimer : MonoBehaviour
         paused = false;
         timer.fillAmount = 1.0f;
         playerTime = GameManager.Instance.playerTime;
+        if(isPrivate)
         secondsRemaining.text = "20s";
     }
 
@@ -127,7 +129,10 @@ public class UpdatePlayerTimer : MonoBehaviour
             audioSources[0].Stop();
             misschance = false;
             playerTime = GameManager.Instance.playerTime;
-            secondsRemaining.text = "20s";
+            if (isPrivate)
+            {
+                secondsRemaining.text = "20s";
+            }
             //timerObj.SetActive(false);
         }
     }

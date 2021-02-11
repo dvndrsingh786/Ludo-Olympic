@@ -49,6 +49,24 @@ public class BetScript : MonoBehaviour
             pubTitle.text = "1v1 Battle";
         }
         else pubTitle.text = "3 Winners";
+        CheckIfJoined();
+    }
+
+    void CheckIfJoined()
+    {
+        List<ActiveGamInfo> temp;
+        temp = GameManager.activeGameInfo;
+        for (int i = 0; i < temp.Count; i++)
+        {
+            if (temp[i].game_id == gameId)
+            {
+                myRoomId = temp[i].game_room_id;
+                Debug.LogError(myRoomId);
+                Debug.LogError(temp.Count);
+                myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
+                isJoined = true;
+            }
+        }
     }
 
     public void ToggleButtonPower(Toggle theToggle)
@@ -77,11 +95,20 @@ public class BetScript : MonoBehaviour
                 GameManager.Instance.playfabManager.apiManager.DeductCoins(tempfloat);
             }
         }
-        else ReferenceManager.refMngr.ShowError("Already Joined Game", "Error");
+        else 
+        {
+            StartTable();
+            //ReferenceManager.refMngr.ShowError("Already Joined Game", "Error");
+        }
     }
 
+    [ContextMenu("Start Table Manually")]
     public void StartTable()
     {
+        FindObjectOfType<GameConfigrationController>().SetTwoPlayerGameDav();
+        ReferenceManager.refMngr.onlineNoOfPlayer = int.Parse(noOfPlayer);
+        ReferenceManager.refMngr.onlineRoomId = myRoomId;
+        GameManager.gameDuration = gameDuration;
         FindObjectOfType<InitMenuScript>().onlineGamePlayButton.onClick.Invoke();
     }
 

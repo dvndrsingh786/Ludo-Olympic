@@ -615,7 +615,7 @@ public class GameGUIController : PunBehaviour
         reff.SecondsToTime(seconds);
         hr = reff.hour;
         mns = reff.minutes;
-        seconds = reff.seconds;
+        secs = reff.seconds;
         if (GameManager.Instance.type == MyGameType.TwoPlayer)
         {
             Invoke(nameof(UpdateGameDuration), 1);
@@ -650,9 +650,45 @@ public class GameGUIController : PunBehaviour
         }
         else
         {
-            Debug.LogError("Table Opened");
+            CheckIfIWon();
         }
     }
+
+    void CheckIfIWon()
+    {
+        int myScore = 0;
+        List<int> otherScores = new List<int>();
+        for (int i = 0; i < PlayersDices.Length; i++)
+        {
+            if (PlayersDices[i].GetComponent<GameDiceController>().isMyDice)
+            {
+                myScore = int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text);
+            }
+            else
+            {
+                otherScores.Add(int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text));
+            }
+        }
+        didIWin = true;
+        for (int i = 0; i < otherScores.Count; i++)
+        {
+            if (myScore < otherScores[i])
+            {
+                didIWin = false;
+                break;
+            }
+        }
+        Debug.LogError("FINISHED: " + didIWin + myScore);
+        DavFinishGameOnline();
+    }
+
+    public void DavFinishGameOnline()
+    {
+        //SetFinishGame(GameManager.Instance.currentPlayer.id, iWon);
+        FinishedGame();
+    }
+
+    bool didIWin = false;
 
     void LoadPreviousGame(string key)
     {
@@ -738,6 +774,7 @@ public class GameGUIController : PunBehaviour
     public void StopAndFinishGame()
     {
         StopTimers();
+
         SetFinishGame(PhotonNetwork.player.NickName, true);
         ShowGameFinishWindow();
     }
@@ -803,19 +840,23 @@ public class GameGUIController : PunBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-
-            FinishedGame();
+            Debug.LogError("Finish Game Disabled here");
+            //FinishedGame();
         }
     }
+
+    
 
     public void FinishedGame()
     {
         if (GameManager.Instance.currentPlayer.id == PhotonNetwork.player.NickName)
         {
+            Debug.LogError("I Called");
             SetFinishGame(GameManager.Instance.currentPlayer.id, true);
         }
         else
         {
+            Debug.LogError("I Called");
             SetFinishGame(GameManager.Instance.currentPlayer.id, false);
         }
         // SetFinishGame(PhotonNetwork.player.NickName, true);
@@ -823,7 +864,6 @@ public class GameGUIController : PunBehaviour
 
     private void SetFinishGame(string id, bool me)
     {
-
         if (!me || !iFinished)
         {
             Debug.Log("SET FINISH");
@@ -841,11 +881,15 @@ public class GameGUIController : PunBehaviour
             playerObjects[index].dice.SetActive(false);
 
             int position = playersFinished.Count;
-
+            if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            {
+                if (didIWin) position = 1;
+                else position = 2;
+            }
+            //Debug.LogError("PSOITION: " + position + "ME: " + me + "iFinished: " + iFinished);
             if (position == 1)
             {
                 controller.Crown.SetActive(true);
-
             }
 
 
@@ -855,9 +899,12 @@ public class GameGUIController : PunBehaviour
                 iFinished = true;
                 if (ActivePlayersInRoom >= 0)
                 {
-                    PhotonNetwork.RaiseEvent((int)EnumPhoton.FinishedGame, PhotonNetwork.player.NickName, true, null);
-                    Debug.Log("set finish call finish turn");
-                    SendFinishTurn();
+                    if (GameManager.Instance.type == MyGameType.Private)
+                    {
+                        PhotonNetwork.RaiseEvent((int)EnumPhoton.FinishedGame, PhotonNetwork.player.NickName, true, null);
+                        Debug.Log("set finish call finish turn");
+                        SendFinishTurn();
+                    }
                 }
 
                 PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest
@@ -884,7 +931,6 @@ public class GameGUIController : PunBehaviour
                         Debug.Log(finalAmount + " finishingvalue " + PlayerPrefs.GetInt("Finishing"));
                         if (PlayerPrefs.GetInt("Finishing") == 1)
                         {
-
                             GameManager.Instance.playfabManager.apiManager.AddCoins(finalAmount);
                         }
                     }
@@ -1169,6 +1215,8 @@ public class GameGUIController : PunBehaviour
         else if (eventcode == (int)EnumPhoton.FinishedGame)
         {
             string message = (string)content;
+            Debug.LogError("I Called");
+
             SetFinishGame(message, false);
 
         }

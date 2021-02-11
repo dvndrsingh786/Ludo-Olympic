@@ -117,14 +117,15 @@ public class ControlAvatars : MonoBehaviour
             Debug.Log("Timeout 0.2s");
             Debug.LogError("Callled bro");
             //PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeout;
-            PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeoutOneMinute;
+            PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeoutLong;
         }
 
         GameSceneLoaded = false;
 
         if (GameManager.Instance.type == MyGameType.TwoPlayer)
         {
-            GameManager.Instance.requiredPlayers = 2;
+            //GameManager.Instance.requiredPlayers = 2;
+            GameManager.Instance.requiredPlayers = ReferenceManager.refMngr.onlineNoOfPlayer;
         }
         else
         {

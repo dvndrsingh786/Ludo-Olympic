@@ -642,6 +642,20 @@ public class APIManager : MonoBehaviour
                 GameManager.paytmNumber = pytmNumber;
                 Debug.Log("Pytm" + GameManager.paytmNumber);
 
+                string activePlayer = jsonvale["result_push"][0]["active_game_info"].ToJson();
+                Debug.LogError(activePlayer);
+                activePlayer = "{\"result_push\":" + activePlayer + "}";
+                ///*LiveGameInfo myobj = */
+                // JsonUtility.FromJson<LiveGameInfo>(activePlayer);
+                JsonData jsonvale1 = JsonMapper.ToObject(activePlayer);
+                for (int i = 0; i < jsonvale1["result_push"].Count; i++)
+                {
+                    ActiveGamInfo temp = new ActiveGamInfo();
+                    temp.game_id = jsonvale1["result_push"][i]["game_id"].ToString();
+                    temp.game_room_id = jsonvale1["result_push"][i]["game_room_id"].ToString();
+                    GameManager.activeGameInfo.Add(temp);
+                }
+
                 KYCDob = jsonvale["result_push"][0]["dob"].ToString();
                 KYCadharNumber = jsonvale["result_push"][0]["aadhar"].ToString();
                 KYCpanNumber = jsonvale["result_push"][0]["pan"].ToString();
@@ -1100,6 +1114,20 @@ public class APIManager : MonoBehaviour
                 pytmNumber = (jsonvale["result_push"][0]["paytm"].ToString());
                 GameManager.paytmNumber = pytmNumber;
                 Debug.Log("Pytm" + GameManager.paytmNumber);
+
+                string activePlayer = jsonvale["result_push"][0]["active_game_info"].ToJson();
+                Debug.LogError(activePlayer);
+                activePlayer = "{\"result_push\":" + activePlayer + "}";
+                ///*LiveGameInfo myobj = */
+                // JsonUtility.FromJson<LiveGameInfo>(activePlayer);
+                JsonData jsonvale1 = JsonMapper.ToObject(activePlayer);
+                for (int i = 0; i < jsonvale1["result_push"].Count; i++)
+                {
+                    ActiveGamInfo temp = new ActiveGamInfo();
+                    temp.game_id = jsonvale1["result_push"][i]["game_id"].ToString();
+                    temp.game_room_id = jsonvale1["result_push"][i]["game_room_id"].ToString();
+                    GameManager.activeGameInfo.Add(temp);
+                }
 
                 KYCDob = jsonvale["result_push"][0]["dob"].ToString();
                 KYCadharNumber = jsonvale["result_push"][0]["aadhar"].ToString();
@@ -2205,6 +2233,11 @@ public class APIManager : MonoBehaviour
                 clickedBet.myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
                 clickedBet.isJoined = true;
                 clickedBet.myRoomId = roomId;
+                ActiveGamInfo temp = new ActiveGamInfo();
+                temp.game_id = tablevalue;
+                temp.game_room_id = roomId;
+                GameManager.activeGameInfo.Add(temp);
+                //ActiveGamInfo
             }
         }
     }
@@ -2805,6 +2838,7 @@ public class APIManager : MonoBehaviour
             newGameManager.EnterYourPinScreen.SetActive(false);
             newGameManager.mobileVerificationScreen.SetActive(false);
             PlayerPrefs.DeleteAll();
+            GameManager.activeGameInfo.Clear();
             playerStatsPanel.SetActive(false);
             _name.text = "";
             _password.text = "";

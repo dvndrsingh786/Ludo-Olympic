@@ -37,10 +37,11 @@ public class BetDataScript : MonoBehaviour
     }
     public void OnPlan(bool istwo)
     {
-        for (int i = 0; i < betdataPublic.childCount; i++)
-        {
-            Destroy(betdataPublic.GetChild(i).gameObject);
-        }
+        //for (int i = 0; i < betdataPublic.childCount; i++)
+        //{
+        //    Debug.LogError("Destroying");
+        //    Destroy(betdataPublic.GetChild(i).gameObject);
+        //}
         //for (int i = 0; i < betdataScheduled.childCount; i++)
         //{
         //    Destroy(betdataScheduled.GetChild(i).gameObject);
