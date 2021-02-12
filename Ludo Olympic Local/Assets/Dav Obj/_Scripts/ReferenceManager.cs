@@ -39,6 +39,10 @@ public class ReferenceManager : MonoBehaviour
     public int onlineNoOfPlayer;
     public string onlineRoomId;
 
+    public string firstPlacePrize;
+    public string secondPlacePrize;
+    public string thirdPlacePrize;
+
 
     void Start()
     {
@@ -295,8 +299,6 @@ public class ReferenceManager : MonoBehaviour
             string[] cur = currentDatee.Split('-');
             if (CheckDayOfYear(int.Parse(cur[2]), int.Parse(cur[1]), int.Parse(cur[0])) == CheckDayOfYear(int.Parse(start[2]), int.Parse(start[1]), int.Parse(start[0])))
             {
-                Debug.LogError("Just before:");
-                Debug.LogError("Duh3" + CheckDayOfYear(int.Parse(end[2]), int.Parse(end[1]), int.Parse(end[0])));
                 if (CheckDayOfYear(int.Parse(cur[2]), int.Parse(cur[1]), int.Parse(cur[0])) == CheckDayOfYear(int.Parse(end[2]), int.Parse(end[1]), int.Parse(end[0])))
                 {
                     matchingDateType = 3;
@@ -423,12 +425,15 @@ public class ReferenceManager : MonoBehaviour
         }
     }
 
-    public bool IsLessThanADay(string requiredDate, string currentDate, string currentTimee, string startTimee)
+    public bool isTablePlaying = false;
+
+    public bool IsLessThanADay(string requiredDate, string currentDate, string currentTimee, string startTimee, string durationToAdd)
     {
         string[] reqDate = new string[3];
         string[] curDate = new string[3];
         string[] startTime = startTimee.Split(':');
         string[] curTime = currentTimee.Split(':');
+        int toAddDuration = int.Parse(durationToAdd);
         reqDate = requiredDate.Split('-');
         curDate = currentDate.Split('-');
         if(int.Parse(reqDate[0]) < int.Parse(curDate[0]))
@@ -460,13 +465,20 @@ public class ReferenceManager : MonoBehaviour
 
                 if (curTime.Length == 2) curOne = (int.Parse(curTime[0]) * 3600) + (int.Parse(curTime[1]) * 60);
                 else curOne = (int.Parse(curTime[0]) * 3600) + (int.Parse(curTime[1]) * 60) + int.Parse(curTime[2]);
+                
+                int tempStartOne = startOne + toAddDuration;
 
-                if (startOne < curOne)
+                if (tempStartOne < curOne)
                 {
                     return false;
                 }
 
                 int a = startOne - curOne;
+                if (a < 1)
+                {
+                    isTablePlaying = true;
+                }
+                else isTablePlaying = false;
                 SecondsToTime(a);
                 return true;
             }
@@ -478,10 +490,18 @@ public class ReferenceManager : MonoBehaviour
 
                 if (curTime.Length == 2) curOne = (int.Parse(curTime[0]) * 3600) + (int.Parse(curTime[1]) * 60);
                 else curOne = (int.Parse(curTime[0]) * 3600) + (int.Parse(curTime[1]) * 60) + int.Parse(curTime[2]);
-                
-                if((86400 - curOne) + startOne <= 86400)
+
+                int tempStartOne = startOne + toAddDuration;
+
+                if ((86400 - curOne) + tempStartOne <= 86400)
                 {
                     int a = (86400 - curOne) + startOne;
+                    Debug.LogError("AAAAA: " + a);
+                    if (a < 0)
+                    {
+                        isTablePlaying = true;
+                    }
+                    else isTablePlaying = false;
                     SecondsToTime(a);
                     return true;
                 }

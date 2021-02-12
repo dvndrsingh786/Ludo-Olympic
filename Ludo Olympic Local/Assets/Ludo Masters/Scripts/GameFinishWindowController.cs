@@ -41,6 +41,7 @@ public class GameFinishWindowController : MonoBehaviour
 
     public void showWindow(List<PlayerObject> playersFinished, List<PlayerObject> otherPlayers, float firstPlacePrize, float secondPlacePrize)
     {
+        Debug.LogError("Show Windowww");
         if (secondPlacePrize == 0)
         {
             PrizeMainObjects[1].SetActive(false);
@@ -48,6 +49,19 @@ public class GameFinishWindowController : MonoBehaviour
 
         prizeText[0].GetComponent<Text>().text = firstPlacePrize.ToString();
         prizeText[1].GetComponent<Text>().text = secondPlacePrize.ToString();
+
+        Debug.LogError("1");
+        if (GameManager.Instance.type == MyGameType.TwoPlayer)
+        {
+            Debug.LogError("2");
+            prizeText[0].GetComponent<Text>().text = ReferenceManager.refMngr.firstPlacePrize;
+            prizeText[1].GetComponent<Text>().text = ReferenceManager.refMngr.secondPlacePrize;
+            if (ReferenceManager.refMngr.onlineNoOfPlayer == 4)
+            {
+                prizeText[2].GetComponent<Text>().text = ReferenceManager.refMngr.thirdPlacePrize;
+            }
+        }
+            Debug.LogError("3");
 
         Window.SetActive(true);
         for (int i = 0; i < playersFinished.Count; i++)

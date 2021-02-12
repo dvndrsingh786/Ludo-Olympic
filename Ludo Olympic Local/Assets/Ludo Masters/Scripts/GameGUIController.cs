@@ -658,35 +658,57 @@ public class GameGUIController : PunBehaviour
     {
         int myScore = 0;
         List<int> otherScores = new List<int>();
-        for (int i = 0; i < PlayersDices.Length; i++)
+        List<int> allScores = new List<int>();
+        for (int i = 0; i < playerObjects.Count; i++)
         {
-            if (PlayersDices[i].GetComponent<GameDiceController>().isMyDice)
+            allScores.Add(int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text));
+            //if (PlayersDices[i].GetComponent<GameDiceController>().isMyDice)
+            //{
+            //    myScore = int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text);
+            //}
+            //else
+            //{
+            //    otherScores.Add(int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text));
+            //}
+        }
+        allScores.Sort();
+        for (int i = 0; i < playerObjects.Count; i++)
+        {
+            for (int j = 0; j < allScores.Count; j++)
             {
-                myScore = int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text);
-            }
-            else
-            {
-                otherScores.Add(int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text));
+                if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) == allScores[j])
+                {
+                    int newPos = allScores.Count - j;
+                    Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + newPos);
+                    if (playerObjects[i].id == PhotonNetwork.player.NickName)
+                    {
+                        SetFinishGameManually(playerObjects[i].id, true, newPos);
+                    }
+                    else
+                    {
+                        SetFinishGameManually(playerObjects[i].id, false, newPos);
+                    }
+                }
             }
         }
-        didIWin = true;
-        for (int i = 0; i < otherScores.Count; i++)
-        {
-            if (myScore < otherScores[i])
-            {
-                didIWin = false;
-                break;
-            }
-        }
-        Debug.LogError("FINISHED: " + didIWin + myScore);
-        DavFinishGameOnline();
+        //didIWin = true;
+        //for (int i = 0; i < otherScores.Count; i++)
+        //{
+        //    if (myScore < otherScores[i])
+        //    {
+        //        didIWin = false;
+        //        break;
+        //    }
+        //}
+        //Debug.LogError("FINISHED: " + didIWin + myScore);
+        //DavFinishGameOnline();
     }
 
-    public void DavFinishGameOnline()
-    {
-        //SetFinishGame(GameManager.Instance.currentPlayer.id, iWon);
-        FinishedGame();
-    }
+    //public void DavFinishGameOnline()
+    //{
+    //    //SetFinishGame(GameManager.Instance.currentPlayer.id, iWon);
+    //    SetFinishGameManually(GameManager.Instance.currentPlayer.id, didIWin);
+    //}
 
     bool didIWin = false;
 
@@ -1001,6 +1023,109 @@ public class GameGUIController : PunBehaviour
                     }
                 }
 
+                GameManager.Instance.myPlayerData.UpdateUserData(data);
+            }
+            else if (GameManager.Instance.currentPlayer.isBot)
+            {
+                SendFinishTurn();
+            }
+
+            controller.setPositionSprite(position);
+            CheckPlayersIfShouldFinishGame();
+        }
+    }
+
+    private void SetFinishGameManually(string id, bool me, int position)
+    {
+        if (!me || !iFinished)
+        {
+            Debug.Log("SET FINISH");
+            ActivePlayersInRoom--;
+
+            int index = GetPlayerPosition(id);
+
+            playersFinished.Add(playerObjects[index]);
+
+            PlayerAvatarController controller = playerObjects[index].AvatarObject.GetComponent<PlayerAvatarController>();
+            controller.Name.GetComponent<Text>().text = "";
+            controller.Active = false;
+            controller.finished = true;
+
+            playerObjects[index].dice.SetActive(false);
+
+            //int position = playersFinished.Count;
+            //if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            //{
+            //    if (didIWin) position = 1;
+            //    else position = 2;
+            //}
+            //Debug.LogError("PSOITION: " + position + "ME: " + me + "iFinished: " + iFinished);
+            if (position == 1)
+            {
+                controller.Crown.SetActive(true);
+            }
+
+
+            if (me)
+            {
+                PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeoutLong;
+                iFinished = true;
+                if (ActivePlayersInRoom >= 0)
+                {
+                    if (GameManager.Instance.type == MyGameType.Private)
+                    {
+                        PhotonNetwork.RaiseEvent((int)EnumPhoton.FinishedGame, PhotonNetwork.player.NickName, true, null);
+                        Debug.Log("set finish call finish turn");
+                        SendFinishTurn();
+                    }
+                }
+
+                PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest
+                {
+                    // request.Statistics is a list, so multiple StatisticUpdate objects can be defined if required.
+                    Statistics = new List<StatisticUpdate> {
+                    new StatisticUpdate { StatisticName = "MaxWin", Value = 1 },
+                    }
+                },
+                result => { Debug.Log("User statistics updated"); },
+                error => { Debug.LogError(error.GenerateErrorReport()); });
+
+                Dictionary<string, string> data = new Dictionary<string, string>();
+                data.Add(MyPlayerData.GamesPlayedKey, (GameManager.Instance.myPlayerData.GetPlayedGamesCount() + 1).ToString());
+                if (position == 1)
+                {
+                    WinSound.Play();
+                    print("running");
+                    if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                    {
+                        Debug.LogError("Changed Amount here");
+                        //int finalAmount = firstPlacePrize - (int)(firstPlacePrize * 0.10f);
+                        float finalAmount = firstPlacePrize;
+                        Debug.Log(finalAmount + " finishingvalue " + PlayerPrefs.GetInt("Finishing"));
+                        if (PlayerPrefs.GetInt("Finishing") == 1)
+                        {
+                            GameManager.Instance.playfabManager.apiManager.AddCoins(finalAmount);
+                        }
+                    }
+                    else if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                    {
+                        GameManager.Instance.twoWins++;
+                    }
+                    positionText.text = "Note: 10% service charges on win amount.";
+                    stars.SetActive(true);
+                }
+
+                else
+                {
+                    positionText.text = "You Lost";
+                    stars.SetActive(false);
+                    if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                    {
+                        GameManager.Instance.twoWins++;
+                    }
+                }
+
+                positionText.text = "Your Position is: " + position.ToString();
                 GameManager.Instance.myPlayerData.UpdateUserData(data);
             }
             else if (GameManager.Instance.currentPlayer.isBot)

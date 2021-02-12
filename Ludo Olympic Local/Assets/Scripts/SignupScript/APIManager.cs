@@ -171,7 +171,6 @@ public class APIManager : MonoBehaviour
     void Awake()
     {
         isFirstTimeLogin = false;
-        Debug.LogError("API Manager" + gameObject.name);
         StartCoroutine(OpenLogin());
         StartCoroutine (LoginMenu());
         newGameManager = FindObjectOfType<NewGameManager>();
@@ -1781,7 +1780,6 @@ public class APIManager : MonoBehaviour
         GameManager.onlineAmount= jsonvale["result_push"][0]["online_amount"].ToString();
         GameManager.offlineAmount= jsonvale["result_push"][0]["offline_amount"].ToString();
         string activePlayer = jsonvale["result_push"][0]["active_game_info"].ToJson();
-        Debug.LogError(activePlayer);
         activePlayer = "{\"result_push\":" + activePlayer + "}";
         ///*LiveGameInfo myobj = */
         // JsonUtility.FromJson<LiveGameInfo>(activePlayer);
@@ -1795,7 +1793,6 @@ public class APIManager : MonoBehaviour
         }
         //Debug.LogError("YAYYY WORKINGGGG : :  : : " + myobj.gameId[0]);
 
-        Debug.LogError("STATUS: " + jsonvale["result_push"][0]["status"].ToString());
 
         GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
         nameP.text = GameManager.playerName;
@@ -1961,7 +1958,6 @@ public class APIManager : MonoBehaviour
         {
             playerImage.gameObject.SetActive(true);
             playerImageUrl = jsonvale["result_push"][0]["profile_pic"].ToString();
-            Debug.LogError("Player image url: " + playerImageUrl);
             UnityWebRequest unityWebRequest3 = UnityWebRequest.Get(playerImageUrl);
             yield return unityWebRequest3.SendWebRequest();
             byte[] bytes3 = unityWebRequest3.downloadHandler.data;

@@ -42,8 +42,6 @@ public class AvatarDataScipt : MonoBehaviour
         yield return www;
         Debug.Log(www.text);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
-        if (www.error == null) Debug.LogError("ERROR NULLLLLLLLLL");
-        else Debug.LogError("ERROR NOTTTTT NULLLLLLLLLL");
         for (int i = 0; i < jsonvale["result_push"].Count; i++)
         {
             AvatarData clone = Instantiate(avatarIconPrefab, avatarContainer).GetComponent<AvatarData>();

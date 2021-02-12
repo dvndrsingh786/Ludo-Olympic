@@ -30,6 +30,7 @@ public class BetScript : MonoBehaviour
     public TextMeshProUGUI pubTitle;
     public string myRoomId;
 
+    public bool isTablePlaying = false;
     public bool isJoined = false;
 
     public string timeLeft;
@@ -49,6 +50,7 @@ public class BetScript : MonoBehaviour
             pubTitle.text = "1v1 Battle";
         }
         else pubTitle.text = "3 Winners";
+        if (isTablePlaying) SetTableAsPlaying();
         CheckIfJoined();
     }
 
@@ -61,12 +63,17 @@ public class BetScript : MonoBehaviour
             if (temp[i].game_id == gameId)
             {
                 myRoomId = temp[i].game_room_id;
-                Debug.LogError(myRoomId);
-                Debug.LogError(temp.Count);
                 myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
                 isJoined = true;
             }
         }
+
+    }
+
+    void SetTableAsPlaying()
+    {
+        isTablePlaying = true;
+        timeLeftText.text = "Table Playing";
     }
 
     public void ToggleButtonPower(Toggle theToggle)
@@ -108,6 +115,9 @@ public class BetScript : MonoBehaviour
         FindObjectOfType<GameConfigrationController>().SetTwoPlayerGameDav();
         ReferenceManager.refMngr.onlineNoOfPlayer = int.Parse(noOfPlayer);
         ReferenceManager.refMngr.onlineRoomId = myRoomId;
+        ReferenceManager.refMngr.firstPlacePrize = firstPrize;
+        ReferenceManager.refMngr.secondPlacePrize = secondPrize;
+        ReferenceManager.refMngr.thirdPlacePrize = thirdPrize;
         GameManager.gameDuration = gameDuration;
         FindObjectOfType<InitMenuScript>().onlineGamePlayButton.onClick.Invoke();
     }
@@ -131,33 +141,37 @@ public class BetScript : MonoBehaviour
 
     public void UpdateClock()
     {
-        if (hr <= 0)
+        if (!isTablePlaying)
         {
-            timeLeftText.text = mns.ToString() + "m:" + secs.ToString() + "s";
-        }
-        else
-        {
-            timeLeftText.text = hr.ToString() + "h:" + mns.ToString() + "m:" + secs.ToString() + "s";
-        }
-        secs--;
-        if (secs < 0)
-        {
-            mns--;
-            secs = 59;
-            if (mns < 0)
+            if (hr <= 0)
             {
-                hr--;
-                mns = 59;
+                timeLeftText.text = mns.ToString() + "m:" + secs.ToString() + "s";
             }
-        }
-        if (hr != 0 || mns != 0 || secs != 0)
-        {
-            Invoke(nameof(UpdateClock), 1);
-        }
-        else
-        {
-            StartTable();
-            Debug.LogError("Table Opened");
+            else
+            {
+                timeLeftText.text = hr.ToString() + "h:" + mns.ToString() + "m:" + secs.ToString() + "s";
+            }
+            secs--;
+            if (secs < 0)
+            {
+                mns--;
+                secs = 59;
+                if (mns < 0)
+                {
+                    hr--;
+                    mns = 59;
+                }
+            }
+            if (hr != 0 || mns != 0 || secs != 0)
+            {
+                Invoke(nameof(UpdateClock), 1);
+            }
+            else
+            {
+                SetTableAsPlaying();
+                //StartTable();
+                Debug.LogError("Table Opened");
+            }
         }
     }
 

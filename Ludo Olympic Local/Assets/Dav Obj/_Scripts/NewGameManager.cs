@@ -41,10 +41,10 @@ public class NewGameManager : MonoBehaviour
             loadingBarFill.fillAmount += 0.0167f / time;
             if (loadingBarFill.fillAmount >= 0.95f  && loadingBarFill.fillAmount < 0.98f)
             {
-                Debug.LogError(loadingBarFill.fillAmount + ": fill amount");
+                //Debug.LogError(loadingBarFill.fillAmount + ": fill amount");
                 //newLoginScreen.SetActive(true);
                 splashScreen.SetActive(false);
-                Debug.LogError(DateTime.Now);
+                //Debug.LogError(DateTime.Now);
             }
         }
     }

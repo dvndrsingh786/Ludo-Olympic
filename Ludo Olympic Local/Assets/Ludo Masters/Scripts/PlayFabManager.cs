@@ -292,7 +292,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     IEnumerator waitForPlayerCo()
     {
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(12f);
         //yield return new WaitForSeconds(1f);
         if (PhotonNetwork.isMasterClient && GameManager.Instance.type != MyGameType.Private)
         {
@@ -706,7 +706,6 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         PhotonNetwork.AuthValues.AddAuthParameter("Token", result.PhotonCustomAuthenticationToken);
         PhotonNetwork.AuthValues.UserId = this.PlayFabId;
         PhotonNetwork.ConnectUsingSettings("1.0");
-        Debug.LogError("Connecting Using Settings");
         PhotonNetwork.playerName = this.PlayFabId;
         PhotonNetwork.player.UserId = GameManager.Instance.nameMy;
 
@@ -1317,7 +1316,10 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
         if (PhotonNetwork.room.PlayerCount >= GameManager.Instance.requiredPlayers)
         {
-            PhotonNetwork.room.IsOpen = false;
+            if (GameManager.Instance.type == MyGameType.Private)
+            {
+                PhotonNetwork.room.IsOpen = false;
+            }
         }
 
         if (PhotonNetwork.room.PlayerCount > 1)

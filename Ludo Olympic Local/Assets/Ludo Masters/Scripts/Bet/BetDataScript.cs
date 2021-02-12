@@ -88,6 +88,7 @@ public class BetDataScript : MonoBehaviour
                 thirdPrize = jsonvale["result_push"][i]["third_prize"].ToString();
                 fourthPrize = jsonvale["result_push"][i]["fourth_prize"].ToString();
                 playerCount = jsonvale["result_push"][i]["public_table_count"].ToString();
+                int durationToAddddd = ReferenceManager.refMngr.timeToSeconds(gameDuration, ':');
                 BetScript betScript;
                 if (true)
                 {
@@ -101,7 +102,7 @@ public class BetDataScript : MonoBehaviour
                         string bidTime = "";
                         isSameDate = ReferenceManager.refMngr.CheckDate(startDate, endDate, nowDate);
                         isRightTime = ReferenceManager.refMngr.CheckTime(startTime, endTime, nowTime);
-                        isLessThanADay = ReferenceManager.refMngr.IsLessThanADay(startDate, nowDate, nowTime, startTime);
+                        isLessThanADay = ReferenceManager.refMngr.IsLessThanADay(startDate, nowDate, nowTime, startTime, durationToAddddd.ToString());
                         //if (isSameDate && isRightTime)
                         //{
                         if (isLessThanADay)
@@ -132,6 +133,7 @@ public class BetDataScript : MonoBehaviour
                                 betScript.hr = ReferenceManager.refMngr.hour;
                                 betScript.mns = ReferenceManager.refMngr.minutes;
                                 betScript.secs = ReferenceManager.refMngr.seconds;
+                                betScript.isTablePlaying = ReferenceManager.refMngr.isTablePlaying;
                                 betScript.SetTexts();
                                 //For countdown
                                 //else
