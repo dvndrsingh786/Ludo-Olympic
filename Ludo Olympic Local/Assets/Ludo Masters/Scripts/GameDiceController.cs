@@ -41,6 +41,8 @@ public class GameDiceController : PunBehaviour
 
     public UpdatePlayerTimer timer;
 
+    bool canDisable = true;
+
     void Start()
     {
         nextSixAppearnce = Random.Range(3, 8);
@@ -48,6 +50,12 @@ public class GameDiceController : PunBehaviour
         {
             SetSprite();
         }
+        Invoke(nameof(Candisableee), 1);
+    }
+
+    void Candisableee()
+    {
+        canDisable = false;
     }
 
     public GameObject myScoreText;
@@ -62,6 +70,8 @@ public class GameDiceController : PunBehaviour
     {
         try
         {
+            Debug.LogError("Disbaled");
+            if(Time.timeSinceLevelLoad<1.2f)
             myScoreText.SetActive(false);
         }
         catch { }
@@ -198,8 +208,6 @@ public class GameDiceController : PunBehaviour
                     arrowObject.SetActive(true);
                     highlightBoard.SetActive(true);
                 }
-
-
             }
 
         }
@@ -251,7 +259,7 @@ public class GameDiceController : PunBehaviour
         {
             if (GameManager.Instance.requiredPlayers == 2)
             {
-                button.gameObject.SetActive(false);
+                //button.gameObject.SetActive(false);
                 notInteractable.gameObject.SetActive(false);
             }
         }
@@ -278,7 +286,7 @@ public class GameDiceController : PunBehaviour
         {
             if (GameManager.Instance.requiredPlayers == 2)
             {
-                button.gameObject.SetActive(true);
+                //button.gameObject.SetActive(true);
                 button.interactable = true;
                 notInteractable.gameObject.SetActive(false);
             }

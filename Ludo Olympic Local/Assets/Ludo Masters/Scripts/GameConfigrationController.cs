@@ -322,14 +322,14 @@ public class GameConfigrationController : MonoBehaviour
             
             if (GameManager.Instance.type != MyGameType.Private)
             {
-                Debug.LogError("not Private");
+                Debug.Log("not Private");
                 GameManager.Instance.facebookManager.startRandomGame();
             }
             else
             {
                 if (GameManager.Instance.JoinedByID)
                 {
-                    Debug.LogError("Joined by id");
+                    Debug.Log("Joined by id");
                     Debug.Log("Joined by id!");
                     GameManager.Instance.matchPlayerObject.GetComponent<SetMyData>().MatchPlayer();
                 }

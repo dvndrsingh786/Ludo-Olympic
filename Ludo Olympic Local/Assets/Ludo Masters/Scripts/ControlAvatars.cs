@@ -115,7 +115,7 @@ public class ControlAvatars : MonoBehaviour
         else
         {
             Debug.Log("Timeout 0.2s");
-            Debug.LogError("Callled bro");
+            Debug.Log("Callled bro");
             //PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeout;
             PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeoutLong;
         }
@@ -257,12 +257,12 @@ public class ControlAvatars : MonoBehaviour
                 {
                     for (int i = 0; i < GameManager.Instance.opponentsNames.Count; i++)
                     {
-                        Debug.LogError("All Players Joined OP Names: " + GameManager.Instance.opponentsNames[i]);
+                        Debug.Log("All Players Joined OP Names: " + GameManager.Instance.opponentsNames[i]);
                     }
 
                     for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
                     {
-                        Debug.LogError("All Players Joined OP ID: " + GameManager.Instance.opponentsIDs[i]);
+                        Debug.Log("All Players Joined OP ID: " + GameManager.Instance.opponentsIDs[i]);
                     }
                     GameManager.Instance.playfabManager.StartGame();
                 }

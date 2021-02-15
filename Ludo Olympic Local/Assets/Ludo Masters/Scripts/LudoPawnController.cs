@@ -159,7 +159,7 @@ public class LudoPawnController : MonoBehaviour
                 {
                     for (int i = 1; i < 7; i++)
                     {
-                        if (currentPosition - i < 0) Debug.LogError("Do nothing");
+                        if (currentPosition - i < 0) Debug.Log("Do nothing");
                         else if (path[currentPosition - i].GetComponent<LudoPathObjectController>().pawns.Count > 0)
                         {
                             for (int j = 0; j < path[currentPosition - i].GetComponent<LudoPathObjectController>().pawns.Count; j++)
@@ -187,7 +187,7 @@ public class LudoPawnController : MonoBehaviour
                     bool isSomeoneBehind = false;
                     for (int i = 1; i < 7; i++)
                     {
-                        if (currentPosition + steps - i < 0) Debug.LogError("Do nothing");
+                        if (currentPosition + steps - i < 0) Debug.Log("Do nothing");
                         else if (path[currentPosition + steps - i].GetComponent<LudoPathObjectController>().pawns.Count > 0)
                         {
                             for (int j = 0; j < path[currentPosition + steps - i].GetComponent<LudoPathObjectController>().pawns.Count; j++)
@@ -394,6 +394,7 @@ public class LudoPawnController : MonoBehaviour
         controller.RemovePawn(this.gameObject);
 
         RepositionPawns(controller.pawns.Count, currentPosition);
+        Debug.LogError("222");
 
         if (controller.pawns.Count == 1)
         {
@@ -462,6 +463,8 @@ public class LudoPawnController : MonoBehaviour
 
             currentPosition++;
             StartCoroutine("Particle");
+            Debug.LogError("333");
+
             yield return StartCoroutine(MoveDelayed(i, path[currentPosition - 1], path[currentPosition], singlePathSpeed, last, true));
 
 
@@ -590,6 +593,7 @@ public class LudoPawnController : MonoBehaviour
             {
                 pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
             }
+            Debug.LogError("111");
             MoveBySteps(ludoController.steps);
             isOnBoard = true;
         }
@@ -627,7 +631,7 @@ public class LudoPawnController : MonoBehaviour
 
         myTurn = false;
         ludoController.gUIController.PauseTimers();
-
+        
         if (!isOnBoard)
         {
             GoToStartPosition();
@@ -670,6 +674,7 @@ public class LudoPawnController : MonoBehaviour
         //  rect.localScale = new Vector3(initScale.x * 1.25f, initScale.y * 1.25f, initScale.z);
         StartCoroutine("ScalingEffect");
         yield return new WaitForSeconds(0);
+        Debug.LogError("444");
 
         if (playSound)
         {
@@ -947,7 +952,6 @@ public class LudoPawnController : MonoBehaviour
 
     private void RepositionPawns(int otherCount, int currentPosition)
     {
-        Debug.LogError("Reposiitoning: " + otherCount);
         LudoPathObjectController pathController = path[currentPosition].GetComponent<LudoPathObjectController>();
 
         float scale = 0.8f;
@@ -982,7 +986,6 @@ public class LudoPawnController : MonoBehaviour
         List<int> orderPawns = new List<int>();
         if (otherCount > 1)
         {
-            Debug.LogError("Repositioning fcukc");
             for (int i = 0; i < otherCount; i++)
             {
                 if (pathController.pawns[i].GetComponent<LudoPawnController>().playerIndex == GameManager.Instance.myPlayerIndex)

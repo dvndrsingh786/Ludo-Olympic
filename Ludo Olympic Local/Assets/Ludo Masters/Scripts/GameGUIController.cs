@@ -900,6 +900,7 @@ public class GameGUIController : PunBehaviour
             controller.Active = false;
             controller.finished = true;
 
+            Debug.LogError("DICEEE");
             playerObjects[index].dice.SetActive(false);
 
             int position = playersFinished.Count;
@@ -1050,7 +1051,7 @@ public class GameGUIController : PunBehaviour
             controller.Name.GetComponent<Text>().text = "";
             controller.Active = false;
             controller.finished = true;
-
+            Debug.LogError("DICEEE");
             playerObjects[index].dice.SetActive(false);
 
             //int position = playersFinished.Count;
@@ -1366,7 +1367,6 @@ public class GameGUIController : PunBehaviour
         StartTimer();
         if (!GameManager.Instance.isLocalMultiplayer)
         {
-
             GameManager.Instance.miniGame.BotTurn(true);
         }
         else
@@ -1594,6 +1594,7 @@ public class GameGUIController : PunBehaviour
             playerObjects[i].AvatarObject.GetComponent<PlayerAvatarController>().PlayerLeftRoom();
 
             // LUDO
+            Debug.LogError("DICEEEE");
             playerObjects[i].dice.SetActive(false);
             if (!playerObjects[i].AvatarObject.GetComponent<PlayerAvatarController>().finished)
             {

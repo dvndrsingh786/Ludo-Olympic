@@ -931,7 +931,24 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     void CreateOnlineRoom()
     {
-        PhotonNetwork.CreateRoom(ReferenceManager.refMngr.onlineRoomId);
+        RoomOptions roomOptions = new RoomOptions();
+        GameManager.Instance.isMultiplayerBot = true;
+        if (GameManager.Instance.isMultiplayerBot)
+        {
+            roomOptions.CustomRoomPropertiesForLobby = new String[] { "m", "v" };
+            string BotMoves = "";
+
+            BotMoves = generateBotMoves();
+
+            roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "m", GameManager.Instance.mode.ToString () + GameManager.Instance.type.ToString () + GameManager.Instance.payoutCoins.ToString () }, { "bt", BotMoves }, { "fp", UnityEngine.Random.Range (0, GameManager.Instance.requiredPlayers) }
+            };
+        }
+        else
+        {
+            roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "m", GameManager.Instance.mode.ToString () + GameManager.Instance.type.ToString () + GameManager.Instance.payoutCoins.ToString () }
+            };
+        }
+        PhotonNetwork.CreateRoom(ReferenceManager.refMngr.onlineRoomId, roomOptions, TypedLobby.Default);
     }
 
     void JoinOnlineRoom()
@@ -1104,20 +1121,16 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public IEnumerator TryToCreateGameAfterFailedToJoinRandom(RoomOptions roomOptions)
     {
-        Debug.LogError("FFF");
         while (true)
         {
-            Debug.LogError("1432F");
             if (isInLobby && isInMaster)
             {
-                Debug.LogError("22F");
                 PhotonNetwork.CreateRoom(null, roomOptions, TypedLobby.Default);
 
                 break;
             }
             else
             {
-                Debug.LogError("111");
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -1172,7 +1185,10 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         }
         else if (PhotonNetwork.room.PlayerCount >= GameManager.Instance.requiredPlayers)
         {
-            PhotonNetwork.room.IsOpen = false;
+            if (GameManager.Instance.type != MyGameType.TwoPlayer)
+            {
+                PhotonNetwork.room.IsOpen = false;
+            }
         }
 
         if (!roomOwner)
@@ -1275,6 +1291,20 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         return index;
     }
 
+    //public int GetFirstFreeBotSlot()
+    //{
+    //    int index = 0;
+    //    for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+    //    {
+    //        if (GameManager.Instance.opponentsIDs[i].Contains("")
+    //        {
+    //            index = i;
+    //            break;
+    //        }
+    //    }
+    //    return index;
+    //}
+
     public override void OnPhotonCreateRoomFailed(object[] codeAndMsg)
     {
         Debug.Log("Failed to create room");
@@ -1313,31 +1343,43 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         Debug.Log("New player joined " + newPlayer.NickName);
         Debug.Log("Players Count: " + GameManager.Instance.currentPlayersCount);
         Debug.Log("PLayer id" + newPlayer.ID + " nick name" + newPlayer.NickName);
-
-        if (PhotonNetwork.room.PlayerCount >= GameManager.Instance.requiredPlayers)
+        if (!FindObjectOfType<TempGameManager>())
         {
-            if (GameManager.Instance.type == MyGameType.Private)
+
+            if (PhotonNetwork.room.PlayerCount >= GameManager.Instance.requiredPlayers)
             {
-                PhotonNetwork.room.IsOpen = false;
+                if (GameManager.Instance.type == MyGameType.Private)
+                {
+                    PhotonNetwork.room.IsOpen = false;
+                }
             }
-        }
 
-        if (PhotonNetwork.room.PlayerCount > 1)
-        {
-            GameManager.Instance.controlAvatars.startButtonPrivate.GetComponent<Button>().interactable = true;
+            if (PhotonNetwork.room.PlayerCount > 1)
+            {
+                GameManager.Instance.controlAvatars.startButtonPrivate.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                GameManager.Instance.controlAvatars.startButtonPrivate.GetComponent<Button>().interactable = true;
+            }
+
+            int index = GetFirstFreeSlot();
+
+            GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
+            GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
+            GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
+            //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
+            getOpponentData(newPlayer.ID, newPlayer.NickName);
         }
         else
         {
-            GameManager.Instance.controlAvatars.startButtonPrivate.GetComponent<Button>().interactable = true;
+
         }
+    }
 
-        int index = GetFirstFreeSlot();
+    void GetOpponentDataInGame(int index, string id)
+    {
 
-        GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
-        GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
-        GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
-        //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
-        getOpponentData(newPlayer.ID, newPlayer.NickName);
     }
 
     private void getOpponentData(int index, string id)
