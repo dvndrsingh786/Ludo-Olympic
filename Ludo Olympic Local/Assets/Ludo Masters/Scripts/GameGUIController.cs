@@ -680,6 +680,8 @@ public class GameGUIController : PunBehaviour
             }
         }
 
+        
+        GameManager.Instance.playfabManager.GetOpponentDetails();
 
         currentPlayerIndex = 0;
         emojiSprites = GameManager.Instance.playfabManager.staticGameVariables.emoji;
@@ -694,7 +696,6 @@ public class GameGUIController : PunBehaviour
 
         PlayersIDs = new List<string>();
 
-        GameManager.Instance.playfabManager.GetOpponentDetails();
 
         for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
         {
