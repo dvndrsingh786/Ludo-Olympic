@@ -227,7 +227,8 @@ public class LudoGameController : PunBehaviour, IMiniGame
         }
         Debug.Log("bogCount  " + botCounter + "   delay   " + GameManager.Instance.botDelays.Count);
         // Invoke("RollDiceWithDelay", GameManager.Instance.botDelays[(botCounter + 1) % GameManager.Instance.botDelays.Count]);
-        Invoke("RollDiceWithDelay", 0.3f);
+        Debug.LogError("Bot disabled here");
+//        Invoke("RollDiceWithDelay", 0.3f);
         Debug.Log("botcountr   " + botCounter);
 
         //throw new System.NotImplementedException();
@@ -328,7 +329,6 @@ public class LudoGameController : PunBehaviour, IMiniGame
 
         if (eventcode == (int)EnumGame.DiceRoll)
         {
-
             gUIController.PauseTimers();
             string[] data = ((string)content).Split(';');
             steps = int.Parse(data[0]);

@@ -128,6 +128,509 @@ public class GameGUIController : PunBehaviour
         //dfdsDebug.LogError("Background TimeOut: " + PhotonNetwork.BackgroundTimeout);
         // LUDO
         // Rotate board and set colors
+        if (GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime)
+        {
+            PlayerManager.SetActive(false);
+            LocalPlayerManager.SetActive(false);
+            ComputerManager.SetActive(false);
+            Debug.Log("requiredPlayers   " + GameManager.Instance.requiredPlayers + " isPlayingWithComputer  " + GameManager.Instance.isPlayingWithComputer);
+
+            int rotation = GameManager.Instance.isColorSelected;
+            Debug.LogWarning("Old Rotation: " + rotation);
+            rotation = 0;
+            Debug.LogWarning("Setting color selected to default(zero)");
+            StartCoroutine(pic());
+
+            Sprite[] colors = null;
+
+            if (rotation == 0)
+            {
+                colors = new Sprite[] { PawnColorsSprite[0], PawnColorsSprite[1], PawnColorsSprite[2], PawnColorsSprite[3] };
+            }
+            else if (rotation == 1)
+            {
+                ComputerManager = AllCompManager[0];
+                colors = new Sprite[] { PawnColorsSprite[3], PawnColorsSprite[0], PawnColorsSprite[1], PawnColorsSprite[2] };
+                ludoBoard.GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, -90.0f);
+            }
+            else if (rotation == 2)
+            {
+                ComputerManager = AllCompManager[1];
+                colors = new Sprite[] { PawnColorsSprite[2], PawnColorsSprite[3], PawnColorsSprite[0], PawnColorsSprite[1] };
+                ludoBoard.GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, -180.0f);
+            }
+            else
+            {
+                ComputerManager = AllCompManager[2];
+                colors = new Sprite[] { PawnColorsSprite[1], PawnColorsSprite[2], PawnColorsSprite[3], PawnColorsSprite[0] };
+                ludoBoard.GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, -270.0f);
+            }
+
+            if (GameManager.Instance.isLocalMultiplayer)
+            {
+                if (GameManager.Instance.isPlayingWithComputer)
+                {
+                    PrizeTopBar.SetActive(true);
+                    if (GameManager.Instance.requiredPlayers == 2)
+                    {
+
+                        ComputerManager.SetActive(true);
+                        CompMultiDices[0] = GameObject.Find("Dice1");
+                        CompMultiDices[1] = GameObject.Find("Dice3");
+
+                        ComputerWithOnePlayers[0] = GameObject.Find("Player1");
+                        ComputerWithOnePlayers[1] = GameObject.Find("Player3");
+                    }
+                    else
+                        LocalPlayerManager.SetActive(true);
+                }
+                else
+                {
+                    PrizeTopBar.SetActive(false);
+                    LocalPlayerManager.SetActive(true);
+                }
+
+                ChatWindow.SetActive(false);
+                // voiceChatButton.SetActive(false);
+                ChatButton.SetActive(false);
+            }
+            else
+            {
+                PlayerManager.SetActive(true);
+            }
+
+            if (GameManager.Instance.type == MyGameType.Private)
+            {
+                //  voiceChatButton.SetActive(true);
+            }
+            else
+            {
+                // voiceChatButton.SetActive(false);
+            }
+
+            // for (int i = 0; i < diceBackgrounds.Length; i++)
+            // {
+            //     diceBackgrounds[i].GetComponent<Image>().color = colors[i];
+            // }
+
+            for (int i = 0; i < playersPawnsColors.Length; i++)
+            {
+                for (int j = 0; j < playersPawnsColors[i].objectsArray.Length; j++)
+                {
+                    playersPawnsColors[i].objectsArray[j].GetComponent<Image>().sprite = colors[i];
+                    //  playersPawnsMultiple[i].objectsArray[j].GetComponent<Image>().color = colors[i];
+                }
+            }
+
+            // END LUDO
+
+            //        Debug.Log("Done   ");
+
+            currentPlayerIndex = 0;
+            emojiSprites = GameManager.Instance.playfabManager.staticGameVariables.emoji;
+            myId = GameManager.Instance.playfabManager.PlayFabId;
+            playerObjects = new List<PlayerObject>();
+            avatars = GameManager.Instance.opponentsAvatars;
+            avatars.Insert(0, GameManager.Instance.avatarMy);
+
+            names = GameManager.Instance.opponentsNames;
+            Debug.Log("name " + GameManager.Instance.nameMy);
+            names.Insert(0, GameManager.Instance.nameMy);
+
+            PlayersIDs = new List<string>();
+
+            for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+            {
+                if (GameManager.Instance.opponentsIDs[i] != null)
+                {
+                    PlayersIDs.Add(GameManager.Instance.opponentsIDs[i]);
+                }
+            }
+
+            PlayersIDs.Insert(0, GameManager.Instance.playfabManager.PlayFabId);
+
+            for (int i = 0; i < PlayersIDs.Count; i++)
+            {
+                Debug.Log(PlayersIDs[i]);
+                Debug.Log(GameManager.Instance.opponentsNames[i]);
+                playerObjects.Add(new PlayerObject(names[i], PlayersIDs[i], avatars[i]));
+            }
+
+            // Bubble sort
+            for (int i = 0; i < PlayersIDs.Count; i++)
+            {
+                for (int j = 0; j < PlayersIDs.Count - 1; j++)
+                {
+                    if (string.Compare(playerObjects[j].id, playerObjects[j + 1].id) == 1)
+                    {
+                        // swaap ids
+                        PlayerObject temp = playerObjects[j + 1];
+                        playerObjects[j + 1] = playerObjects[j];
+                        playerObjects[j] = temp;
+                    }
+                }
+            }
+
+            for (int i = 0; i < PlayersIDs.Count; i++)
+            {
+                Debug.Log(playerObjects[i].id);
+            }
+
+            ActivePlayersInRoom = PlayersIDs.Count;
+
+            if (PlayersIDs.Count == 2)
+            {
+                Debug.Log("2 Player  ");
+                if (SecondPlayerOnDiagonal)
+                {
+                    ActivePlayers = new GameObject[2];
+                    if (!GameManager.Instance.isLocalMultiplayer)
+                    {
+                        Players[1].SetActive(false);
+                        Players[3].SetActive(false);
+                        ActivePlayers[0] = Players[0];
+                        ActivePlayers[1] = Players[2];
+                    }
+                    else
+                    {
+                        if (GameManager.Instance.isPlayingWithComputer)
+                        {
+                            ActivePlayers = ComputerWithOnePlayers;
+                        }
+                        else
+                        {
+                            LocalPlayers[1].SetActive(false);
+                            LocalPlayers[3].SetActive(false);
+                            ActivePlayers[0] = LocalPlayers[0];
+                            ActivePlayers[1] = LocalPlayers[2];
+                        }
+                    }
+
+                    // LUDO
+                    for (int i = 0; i < PlayersPawns[1].objectsArray.Length; i++)
+                    {
+                        PlayersPawns[1].objectsArray[i].SetActive(false);
+                    }
+
+                    for (int i = 0; i < PlayersPawns[3].objectsArray.Length; i++)
+                    {
+                        PlayersPawns[3].objectsArray[i].SetActive(false);
+                    }
+
+                    // END LUDO
+                }
+                else
+                {
+                    // LUDO
+                    for (int i = 0; i < PlayersPawns[2].objectsArray.Length; i++)
+                    {
+                        PlayersPawns[2].objectsArray[i].SetActive(false);
+                    }
+
+                    for (int i = 0; i < PlayersPawns[3].objectsArray.Length; i++)
+                    {
+                        PlayersPawns[3].objectsArray[i].SetActive(false);
+                    }
+
+                    ActivePlayers = new GameObject[2];
+                    if (!GameManager.Instance.isLocalMultiplayer)
+                    {
+                        Players[2].SetActive(false);
+                        Players[3].SetActive(false);
+                        ActivePlayers[0] = Players[0];
+                        ActivePlayers[1] = Players[1];
+                    }
+                    else
+                    {
+                        if (GameManager.Instance.isPlayingWithComputer)
+                        {
+                            ActivePlayers = ComputerWithOnePlayers;
+                        }
+                        else
+                        {
+                            LocalPlayers[2].SetActive(false);
+                            LocalPlayers[3].SetActive(false);
+                            ActivePlayers[0] = LocalPlayers[0];
+                            ActivePlayers[1] = LocalPlayers[1];
+                        }
+                    }
+                }
+            }
+            else
+            {
+
+                if (!GameManager.Instance.isLocalMultiplayer)
+                    ActivePlayers = Players;
+                else
+                {
+                    ActivePlayers = LocalPlayers;
+                }
+                Debug.Log("4 ActivePlayers  " + ActivePlayers);
+            }
+
+            int startPos = 0;
+            for (int i = 0; i < playerObjects.Count; i++)
+            {
+                if (playerObjects[i].id == GameManager.Instance.playfabManager.PlayFabId)
+                {
+                    startPos = i;
+                    break;
+                }
+            }
+            int index = 0;
+            bool addedMe = false;
+            myIndex = startPos;
+            GameManager.Instance.myPlayerIndex = myIndex;
+            //TempGameManager.tempGM.SetIndexes(myIndex, true);
+            //TempGameManager.tempGM.view.RPC("SetIndexes", PhotonTargets.OthersBuffered, myIndex, true);
+            for (int i = startPos; ;)
+            {
+                if (i == startPos && addedMe) break;
+
+                if (PlayersIDs.Count == 2 && SecondPlayerOnDiagonal)
+                {
+                    if (addedMe)
+                    {
+                        playerObjects[i].timer = PlayersTimers[2];
+                        playerObjects[i].ChatBubble = PlayersChatBubbles[2];
+                        playerObjects[i].ChatBubbleText = PlayersChatBubblesText[2];
+                        playerObjects[i].ChatbubbleImage = PlayersChatBubblesImage[2];
+                        string id = playerObjects[i].id;
+                        PlayersAvatarsButton[2].GetComponent<Button>().onClick.RemoveAllListeners();
+                        PlayersAvatarsButton[2].GetComponent<Button>().onClick.AddListener(() => ButtonClick(id));
+
+                        // LUDO
+
+                        playerObjects[i].dice = PlayersDices[2];
+
+                        if (GameManager.Instance.isLocalMultiplayer)
+                        {
+                            if (GameManager.Instance.isPlayingWithComputer && GameManager.Instance.requiredPlayers == 2)
+                            {
+                                playerObjects[i].dice = CompMultiDices[1];
+                                Debug.Log("playerObjects    " + playerObjects[i].dice);
+                            }
+                            else
+                            {
+                                playerObjects[i].dice = PlayersLocalMultiDices[2];
+                            }
+                        }
+
+
+                        playerObjects[i].pawns = PlayersPawns[2].objectsArray;
+
+                        for (int k = 0; k < playerObjects[i].pawns.Length; k++)
+                        {
+                            playerObjects[i].pawns[k].GetComponent<LudoPawnController>().setPlayerIndex(i);
+                        }
+                        playerObjects[i].homeLockObjects = HomeLockObjects[2];
+
+                        // END LUDO
+                    }
+                    else
+                    {
+                        GameManager.Instance.myPlayerIndex = i;
+                        playerObjects[i].timer = PlayersTimers[index];
+                        playerObjects[i].ChatBubble = PlayersChatBubbles[index];
+                        playerObjects[i].ChatBubbleText = PlayersChatBubblesText[index];
+                        playerObjects[i].ChatbubbleImage = PlayersChatBubblesImage[index];
+                        string id = playerObjects[i].id;
+
+                        // LUDO
+                        playerObjects[i].dice = PlayersDices[index];
+                        // if (GameManager.Instance.isLocalMultiplayer)
+                        //     playerObjects[i].dice = PlayersLocalMultiDices[index];
+
+                        if (GameManager.Instance.isLocalMultiplayer)
+                        {
+                            if (GameManager.Instance.isPlayingWithComputer && GameManager.Instance.requiredPlayers == 2)
+                            {
+                                playerObjects[i].dice = CompMultiDices[index];
+                            }
+                            else
+                            {
+                                playerObjects[i].dice = PlayersLocalMultiDices[index];
+                            }
+                        }
+
+                        playerObjects[i].pawns = PlayersPawns[index].objectsArray;
+
+                        for (int k = 0; k < playerObjects[i].pawns.Length; k++)
+                        {
+                            playerObjects[i].pawns[k].GetComponent<LudoPawnController>().setPlayerIndex(i);
+                        }
+                        playerObjects[i].homeLockObjects = HomeLockObjects[index];
+                        // END LUDO
+                    }
+                }
+                else
+                {
+
+                    playerObjects[i].timer = PlayersTimers[index];
+                    playerObjects[i].ChatBubble = PlayersChatBubbles[index];
+                    playerObjects[i].ChatBubbleText = PlayersChatBubblesText[index];
+                    playerObjects[i].ChatbubbleImage = PlayersChatBubblesImage[index];
+
+                    // LUDO
+                    playerObjects[i].dice = PlayersDices[index];
+                    if (GameManager.Instance.isLocalMultiplayer)
+                    {
+                        if (GameManager.Instance.isPlayingWithComputer && GameManager.Instance.requiredPlayers == 2)
+                        {
+                            playerObjects[i].dice = CompMultiDices[index];
+                        }
+                        else
+                        {
+                            playerObjects[i].dice = PlayersLocalMultiDices[index];
+                        }
+                    }
+
+
+                    playerObjects[i].pawns = PlayersPawns[index].objectsArray;
+
+                    for (int k = 0; k < playerObjects[i].pawns.Length; k++)
+                    {
+                        playerObjects[i].pawns[k].GetComponent<LudoPawnController>().setPlayerIndex(i);
+                    }
+                    playerObjects[i].homeLockObjects = HomeLockObjects[index];
+                    // END LUDO
+
+                    string id = playerObjects[i].id;
+                    if (index != 0)
+                    {
+                        PlayersAvatarsButton[index].GetComponent<Button>().onClick.RemoveAllListeners();
+                        PlayersAvatarsButton[index].GetComponent<Button>().onClick.AddListener(() => ButtonClick(id));
+                    }
+                }
+                playerObjects[i].AvatarObject = ActivePlayers[index];
+                ActivePlayers[index].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[i].name;
+                if (playerObjects[i].avatar != null)
+                {
+                    if (!GameManager.Instance.isLocalMultiplayer) { }
+                    else
+                    {
+                        ActivePlayers[index].GetComponent<PlayerAvatarController>().Avatar.GetComponent<Image>().sprite = playerObjects[i].avatar;
+                    }
+                }
+
+                index++;
+
+                if (i < PlayersIDs.Count - 1)
+                {
+                    i++;
+                }
+                else
+                {
+                    i = 0;
+                }
+
+                addedMe = true;
+            }
+
+            currentPlayerIndex = GameManager.Instance.firstPlayerInGame;
+            GameManager.Instance.currentPlayer = playerObjects[currentPlayerIndex];
+
+            SetTurn();
+
+            // if (myIndex == 0)
+            // {
+            //     SetMyTurn();
+            //     playerObjects[0].dice.GetComponent<GameDiceController>().DisableDiceShadow();
+            // }
+            // else
+            // {
+            //     SetOpponentTurn();
+            //     playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().DisableDiceShadow();
+            // }
+
+            GameManager.Instance.playerObjects = playerObjects;
+
+            // Check if all players are still in room - if not deactivate
+            for (int i = 0; i < playerObjects.Count; i++)
+            {
+                bool contains = false;
+                if (!playerObjects[i].id.Contains("_BOT"))
+                {
+                    for (int j = 0; j < PhotonNetwork.playerList.Length; j++)
+                    {
+                        Debug.Log(PhotonNetwork.playerList[j].NickName);
+                        Debug.Log(playerObjects[i].id);
+                        Debug.Log(playerObjects[i].name);
+                        if (PhotonNetwork.playerList[j].NickName.Equals(playerObjects[i].id))
+                        {
+
+                            contains = true;
+                            break;
+                        }
+                    }
+
+                    if (!contains)
+                    {
+                        setPlayerDisconnected(i);
+                    }
+                }
+            }
+
+            CheckPlayersIfShouldFinishGame();
+
+
+            firstPlacePrize = GameManager.Instance.currentWinningAmount;
+
+
+            firstPrizeText.GetComponent<Text>().text = firstPlacePrize + "";
+            secondPrizeText.GetComponent<Text>().text = secondPlacePrize + "";
+
+            if (secondPlacePrize == 0)
+            {
+                SecondPrizeObject.SetActive(false);
+                firstPrizeObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(39.9f, firstPrizeObject.GetComponent<RectTransform>().anchoredPosition.y);
+            }
+
+            // LUDO
+
+            // Enable home locks
+
+            if (GameManager.Instance.mode == MyGameMode.Quick || GameManager.Instance.mode == MyGameMode.Master)
+            {
+                for (int i = 0; i < GameManager.Instance.playerObjects.Count; i++)
+                {
+                    GameManager.Instance.playerObjects[i].homeLockObjects.SetActive(true);
+                }
+                GameManager.Instance.needToKillOpponentToEnterHome = true;
+            }
+            else
+            {
+                GameManager.Instance.needToKillOpponentToEnterHome = false;
+            }
+
+            string loadedData = PlayerPrefs.GetString("PlaySavedGame", "null");
+            if (!loadedData.Equals("null"))
+            {
+                LoadPreviousGame(loadedData);
+            }
+
+            //GameManager.Instance.needToKillOpponentToEnterHome = false;
+
+            // END LUDO
+            ReferenceManager reff = FindObjectOfType<ReferenceManager>();
+            int seconds = reff.timeToSeconds(GameManager.gameDuration, ':');
+            reff.SecondsToTime(seconds);
+            hr = reff.hour;
+            mns = reff.minutes;
+            secs = reff.seconds;
+            if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            {
+                Invoke(nameof(UpdateGameDuration), 1);
+            }
+        }
+        else
+        {
+            LateJoinedStart();
+        }
+    }
+
+    void LateJoinedStart()
+    {
         PlayerManager.SetActive(false);
         LocalPlayerManager.SetActive(false);
         ComputerManager.SetActive(false);
@@ -611,7 +1114,7 @@ public class GameGUIController : PunBehaviour
 
         // END LUDO
         ReferenceManager reff = FindObjectOfType<ReferenceManager>();
-        int seconds = reff.timeToSeconds(GameManager.gameDuration,':');
+        int seconds = reff.timeToSeconds(GameManager.gameDuration, ':');
         reff.SecondsToTime(seconds);
         hr = reff.hour;
         mns = reff.minutes;

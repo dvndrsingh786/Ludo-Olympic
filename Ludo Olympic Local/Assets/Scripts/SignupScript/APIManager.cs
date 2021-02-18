@@ -168,6 +168,8 @@ public class APIManager : MonoBehaviour
     public bool isFirstTimeLogin = false;
     public Sprite defaultPP;
 
+    public bool joinedOnlineOnTime = false;
+
     void Awake()
     {
         isFirstTimeLogin = false;

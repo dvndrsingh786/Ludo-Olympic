@@ -7723,7 +7723,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &224419297
 GameObject:
   m_ObjectHideFlags: 0
@@ -8078,7 +8077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &239829960
 GameObject:
   m_ObjectHideFlags: 0
@@ -28409,7 +28407,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!114 &627202055 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4968272672778642613, guid: c84de9ceea798d045a43b8a04ee2b5ed,
@@ -29876,7 +29873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &660295654
 GameObject:
   m_ObjectHideFlags: 0
@@ -31741,7 +31737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &699025688
 GameObject:
   m_ObjectHideFlags: 0
@@ -32622,7 +32617,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &710912346
 GameObject:
   m_ObjectHideFlags: 0
@@ -61375,7 +61369,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1146038567
 GameObject:
   m_ObjectHideFlags: 0
@@ -63559,7 +63552,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1197506285
 GameObject:
   m_ObjectHideFlags: 0
@@ -65272,7 +65264,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1239669072
 GameObject:
   m_ObjectHideFlags: 0
@@ -66964,7 +66955,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1275836911
 GameObject:
   m_ObjectHideFlags: 0
@@ -67792,7 +67782,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1307185225
 GameObject:
   m_ObjectHideFlags: 0
@@ -71706,7 +71695,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1402451673
 GameObject:
   m_ObjectHideFlags: 0
@@ -71819,7 +71807,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1403938888
 GameObject:
   m_ObjectHideFlags: 0
@@ -85746,7 +85733,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1723380061
 GameObject:
   m_ObjectHideFlags: 0
@@ -91692,7 +91678,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1850890322
 GameObject:
   m_ObjectHideFlags: 0
@@ -92871,7 +92856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1879173256
 GameObject:
   m_ObjectHideFlags: 0
@@ -93789,7 +93773,7 @@ MonoBehaviour:
   phoneEmail: 
   uu: {fileID: 738428116}
   tablevalue: 
-  clickedPubButton: {fileID: 0}
+  clickedBet: {fileID: 0}
   isClickedPubButton: 0
   referralCodeInputField: {fileID: 627202075}
   newCoinsText: {fileID: 627202067}
@@ -94059,7 +94043,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &1903412053
 GameObject:
   m_ObjectHideFlags: 0
@@ -101218,7 +101201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!1 &2080015866
 GameObject:
   m_ObjectHideFlags: 0
@@ -115328,7 +115310,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b97cf4a6703b4044aca50f7b017ffdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flowHandler: {fileID: 0}
 --- !u!114 &5680050561190620389 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4712389017424361983, guid: c84de9ceea798d045a43b8a04ee2b5ed,

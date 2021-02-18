@@ -92,7 +92,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         GameManager.Instance.playfabManager = this;
         fbManager = GameObject.Find("FacebookManager").GetComponent<FacebookManager>();
         facebookFriendsMenu = GameManager.Instance.facebookFriendsMenu;
-
+        PhotonNetwork.automaticallySyncScene = true;
         avatarSprites = staticGameVariables.avatars;
         pickerController = FindObjectOfType<PickerController>();
        /* Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
@@ -193,7 +193,10 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         // {
         //     yield return 0;
         // }
-        PhotonNetwork.room.IsOpen = false;
+        if (GameManager.Instance.type == MyGameType.Private)
+        {
+            PhotonNetwork.room.IsOpen = false;
+        }
         Debug.Log("calling start function");
         CancelInvoke("StartGameWithBots");
         Invoke("startGameScene", 3.0f);
@@ -258,7 +261,10 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         Debug.Log("proinghhvk"+ GameManager.Instance.gameSceneStarted);
         if (!GameManager.Instance.gameSceneStarted)
         {
-            SceneManager.LoadScene(GameManager.Instance.GameScene);
+            //SceneManager.LoadScene(GameManager.Instance.GameScene);
+            Debug.LogError("Loading Game Scene Using Photon");
+            GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime = true;
+            PhotonNetwork.LoadLevel(GameManager.Instance.GameScene);
             GameManager.Instance.gameSceneStarted = true;
             if (GameManager.Instance.type == MyGameType.Private)
             {
@@ -956,16 +962,6 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         PhotonNetwork.JoinRoom(ReferenceManager.refMngr.onlineRoomId);
     }
 
-    //public void JoinOnlineRoom()
-    //{
-    //    PhotonNetwork.JoinRoom(GameManager.currentRoomID);
-    //}
-
-    //public void CreateOnlineRoom()
-    //{
-    //    PhotonNetwork.CreateRoom(GameManager.currentRoomID);
-    //}
-
     public IEnumerator TryToJoinRandomRoom(ExitGames.Client.Photon.Hashtable roomOptions)
     {
         Debug.LogError("WTF");
@@ -1185,7 +1181,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         }
         else if (PhotonNetwork.room.PlayerCount >= GameManager.Instance.requiredPlayers)
         {
-            if (GameManager.Instance.type != MyGameType.TwoPlayer)
+            if (GameManager.Instance.type == MyGameType.Private)
             {
                 PhotonNetwork.room.IsOpen = false;
             }
@@ -1291,19 +1287,19 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         return index;
     }
 
-    //public int GetFirstFreeBotSlot()
-    //{
-    //    int index = 0;
-    //    for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
-    //    {
-    //        if (GameManager.Instance.opponentsIDs[i].Contains("")
-    //        {
-    //            index = i;
-    //            break;
-    //        }
-    //    }
-    //    return index;
-    //}
+    public int GetFirstFreeBotSlot()
+    {
+        int index = 0;
+        for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+        {
+            if (GameManager.Instance.opponentsIDs[i].Contains("_BOT"))
+            {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
 
     public override void OnPhotonCreateRoomFailed(object[] codeAndMsg)
     {
@@ -1328,6 +1324,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         }
         else
         {
+            Debug.LogError(codeAndMsg[1].ToString());
             CreateOnlineRoom();
             //GameManager.Instance.facebookManager.startRandomGame();
         }
@@ -1373,13 +1370,12 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         }
         else
         {
-
+            int index = GetFirstFreeBotSlot();
+            GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
+            GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
+            GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
+            //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
         }
-    }
-
-    void GetOpponentDataInGame(int index, string id)
-    {
-
     }
 
     private void getOpponentData(int index, string id)

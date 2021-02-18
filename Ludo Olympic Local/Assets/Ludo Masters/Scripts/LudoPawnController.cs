@@ -641,7 +641,8 @@ public class LudoPawnController : MonoBehaviour
             {
                 pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
             }
-            MoveBySteps(ludoController.steps);
+        dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+        MoveBySteps(ludoController.steps);
 
         isOnBoard = true;
     }
@@ -673,7 +674,7 @@ public class LudoPawnController : MonoBehaviour
 
         //  rect.localScale = new Vector3(initScale.x * 1.25f, initScale.y * 1.25f, initScale.z);
         StartCoroutine("ScalingEffect");
-        yield return new WaitForSeconds(0);
+        yield return new WaitForSeconds(0.2f);
         Debug.LogError("444");
 
         if (playSound)

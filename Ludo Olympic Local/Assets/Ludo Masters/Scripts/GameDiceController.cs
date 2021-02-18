@@ -432,7 +432,7 @@ public class GameDiceController : PunBehaviour
         {
             aa = 0;
         }
-        IncreaseScore(steps);
+        //IncreaseScore(steps);
         //RollDiceStart(steps);
         GameManager.Instance.playerObjects[controller.gUIController.GetCurrentPlayerIndex()].dice.GetComponent<GameDiceController>().RollDiceStart(steps);
         string data = steps + ";" + controller.gUIController.GetCurrentPlayerIndex();
