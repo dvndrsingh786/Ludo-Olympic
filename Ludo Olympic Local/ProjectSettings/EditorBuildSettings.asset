@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Ludo Masters/Scenes/GameScene.unity
     guid: d4a2e99f19b597c43a1c51507973a621
+  - enabled: 1
+    path: Assets/Ludo Masters/Scenes/GameSceneOnline.unity
+    guid: b9b9643967f555946b61fdeb79c709f8
   m_configObjects: {}

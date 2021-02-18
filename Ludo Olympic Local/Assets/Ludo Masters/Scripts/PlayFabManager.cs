@@ -1189,8 +1189,12 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
         if (!roomOwner)
         {
-            GameManager.Instance.backButtonMatchPlayers.SetActive(false);
 
+            //GameManager.Instance.backButtonMatchPlayers.SetActive(false);
+            if (SceneManager.GetActiveScene().name == "GameSceneOnline")
+            {
+                return;
+            }
             for (int i = 0; i < PhotonNetwork.otherPlayers.Length; i++)
             {
 
@@ -1205,6 +1209,22 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 getOpponentData(index + 1, otherID);
 
             }
+        }
+    }
+
+    public void GetOpponentDetails()
+    {
+        for (int i = 0; i < PhotonNetwork.otherPlayers.Length; i++)
+        {
+            int ii = i;
+            int index = GetFirstFreeSlot();
+            GameManager.Instance.opponentsIDs[index] = PhotonNetwork.otherPlayers[ii].NickName;
+            GameManager.Instance.opponentsNames[index] = PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString();
+            GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(PhotonNetwork.otherPlayers[ii].CustomProperties["avatarId"].ToString())];
+            PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString();
+            Debug.Log(" Name " + PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
+            string otherID = PhotonNetwork.otherPlayers[ii].NickName;
+            //getOpponentData(index + 1, otherID);
         }
     }
 
@@ -1381,6 +1401,10 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     private void getOpponentData(int index, string id)
     {
         Debug.Log("GET OPPONENT DATA: ");
+        if (SceneManager.GetActiveScene().name == "GameSceneOnline")
+        {
+            return;
+        }
         //  GameManager.Instance.opponentsAvatars[index] =  GameManager.Instance.playfabManager.staticGameVariables.avatars[index];
         GameManager.Instance.controlAvatars.PlayerJoined(index, id);
     }

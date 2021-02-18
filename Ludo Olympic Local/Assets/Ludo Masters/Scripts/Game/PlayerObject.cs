@@ -3,6 +3,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 
+[System.Serializable]
 public class PlayerObject
 {
 

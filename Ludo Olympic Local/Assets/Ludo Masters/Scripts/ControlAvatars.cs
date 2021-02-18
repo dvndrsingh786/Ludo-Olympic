@@ -231,6 +231,10 @@ public class ControlAvatars : MonoBehaviour
     public void PlayerJoined(int index, string id)
     {
         GameManager.Instance.currentPlayersCount++;
+        if (SceneManager.GetActiveScene().name == "GameSceneOnline")
+        {
+            return;
+        }
 
         //Debug.LogError("Current Players Count: " + GameManager.Instance.currentPlayersCount);
 

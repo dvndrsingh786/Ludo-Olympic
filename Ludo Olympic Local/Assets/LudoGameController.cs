@@ -249,6 +249,7 @@ public class LudoGameController : PunBehaviour, IMiniGame
     {
         Debug.Log("after    botcountr   " + botCounter +"moves count "+GameManager.Instance.botDiceValues.Count);
         GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().RollDiceBot(GameManager.Instance.botDiceValues[(botCounter % 100)]);
+        
         botCounter++;
     }
 
