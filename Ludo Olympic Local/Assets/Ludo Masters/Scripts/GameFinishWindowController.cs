@@ -98,5 +98,53 @@ public class GameFinishWindowController : MonoBehaviour
         }
 
     }
-    
+
+    public void showWindowManually(List<PlayerObject> playersFinished)
+    {
+        if (GameManager.Instance.type == MyGameType.TwoPlayer)
+        {
+            prizeText[0].GetComponent<Text>().text = ReferenceManager.refMngr.firstPlacePrize;
+            if (ReferenceManager.refMngr.onlineNoOfPlayer == 4)
+            {
+                prizeText[1].GetComponent<Text>().text = ReferenceManager.refMngr.secondPlacePrize;
+                prizeText[2].GetComponent<Text>().text = ReferenceManager.refMngr.thirdPlacePrize;
+                PrizeMainObjects[1].SetActive(true);
+                PrizeMainObjects[2].SetActive(true);
+            }
+            else
+            {
+                PrizeMainObjects[1].SetActive(false);
+                PrizeMainObjects[2].SetActive(false);
+                prizeText[1].gameObject.SetActive(false);
+                prizeText[2].gameObject.SetActive(false);
+            }
+        }
+
+        Window.SetActive(true);
+        for (int i = 0; i < playersFinished.Count; i++)
+        {
+            AvatarsMain[i].SetActive(true);
+            AvatarsImage[i].GetComponent<Image>().sprite = playersFinished[i].avatar;
+            Names[i].GetComponent<Text>().text = playersFinished[i].name;
+            if (playersFinished[i].id.Equals(PhotonNetwork.player.NickName))
+            {
+                //Backgrounds[i].SetActive(true);
+            }
+        }
+        for (int i = 0; i < playersFinished.Count; i++)
+        {
+            for (int j = 0; j < playersFinished.Count; j++)
+            {
+                if (playersFinished[i].myPosition == j + 1)
+                {
+                    AvatarsMain[j].SetActive(true);
+                    AvatarsImage[j].GetComponent<Image>().sprite = playersFinished[i].avatar;
+                    Names[j].GetComponent<Text>().text = playersFinished[i].name;
+                }
+            }
+            
+        }
+
+    }
+
 }

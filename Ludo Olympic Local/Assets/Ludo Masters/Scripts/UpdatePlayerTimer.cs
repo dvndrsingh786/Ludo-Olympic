@@ -190,7 +190,12 @@ public class UpdatePlayerTimer : MonoBehaviour
         if (playerTime < 1)
         {
             Pause();
-            StartCoroutine(autoMove());
+            Debug.LogError("Auto Move Disabled here");
+            if (GameManager.Instance.currentPlayer.isBot || Gamedice.isMyDice)
+            {
+                FindObjectOfType<GameGUIController>().SendFinishTurn();
+            }
+            //StartCoroutine(autoMove());
         }
         else
         {
@@ -245,7 +250,12 @@ public class UpdatePlayerTimer : MonoBehaviour
         if (timer.fillAmount <= 0.0f)
         {
             Pause();
-            StartCoroutine(autoMove());
+            Debug.LogError("Auto Move Disabled here");
+            if (GameManager.Instance.currentPlayer.isBot || Gamedice.isMyDice)
+            {
+                FindObjectOfType<GameGUIController>().SendFinishTurn();
+            }
+            //StartCoroutine(autoMove());
         }
 
     }
@@ -314,8 +324,8 @@ public class UpdatePlayerTimer : MonoBehaviour
         else
         {
             //Debug.LogError("MY New Else");
-            if(false)
-            GUIController.GetComponent<GameGUIController>().SendingFinishSlowly(this);
+            //if(false)
+            //GUIController.GetComponent<GameGUIController>().SendingFinishSlowly(this);
         }
     }
 
@@ -324,45 +334,45 @@ public class UpdatePlayerTimer : MonoBehaviour
     //    Invoke(nameof(PlayerAutoMove2), 1);
     //}
 
-    public void PlayerAutoMove1()
-    {
-        Debug.LogError("Auto Move 1");
-        InBoard.Clear();
-        foreach (LudoPawnController item in Gamedice.myPawns)
-        {
-            if (item.isOnBoard)
-                InBoard.Add(item);
-        }
-        if (InBoard.Count >= 1)
-        {
-            Debug.LogError("Count issss: " + InBoard.Count);
-            //by default opening the 
-            int ran = Random.Range(0, InBoard.Count);
-            InBoard[ran].MakeMoveManually(Gamedice.steps);
-        }
-        else
-        {
-            if (Gamedice.steps == 6)
-            {
-                Debug.Log("DiceValue_A" + Gamedice.steps);
-                int ran = Random.Range(0, Gamedice.myPawns.Count);
-                Gamedice.myPawns[ran].MakeMoveManually(Gamedice.steps);
-                ismyTurn = false;
-                misschance = false;
-            }
-            else
-            {
-                int ran = Random.Range(0, InBoard.Count);
-                if (InBoard.Count > 0)
-                {
-                    InBoard[ran].MakeMoveManually(Gamedice.steps);
-                    ismyTurn = false;
-                    misschance = false;
-                }
-            }
-        }
-        GUIController.GetComponent<GameGUIController>().TheEnd();
-    }
+    //public void PlayerAutoMove1()
+    //{
+    //    Debug.LogError("Auto Move 1");
+    //    InBoard.Clear();
+    //    foreach (LudoPawnController item in Gamedice.myPawns)
+    //    {
+    //        if (item.isOnBoard)
+    //            InBoard.Add(item);
+    //    }
+    //    if (InBoard.Count >= 1)
+    //    {
+    //        Debug.LogError("Count issss: " + InBoard.Count);
+    //        //by default opening the 
+    //        int ran = Random.Range(0, InBoard.Count);
+    //        InBoard[ran].MakeMoveManually(Gamedice.steps);
+    //    }
+    //    else
+    //    {
+    //        if (Gamedice.steps == 6)
+    //        {
+    //            Debug.Log("DiceValue_A" + Gamedice.steps);
+    //            int ran = Random.Range(0, Gamedice.myPawns.Count);
+    //            Gamedice.myPawns[ran].MakeMoveManually(Gamedice.steps);
+    //            ismyTurn = false;
+    //            misschance = false;
+    //        }
+    //        else
+    //        {
+    //            int ran = Random.Range(0, InBoard.Count);
+    //            if (InBoard.Count > 0)
+    //            {
+    //                InBoard[ran].MakeMoveManually(Gamedice.steps);
+    //                ismyTurn = false;
+    //                misschance = false;
+    //            }
+    //        }
+    //    }
+    //    GUIController.GetComponent<GameGUIController>().TheEnd();
+    //}
 
     public void SetTurn(int turns, string idd)
     {
@@ -419,7 +429,7 @@ public class UpdatePlayerTimer : MonoBehaviour
             {
                 Debug.LogError("My timer false");
                 Debug.LogError("Sedning finish turn manually");
-                GUIController.GetComponent<GameGUIController>().SendFinishTurnManually();
+                //GUIController.GetComponent<GameGUIController>().SendFinishTurnManually();
             }
             //PhotonNetwork.RaiseEvent(9, null, true, null);
         }

@@ -257,14 +257,28 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         //    Debug.LogError("Loading Game Scene OP ID: " + GameManager.Instance.opponentsIDs[i]);
         //}
         apiManager.tablevalue = ReferenceManager.refMngr.GetTableValue(GameManager.Instance.currentBetAmount, GameManager.Instance.currentWinningAmount);
-        GameManager.Instance.GameScene = "GameScene";
+        if (GameManager.Instance.type == MyGameType.TwoPlayer)
+        {
+            GameManager.Instance.GameScene = "GameSceneOnline";
+        }
+        else
+        {
+            GameManager.Instance.GameScene = "GameScene";
+        }
         Debug.Log("proinghhvk"+ GameManager.Instance.gameSceneStarted);
         if (!GameManager.Instance.gameSceneStarted)
         {
             //SceneManager.LoadScene(GameManager.Instance.GameScene);
             Debug.LogError("Loading Game Scene Using Photon");
             GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime = true;
-            PhotonNetwork.LoadLevel(GameManager.Instance.GameScene);
+            if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            {
+                PhotonNetwork.LoadLevel(GameManager.Instance.GameScene);
+            }
+            else
+            {
+                SceneManager.LoadScene(GameManager.Instance.GameScene);
+            }
             GameManager.Instance.gameSceneStarted = true;
             if (GameManager.Instance.type == MyGameType.Private)
             {

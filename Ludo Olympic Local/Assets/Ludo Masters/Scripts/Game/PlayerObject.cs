@@ -30,6 +30,8 @@ public class PlayerObject
     public bool isBot = false;
     public int finishedPawns = 0;
 
+    public int myPosition;
+
     public PlayerObject(string name, string id, Sprite avatar)
     {
         this.name = name;

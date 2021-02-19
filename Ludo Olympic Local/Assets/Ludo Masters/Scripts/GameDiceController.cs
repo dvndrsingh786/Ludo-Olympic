@@ -191,7 +191,7 @@ public class GameDiceController : PunBehaviour
         {
             if (!GameManager.Instance.isLocalMultiplayer)
             {
-                Debug.Log("Bot Turn  ");
+                Debug.LogError("Bot Turn disabled Here ");
                 GameManager.Instance.miniGame.BotTurn(false);
             }
 
@@ -199,6 +199,7 @@ public class GameDiceController : PunBehaviour
             {
                 if (GameManager.Instance.isPlayingWithComputer)
                 {
+                    Debug.LogError("Bot Turn Disabled Here");
                     GameManager.Instance.miniGame.BotTurn(false);
                 }
                 else

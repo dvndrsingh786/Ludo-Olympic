@@ -817,6 +817,7 @@ public class LudoPawnController : MonoBehaviour
                                 if (pawnsInColor == 1 || canMakeJoint)
                                 {
                                     isKilled = true;
+                                    Debug.LogError("KILLED");
                                     // Killed opponent pawn, Additional turn
                                     // for new 
                                     ludoController.nextShotPossible = true;

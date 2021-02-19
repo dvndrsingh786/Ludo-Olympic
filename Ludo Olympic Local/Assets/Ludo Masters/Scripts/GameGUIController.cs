@@ -630,6 +630,10 @@ public class GameGUIController : PunBehaviour
             LateJoinedStart();
         }
     }
+    public void SetDesigns()
+    {
+
+    }
 
     void LateJoinedStart()
     {
@@ -686,6 +690,7 @@ public class GameGUIController : PunBehaviour
         currentPlayerIndex = 0;
         emojiSprites = GameManager.Instance.playfabManager.staticGameVariables.emoji;
         myId = GameManager.Instance.playfabManager.PlayFabId;
+
         playerObjects = new List<PlayerObject>();
         avatars = GameManager.Instance.opponentsAvatars;
         avatars.Insert(0, GameManager.Instance.avatarMy);
@@ -955,6 +960,7 @@ public class GameGUIController : PunBehaviour
         }
     }
 
+
     public int hr, mns, secs;
     public void UpdateGameDuration()
     {
@@ -1005,6 +1011,7 @@ public class GameGUIController : PunBehaviour
             //}
         }
         allScores.Sort();
+        iFinished = false;
         for (int i = 0; i < playerObjects.Count; i++)
         {
             for (int j = 0; j < allScores.Count; j++)
@@ -1015,6 +1022,7 @@ public class GameGUIController : PunBehaviour
                     Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + newPos);
                     if (playerObjects[i].id == PhotonNetwork.player.NickName)
                     {
+                        Debug.LogError("MY New Position");
                         SetFinishGameManually(playerObjects[i].id, true, newPos);
                     }
                     else
@@ -1169,6 +1177,12 @@ public class GameGUIController : PunBehaviour
         GameFinishWindow.GetComponent<GameFinishWindowController>().showWindow(playersFinished, otherPlayers, firstPlacePrize, secondPlacePrize);
     }
 
+    public void ShowGameFinishedWindowManually()
+    {
+        FinishWindowActive = true;
+        GameFinishWindow.GetComponent<GameFinishWindowController>().showWindowManually(playersFinished);
+    }
+
     private void ButtonClick(string id)
     {
 
@@ -1237,11 +1251,11 @@ public class GameGUIController : PunBehaviour
             playerObjects[index].dice.SetActive(false);
 
             int position = playersFinished.Count;
-            if (GameManager.Instance.type == MyGameType.TwoPlayer)
-            {
-                if (didIWin) position = 1;
-                else position = 2;
-            }
+            //if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            //{
+            //    if (didIWin) position = 1;
+            //    else position = 2;
+            //}
             //Debug.LogError("PSOITION: " + position + "ME: " + me + "iFinished: " + iFinished);
             if (position == 1)
             {
@@ -1371,7 +1385,8 @@ public class GameGUIController : PunBehaviour
 
     private void SetFinishGameManually(string id, bool me, int position)
     {
-        if (!me || !iFinished)
+        Debug.LogError("ME: " + me + "Psoition: " + position + "IFInished: " + iFinished);
+        if (!me || !iFinished || true)
         {
             Debug.Log("SET FINISH");
             ActivePlayersInRoom--;
@@ -1380,39 +1395,24 @@ public class GameGUIController : PunBehaviour
 
             playersFinished.Add(playerObjects[index]);
 
+            playerObjects[index].myPosition = position;
+
             PlayerAvatarController controller = playerObjects[index].AvatarObject.GetComponent<PlayerAvatarController>();
             controller.Name.GetComponent<Text>().text = "";
             controller.Active = false;
             controller.finished = true;
             Debug.LogError("DICEEE");
             playerObjects[index].dice.SetActive(false);
-
-            //int position = playersFinished.Count;
-            //if (GameManager.Instance.type == MyGameType.TwoPlayer)
-            //{
-            //    if (didIWin) position = 1;
-            //    else position = 2;
-            //}
-            //Debug.LogError("PSOITION: " + position + "ME: " + me + "iFinished: " + iFinished);
+            
             if (position == 1)
             {
                 controller.Crown.SetActive(true);
             }
 
-
             if (me)
             {
                 PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeoutLong;
                 iFinished = true;
-                if (ActivePlayersInRoom >= 0)
-                {
-                    if (GameManager.Instance.type == MyGameType.Private)
-                    {
-                        PhotonNetwork.RaiseEvent((int)EnumPhoton.FinishedGame, PhotonNetwork.player.NickName, true, null);
-                        Debug.Log("set finish call finish turn");
-                        SendFinishTurn();
-                    }
-                }
 
                 PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest
                 {
@@ -1441,10 +1441,6 @@ public class GameGUIController : PunBehaviour
                             GameManager.Instance.playfabManager.apiManager.AddCoins(finalAmount);
                         }
                     }
-                    else if (GameManager.Instance.type == MyGameType.TwoPlayer)
-                    {
-                        GameManager.Instance.twoWins++;
-                    }
                     positionText.text = "Note: 10% service charges on win amount.";
                     stars.SetActive(true);
                 }
@@ -1453,22 +1449,22 @@ public class GameGUIController : PunBehaviour
                 {
                     positionText.text = "You Lost";
                     stars.SetActive(false);
-                    if (GameManager.Instance.type == MyGameType.TwoPlayer)
-                    {
-                        GameManager.Instance.twoWins++;
-                    }
                 }
 
                 positionText.text = "Your Position is: " + position.ToString();
                 GameManager.Instance.myPlayerData.UpdateUserData(data);
             }
-            else if (GameManager.Instance.currentPlayer.isBot)
+            //else if (GameManager.Instance.currentPlayer.isBot)
+            //{
+            //    SendFinishTurn();
+            //}
+            if (ActivePlayersInRoom == 0)
             {
-                SendFinishTurn();
+                StopTimers();
+                ShowGameFinishedWindowManually();
             }
-
             controller.setPositionSprite(position);
-            CheckPlayersIfShouldFinishGame();
+            //CheckPlayersIfShouldFinishGame();
         }
     }
 
@@ -1484,42 +1480,42 @@ public class GameGUIController : PunBehaviour
         return -1;
     }
 
-    bool canCallFinishAgain = true;
+    //bool canCallFinishAgain = true;
 
     UpdatePlayerTimer timer;
-    public void SendingFinishSlowly(UpdatePlayerTimer timr)
-    {
-        //Debug.LogError("Slowly");
-        if (canCallFinishAgain)
-        {
-            //Debug.LogError("Slowly Inside");
-            canCallFinishAgain = false;
-            timer = timr;
-            Invoke(nameof(SendFinishTurnManually), 1.5f);
-            Invoke(nameof(CanCallFinishAgainTrue), 5);
-        }
-    }
+    //public void SendingFinishSlowly(UpdatePlayerTimer timr)
+    //{
+    //    //Debug.LogError("Slowly");
+    //    if (canCallFinishAgain)
+    //    {
+    //        //Debug.LogError("Slowly Inside");
+    //        canCallFinishAgain = false;
+    //        timer = timr;
+    //        Invoke(nameof(SendFinishTurnManually), 1.5f);
+    //        Invoke(nameof(CanCallFinishAgainTrue), 5);
+    //    }
+    //}
 
-    void CanCallFinishAgainTrue()
-    {
-        canCallFinishAgain = true;
-    }
+    //void CanCallFinishAgainTrue()
+    //{
+    //    canCallFinishAgain = true;
+    //}
 
-    public void SendFinishTurnManually()
-    {
-        if (!TempGameManager.tempGM.iamalive)
-        {
-            //Debug.LogError("I am not alive");
-            timer.Gamedice.RollDiceMAnually();
-            Invoke(nameof(AutoMover), 1);
-            //Invoke(nameof(TheEnd), 1.5f);
-        }
-    }
+    //public void SendFinishTurnManually()
+    //{
+    //    if (!TempGameManager.tempGM.iamalive)
+    //    {
+    //        //Debug.LogError("I am not alive");
+    //        timer.Gamedice.RollDiceMAnually();
+    //        Invoke(nameof(AutoMover), 1);
+    //        //Invoke(nameof(TheEnd), 1.5f);
+    //    }
+    //}
 
     void AutoMover()
     {
         //Debug.LogError("Auto mover");
-        timer.PlayerAutoMove1();
+        //timer.PlayerAutoMove1();
     }
     public bool NextTurnSet = false;
     public void TheEnd()
@@ -1554,8 +1550,18 @@ public class GameGUIController : PunBehaviour
         //}
     }
 
+    void CanCallFinishTurnAgain()
+    {
+        canCallFinish = true;
+    }
+
+    bool canCallFinish = true;
+
     public void SendFinishTurn()
     {
+        if (!canCallFinish) return;
+        canCallFinish = false;
+        Invoke(nameof(CanCallFinishTurnAgain), 1);
         Debug.Log("Send Finish Turn");
         if (!FinishWindowActive && ActivePlayersInRoom > 1)
         {
