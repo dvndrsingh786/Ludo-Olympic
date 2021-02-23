@@ -228,10 +228,12 @@ public class UpdatePlayerTimer : MonoBehaviour
                 misschance = true;
                 turnCount++;
                 Debug.Log("TurnCount" + turnCount);
+                if (turnCount <= autoMoveParent.childCount)
+                    autoMoveParent.GetChild(turnCount - 1).GetComponent<Image>().color = Color.red;
                 //SynchrozeTurnCount();
                 //  FindObjectOfType<GameGUIController>().playerCount.text = "Auto turn Chance" + turnCount;
                 playerchnaceLeft.text = "Auto Move: " + turnCount.ToString();
-                if (turnCount == 5)
+                if (turnCount == maxAutoMove)
                 {
                     FindObjectOfType<GameGUIController>().LeaveGame(false);
                 }

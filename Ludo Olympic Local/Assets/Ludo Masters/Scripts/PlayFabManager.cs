@@ -1408,6 +1408,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
             GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
             GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
+            FindObjectOfType<GameGUIController>().SetDesigns(index);
             //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
         }
     }

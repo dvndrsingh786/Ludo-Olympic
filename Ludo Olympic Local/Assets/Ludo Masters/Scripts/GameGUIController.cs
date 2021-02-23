@@ -630,9 +630,19 @@ public class GameGUIController : PunBehaviour
             LateJoinedStart();
         }
     }
-    public void SetDesigns()
+    public void SetDesigns(int index)
     {
-
+        Debug.LogError("Indexxxx : " + index);
+        PlayersIDs[index + 1] = GameManager.Instance.opponentsIDs[index];
+        Debug.LogError("IDDD : " + GameManager.Instance.opponentsIDs[index]);
+        names[index + 1] = GameManager.Instance.opponentsNames[index];
+        Debug.LogError("NAme : " + GameManager.Instance.opponentsNames[index]);
+        avatars[index + 1] = GameManager.Instance.opponentsAvatars[index];
+        Debug.LogError("!!!1");
+        playerObjects[index + 1] = new PlayerObject(names[index + 1], PlayersIDs[index + 1], avatars[index + 1]);
+        Debug.LogError("DUHH");
+        ActivePlayers[index + 1].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[index + 1].name;
+        Debug.LogError("LOPP");
     }
 
     void LateJoinedStart()
@@ -711,6 +721,7 @@ public class GameGUIController : PunBehaviour
         }
 
         PlayersIDs.Insert(0, GameManager.Instance.playfabManager.PlayFabId);
+
 
         for (int i = 0; i < PlayersIDs.Count; i++)
         {
