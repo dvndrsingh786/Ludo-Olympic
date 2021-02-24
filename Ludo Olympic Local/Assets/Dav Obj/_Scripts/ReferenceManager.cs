@@ -248,6 +248,8 @@ public class ReferenceManager : MonoBehaviour
         }
     }
 
+    
+
     public void ChangeWinningAmountManually(float currentBettingAmount, int totalPlayers)
     {
         GameManager.Instance.currentBettingIndex = 0;

@@ -18,13 +18,16 @@ public class TempGameManager : MonoBehaviour
 
     void Start()
     {
+        Debug.LogError("1");
         PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeoutLong;
         tempGM = this;
+        Debug.LogError("2");
 
         if (GameManager.Instance.type == MyGameType.Private)
         {
             ReferenceManager.refMngr.ChangeWinningAmountManually(GameManager.Instance.currentBetAmount, PhotonNetwork.room.PlayerCount);
         }
+        Debug.LogError("3");
 
         if (PhotonNetwork.inRoom)
         {
@@ -36,6 +39,7 @@ public class TempGameManager : MonoBehaviour
                 }
             }
         }
+        Debug.LogError("4");
         if (PlayerPrefs.GetInt("IsSoundEffect", 1) == 1)
         {
             SetEffectToMute(false);
@@ -44,11 +48,22 @@ public class TempGameManager : MonoBehaviour
         {
             SetEffectToMute(true);
         }
-        if (FindObjectOfType<ReferenceManager>().onlineGameWaitingPanel.activeInHierarchy)
-        {
-            FindObjectOfType<ReferenceManager>().onlineGameWaitingPanel.SetActive(false);
-        }
+        Invoke(nameof(HideWaitingPanel), 1);
         //Invoke(nameof(SetTimerNames), 0.8f);
+    }
+
+    void HideWaitingPanel()
+    {
+        if (ReferenceManager.refMngr)
+        {
+            Debug.LogError("Waiting panel closed");
+            ReferenceManager.refMngr.onlineGameWaitingPanel.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("Waiting panel closinggg");
+            Invoke(nameof(HideWaitingPanel), 0.03f);
+        }
     }
 
     public void SetEffectToMute(bool state)

@@ -1011,9 +1011,9 @@ public class APIManager : MonoBehaviour
                 if (_w.text != "" && _w.text != null)
                 {
                     Debug.LogError("Should owrk");
-                    GetErrors abc = JsonUtility.FromJson<GetErrors>(_w.text);
-                    Debug.LogError("Should owrk");
-                    errorMsg.text = abc.errors[0];
+                    //GetErrors abc = JsonUtility.FromJson<GetErrors>(_w.text);
+                    //Debug.LogError("Should owrk");
+                    //errorMsg.text = abc.errors[0];
                     Debug.LogError("Should owrk");
                 }
                 else errorMsg.text = "Sinup Failed";
@@ -1488,9 +1488,9 @@ public class APIManager : MonoBehaviour
                 if (_w.text != "" && _w.text != null)
                 {
                     Debug.LogError("Should owrk");
-                    GetErrors abc = JsonUtility.FromJson<GetErrors>(_w.text);
-                    Debug.LogError("Should owrk");
-                    errorMsg.text = abc.errors[0];
+                    //GetErrors abc = JsonUtility.FromJson<GetErrors>(_w.text);
+                    //Debug.LogError("Should owrk");
+                    //errorMsg.text = abc.errors[0];
                     Debug.LogError("Should owrk");
                 }
                 else errorMsg.text = "Sinup Failed";

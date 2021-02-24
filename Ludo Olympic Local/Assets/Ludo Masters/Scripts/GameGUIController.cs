@@ -632,17 +632,13 @@ public class GameGUIController : PunBehaviour
     }
     public void SetDesigns(int index)
     {
-        Debug.LogError("Indexxxx : " + index);
-        PlayersIDs[index + 1] = GameManager.Instance.opponentsIDs[index];
-        Debug.LogError("IDDD : " + GameManager.Instance.opponentsIDs[index]);
-        names[index + 1] = GameManager.Instance.opponentsNames[index];
-        Debug.LogError("NAme : " + GameManager.Instance.opponentsNames[index]);
-        avatars[index + 1] = GameManager.Instance.opponentsAvatars[index];
-        Debug.LogError("!!!1");
-        playerObjects[index + 1] = new PlayerObject(names[index + 1], PlayersIDs[index + 1], avatars[index + 1]);
-        Debug.LogError("DUHH");
-        ActivePlayers[index + 1].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[index + 1].name;
-        Debug.LogError("LOPP");
+        PlayersIDs[index] = GameManager.Instance.opponentsIDs[index];
+        names[index] = GameManager.Instance.opponentsNames[index];
+        avatars[index] = GameManager.Instance.opponentsAvatars[index];
+        playerObjects[index].name = names[index];
+        playerObjects[index].id = PlayersIDs[index];
+        playerObjects[index].avatar = avatars[index];
+        ActivePlayers[index + 1].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[index].name;
     }
 
     void LateJoinedStart()
