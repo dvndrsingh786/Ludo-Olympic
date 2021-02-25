@@ -18,17 +18,12 @@ public class TempGameManager : MonoBehaviour
 
     void Start()
     {
-        Debug.LogError("1");
         PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeoutLong;
         tempGM = this;
-        Debug.LogError("2");
-
         if (GameManager.Instance.type == MyGameType.Private)
         {
             ReferenceManager.refMngr.ChangeWinningAmountManually(GameManager.Instance.currentBetAmount, PhotonNetwork.room.PlayerCount);
         }
-        Debug.LogError("3");
-
         if (PhotonNetwork.inRoom)
         {
             if (PhotonNetwork.room.CustomProperties != null)
@@ -39,7 +34,6 @@ public class TempGameManager : MonoBehaviour
                 }
             }
         }
-        Debug.LogError("4");
         if (PlayerPrefs.GetInt("IsSoundEffect", 1) == 1)
         {
             SetEffectToMute(false);
@@ -117,7 +111,7 @@ public class TempGameManager : MonoBehaviour
     {
         if (pauseStatus == false)
         {
-            IamBackRPC();
+            //IamBackRPC();
         }
         Debug.LogWarning("On Application pause: " + pauseStatus);
     }

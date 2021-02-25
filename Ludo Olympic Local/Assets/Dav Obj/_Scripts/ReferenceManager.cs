@@ -43,6 +43,9 @@ public class ReferenceManager : MonoBehaviour
     public string secondPlacePrize;
     public string thirdPlacePrize;
 
+    public string[] onlinePlayersNames = new string[4];
+    public List<string> botsAdded;
+
 
     void Start()
     {
@@ -205,6 +208,9 @@ public class ReferenceManager : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
+            //Debug.LogError("Name: " + GameManager.Instance.nameMy);
+            //Debug.LogError("Name: " + GameManager.playerName);
+            //Debug.LogError("Name: " + GameManager.emailId);
             //Debug.LogWarning("Current Bet: " + GameManager.Instance.currentBetAmount);
             //Debug.LogWarning("Table: " + GetTableValue(GameManager.Instance.currentBetAmount, GameManager.Instance.currentWinningAmount));
             //Debug.LogError(GameManager.paytmNumber);

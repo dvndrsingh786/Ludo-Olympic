@@ -424,7 +424,36 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         Debug.Log("Step3");
         GameManager.Instance.opponentsAvatars[i] = avatarSprites[UnityEngine.Random.Range(0, avatarSprites.Length - 1)];
         GameManager.Instance.opponentsIDs[i] = "_BOT" + i;
-        GameManager.Instance.opponentsNames[i] = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)]; //"Guest" + UnityEngine.Random.Range (100000, 999999);
+        string botName = "";
+        bool foundName = false;
+        for (int j = 0; j < ReferenceManager.refMngr.onlinePlayersNames.Length; j++)
+        {
+            if (ReferenceManager.refMngr.onlinePlayersNames[j] != null && ReferenceManager.refMngr.onlinePlayersNames[j] != "")
+            {
+                if (!ReferenceManager.refMngr.botsAdded.Contains(ReferenceManager.refMngr.onlinePlayersNames[j]))
+                {
+                    foundName = true;
+                    botName = ReferenceManager.refMngr.onlinePlayersNames[j];
+                    ReferenceManager.refMngr.botsAdded.Add(ReferenceManager.refMngr.onlinePlayersNames[j]);
+                    break;
+                }
+            }
+        }
+        if (!foundName)
+        {
+            botName = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];
+            Debug.LogError("BOT NAME: " + botName);
+        }
+        if (GameManager.Instance.type == MyGameType.TwoPlayer && !GameManager.Instance.isLocalMultiplayer)
+        {
+            GameManager.Instance.opponentsNames[i] = botName;
+            Debug.LogError("BOT NAME: " + botName);
+        }
+        else
+        {
+            GameManager.Instance.opponentsNames[i] = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];//"Guest" + UnityEngine.Random.Range (100000, 999999);
+            Debug.LogError("BOT NAME: " + GameManager.Instance.opponentsNames[i]);
+        } 
         Debug.Log("Name: " + GameManager.Instance.opponentsNames[i]);
         Debug.Log(GameManager.Instance.isLocalMultiplayer);
        if (!GameManager.Instance.isLocalMultiplayer)

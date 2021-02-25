@@ -18,18 +18,18 @@ using System.Security.Authentication.ExtendedProtection;
 public class APIManager : MonoBehaviour
 {
     [Header("SignUp Object")]
-    
+
     public InputField _nameWithdraw;
     public InputField _amountWithdraw;
     public InputField _mobileNumberWithdraw;
-    
+
     [Header("Login Object")]
     public TMP_InputField _password;
     public TMP_InputField _emailId;
 
     [Header("Forgot Password Object")]
     public InputField _forgotPasswordEmail;
-    public Text ferrorText,withdrwal;
+    public Text ferrorText, withdrwal;
     public Text cerrorText;
     public InputField changeForgetPasswordEmail;
     public InputField otp;
@@ -45,7 +45,7 @@ public class APIManager : MonoBehaviour
     public Text fourWonTxt;
     public Text gamesWonTxt;
     public Text playerNameTxt;
-    
+
     [Header("SignUp Object")]
 
     public TMP_InputField _name;
@@ -56,16 +56,16 @@ public class APIManager : MonoBehaviour
     public TMP_InputField _year;
     public TMP_InputField _mobileNumber;
     public TMP_InputField _emailIdR;
-           
+
     [Header("Coins Request ")]
 
     public InputField _requestCoins;
-        
+
     [Header("Payment Data")]
-    
+
     public Transform contentPanel;
     public GameObject paymentData, scrollPanel;
-    
+
     [Header("Common")]
     public Text errorMsg, coinsInfo, loginerror;
     public GameObject SignupPanel;
@@ -73,7 +73,7 @@ public class APIManager : MonoBehaviour
     public Image loginBtn;
     public Image signupBtn;
     public GameObject withdrawPanel;
-    public GameObject storePanel,notificationPanel,choosePanel,successPanel, addMoneyView, addCoinsNofitications;
+    public GameObject storePanel, notificationPanel, choosePanel, successPanel, addMoneyView, addCoinsNofitications;
     public string fullname;
     public GameObject playerStatsPanel;
     public GameObject paymentHistoryPanel;
@@ -86,12 +86,12 @@ public class APIManager : MonoBehaviour
     public Button[] WithdrawBtn;
     public Text MinimumText;
 
-    [Header ("KYC Attibute")]
+    [Header("KYC Attibute")]
 
     public RawImage adharFront;
     public RawImage adharBack;
     public RawImage pancard;
-  
+
     public string image1;
     public string image2;
     public string image3;
@@ -124,7 +124,7 @@ public class APIManager : MonoBehaviour
     public Text newTotalBalance;
     public Text newAddedAmount;
     public Text newWithdrawableAmount;
-    
+
     int age;
     public string dob;
     string userName;
@@ -135,13 +135,13 @@ public class APIManager : MonoBehaviour
     string url;
 
     NewGameManager newGameManager;
-    
+
     private string getBettingApi = GameManager.apiBase1 + "betting";
 
     private string getBotDifficulty = "https://onlystore.in/ludomoney/api/gamedifficulty.php";
 
     private string getBotAvailiblity = "https://onlystore.in/ludomoney/api/botswinning.php";
-    
+
     public const string MatchEmailPattern =
       @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
       + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
@@ -174,7 +174,7 @@ public class APIManager : MonoBehaviour
     {
         isFirstTimeLogin = false;
         StartCoroutine(OpenLogin());
-        StartCoroutine (LoginMenu());
+        StartCoroutine(LoginMenu());
         newGameManager = FindObjectOfType<NewGameManager>();
         if (PlayerPrefs.GetInt("Muted", 0) == 0)
         {
@@ -201,23 +201,23 @@ public class APIManager : MonoBehaviour
     {
         // Make sure user is on Android platform
 
-            if (Application.platform == RuntimePlatform.Android)
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            //AndroidJavaObject activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
+            //activity.Call<bool>("moveTaskToBack", true);
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                //AndroidJavaObject activity = new AndroidJavaClass("com.unity3d.player.UnityPlayer").GetStatic<AndroidJavaObject>("currentActivity");
-                //activity.Call<bool>("moveTaskToBack", true);
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
 
-                    // Quit the application
-                    //Application.Quit();
-                 
-                }
-            }
-            else
-            {
+                // Quit the application
                 //Application.Quit();
+
             }
-      
+        }
+        else
+        {
+            //Application.Quit();
+        }
+
     }
 
     private string results;
@@ -239,11 +239,11 @@ public class APIManager : MonoBehaviour
             choosePanel.SetActive(false);
             GameManager.Instance.userID = PlayerPrefs.GetString("Logintoken");
             Debug.Log("has key");
-           
-           
+
+
             LoginPanel.SetActive(false);
             choosePanel.SetActive(false);
-           // yield return new WaitForSeconds(5f);
+            // yield return new WaitForSeconds(5f);
             //OnPlayerProfileData();
             //CloseSplash();
             Invoke("Delayforloading", 0.01f);
@@ -270,7 +270,7 @@ public class APIManager : MonoBehaviour
     public void OnLoginBtnClick()
     {
 
-       // url = "http://onlystore.in/ludomoney/api/login_user.php?mobile=" + _emailId.text + "&password=" + _password.text;
+        // url = "http://onlystore.in/ludomoney/api/login_user.php?mobile=" + _emailId.text + "&password=" + _password.text;
         url = GameManager.apiBase1 + "login";
 
         if (string.IsNullOrEmpty(_emailId.text))
@@ -290,11 +290,11 @@ public class APIManager : MonoBehaviour
         }
         Debug.Log(url);
         WWWForm form = new WWWForm();
-        form.AddField("username",_emailId.text);
-        form.AddField("password",_password.text);
+        form.AddField("username", _emailId.text);
+        form.AddField("password", _password.text);
         CloseSplash();
         Debug.Log("userName" + _emailId.text);
-        Debug.Log("Paas"+_password.text);
+        Debug.Log("Paas" + _password.text);
         WWW w = new WWW(url, form);
         loadinPanel.SetActive(true);
         StartCoroutine(LoginAPI(w));
@@ -305,7 +305,7 @@ public class APIManager : MonoBehaviour
     IEnumerator LoginAPI(WWW _w)
     {
         yield return _w;
-         print("responce=" + _w.text);
+        print("responce=" + _w.text);
         if (_w.error == null)
         {
 
@@ -315,7 +315,7 @@ public class APIManager : MonoBehaviour
             msg = msg.Replace("[", "");
             msg = msg.Replace("]", "");
             msg = msg.Replace(@"""", string.Empty);
-            
+
             results = GetDataValue(msg, "message:");
             status = GetDataValue(msg, "status:");
             GameManager.Instance.nameMy = GetDataValue(msg, "username:");
@@ -345,13 +345,13 @@ public class APIManager : MonoBehaviour
                 GameManager.Instance.userID = GetDataValue(msg, "my_referral_code:");
                 GameManager.Uid = GetDataValue(msg, "uid:");
                 GameManager.friendrefferalCode = GetDataValue(msg, "reference_code:");
-                
+
                 Debug.Log("UID" + GameManager.Uid);
                 Debug.Log("codeRR" + GameManager.friendrefferalCode);
                 Debug.Log("my_referral_code " + GameManager.Instance.userID);
                 PlayerPrefs.SetString("Logintoken", GameManager.Instance.userID);
 
-                
+
                 // Reedem Amount Data...!!!
                 JsonData jsonvale = JsonMapper.ToObject(_w.text);
 
@@ -371,33 +371,33 @@ public class APIManager : MonoBehaviour
                 phoneNumber.text = GameManager.mobileNumber;
                 playerName.text = GameManager.playerName;
 
-                Debug.Log("Name"+ GameManager.playerName);
-                Debug.Log("Mobile"+GameManager.mobileNumber);
-                Debug.Log("Emaild"+GameManager.emailId);
-                   pytmNumber = (jsonvale["result_push"][0]["paytm"].ToString());
-                    GameManager.paytmNumber = pytmNumber;
-                    Debug.Log("Pytm" + GameManager.paytmNumber);
+                Debug.Log("Name" + GameManager.playerName);
+                Debug.Log("Mobile" + GameManager.mobileNumber);
+                Debug.Log("Emaild" + GameManager.emailId);
+                pytmNumber = (jsonvale["result_push"][0]["paytm"].ToString());
+                GameManager.paytmNumber = pytmNumber;
+                Debug.Log("Pytm" + GameManager.paytmNumber);
 
 
-                    upi = (jsonvale["result_push"][0]["upi"].ToString());
-                    GameManager.upiID = upi;
-                    Debug.Log("UPI" + GameManager.upiID);
+                upi = (jsonvale["result_push"][0]["upi"].ToString());
+                GameManager.upiID = upi;
+                Debug.Log("UPI" + GameManager.upiID);
 
 
-                    bank = (jsonvale["result_push"][0]["bank_name"].ToString());
-                    GameManager.bankName = bank;
-                    Debug.Log("bank" + GameManager.bankName);
+                bank = (jsonvale["result_push"][0]["bank_name"].ToString());
+                GameManager.bankName = bank;
+                Debug.Log("bank" + GameManager.bankName);
 
 
 
-                    ifscCode = (jsonvale["result_push"][0]["ifsc_code"].ToString());
-                    GameManager.bankIfscCode = ifscCode;
-                    Debug.Log("IFSC" + GameManager.bankIfscCode);
+                ifscCode = (jsonvale["result_push"][0]["ifsc_code"].ToString());
+                GameManager.bankIfscCode = ifscCode;
+                Debug.Log("IFSC" + GameManager.bankIfscCode);
 
 
-                    accoutnumber = (jsonvale["result_push"][0]["account"].ToString());
-                    GameManager.accountNumber = accoutnumber;
-                    Debug.Log("IFSC" + GameManager.accountNumber);
+                accoutnumber = (jsonvale["result_push"][0]["account"].ToString());
+                GameManager.accountNumber = accoutnumber;
+                Debug.Log("IFSC" + GameManager.accountNumber);
 
 
                 // Player Profile Data..!!!
@@ -426,7 +426,7 @@ public class APIManager : MonoBehaviour
                 newWithdrawableAmount.text = GameManager.withdraw;
                 LoadingPage.SetActive(true);
                 SceneManager.LoadScene("MenuScene");
-               
+
                 GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
                 if (jsonvale["result_push"][0]["aadhar_first"].ToString() != "0")
                 {
@@ -500,7 +500,7 @@ public class APIManager : MonoBehaviour
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
                 nameP.text = GameManager.playerName;
             }
-            if(results == "wrong username and password" || status =="False")
+            if (results == "wrong username and password" || status == "False")
             {
                 loginerror.text = results;
                 loadinPanel.SetActive(false);
@@ -516,13 +516,13 @@ public class APIManager : MonoBehaviour
                 StopCoroutine(ErrorClose());
                 StartCoroutine(ErrorClose());
             }
-            if (status == "false"|| results == "Login Fail")
+            if (status == "false" || results == "Login Fail")
             {
-                loginerror.text =results;
+                loginerror.text = results;
                 loadinPanel.SetActive(false);
                 StopCoroutine(ErrorClose());
                 StartCoroutine(ErrorClose());
-     
+
             }
             else
             {
@@ -533,14 +533,14 @@ public class APIManager : MonoBehaviour
         }
         else
         {
-          
+
             loginerror.text = "Invalid Login";
             Debug.Log("error");
             loadinPanel.SetActive(false);
             StopCoroutine(ErrorClose());
             StartCoroutine(ErrorClose());
         }
-       
+
     }
 
     #region Social Media Login
@@ -654,6 +654,22 @@ public class APIManager : MonoBehaviour
                     ActiveGamInfo temp = new ActiveGamInfo();
                     temp.game_id = jsonvale1["result_push"][i]["game_id"].ToString();
                     temp.game_room_id = jsonvale1["result_push"][i]["game_room_id"].ToString();
+                    if (jsonvale1["result_push"][i]["first_player"].ToString() != null)
+                    {
+                        temp.first_Player_Name = jsonvale1["result_push"][i]["first_player"].ToString();
+                    }
+                    if (jsonvale1["result_push"][i]["second_player"].ToString() != null)
+                    {
+                        temp.second_Player_Name = jsonvale1["result_push"][i]["second_player"].ToString();
+                    }
+                    if (jsonvale1["result_push"][i]["third_player"].ToString() != null)
+                    {
+                        temp.third_Player_Name = jsonvale1["result_push"][i]["third_player"].ToString();
+                    }
+                    if (jsonvale1["result_push"][i]["fourth_player"].ToString() != null)
+                    {
+                        temp.fourth_Player_Name = jsonvale1["result_push"][i]["fourth_player"].ToString();
+                    }
                     GameManager.activeGameInfo.Add(temp);
                 }
 
@@ -685,7 +701,7 @@ public class APIManager : MonoBehaviour
 
                 bank = (jsonvale["result_push"][0]["bank_name"].ToString());
                 GameManager.bankName = bank;
-                if(bank!="" && bank != null)
+                if (bank != "" && bank != null)
                 {
                     bankeDetailIP.text = "Verified";
                     bankDetailButtonText.text = "Edit";
@@ -991,7 +1007,7 @@ public class APIManager : MonoBehaviour
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                 }
-                    UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+                UIFlowHandler.uihandler.loadingPanel.SetActive(false);
             }
             else
             {
@@ -1127,6 +1143,22 @@ public class APIManager : MonoBehaviour
                     ActiveGamInfo temp = new ActiveGamInfo();
                     temp.game_id = jsonvale1["result_push"][i]["game_id"].ToString();
                     temp.game_room_id = jsonvale1["result_push"][i]["game_room_id"].ToString();
+                    if (jsonvale1["result_push"][i]["first_player"].ToString() != null)
+                    {
+                        temp.first_Player_Name = jsonvale1["result_push"][i]["first_player"].ToString();
+                    }
+                    if (jsonvale1["result_push"][i]["second_player"].ToString() != null)
+                    {
+                        temp.second_Player_Name = jsonvale1["result_push"][i]["second_player"].ToString();
+                    }
+                    if (jsonvale1["result_push"][i]["third_player"].ToString() != null)
+                    {
+                        temp.third_Player_Name = jsonvale1["result_push"][i]["third_player"].ToString();
+                    }
+                    if (jsonvale1["result_push"][i]["fourth_player"].ToString() != null)
+                    {
+                        temp.fourth_Player_Name = jsonvale1["result_push"][i]["fourth_player"].ToString();
+                    }
                     GameManager.activeGameInfo.Add(temp);
                 }
 
@@ -1350,7 +1382,7 @@ public class APIManager : MonoBehaviour
         form.AddField("password", "QAZWSX");
         form.AddField("fullname", phoneEmail.Remove(0, 2));
         form.AddField("dob", "01" + "-" + "01" + "-" + "1990");
-        form.AddField("mobile", phoneEmail.Remove(0,2));
+        form.AddField("mobile", phoneEmail.Remove(0, 2));
         string prefix = emailNames[UnityEngine.Random.Range(1, 6).ToString()].ToString();
         string email = prefix + UnityEngine.Random.Range(10000000, 99999999) + "@gmail.com";
         form.AddField("email", email.ToString());
@@ -1510,7 +1542,7 @@ public class APIManager : MonoBehaviour
 
     string userStatus;
     public void OnRegisterBtnClick()
-     {   
+    {
         if (string.IsNullOrEmpty(_name.text))
         {
             Debug.LogError("Name");
@@ -1519,8 +1551,8 @@ public class APIManager : MonoBehaviour
             StartCoroutine(ErrorClose());
             return;
         }
-        
-        
+
+
         if (string.IsNullOrEmpty(_SignUppassword.text))
         {
             Debug.LogError("Password");
@@ -1529,7 +1561,7 @@ public class APIManager : MonoBehaviour
             StartCoroutine(ErrorClose());
             return;
         }
-        
+
         if (string.IsNullOrEmpty(_confirmPassword.text))
         {
             errorMsg.text = "Full Name Can't be Blank";
@@ -1537,7 +1569,7 @@ public class APIManager : MonoBehaviour
             StartCoroutine(ErrorClose());
             return;
         }
-       
+
         if (string.IsNullOrEmpty(_date.text))
         {
             errorMsg.text = "DOB Can't be Blank";
@@ -1559,7 +1591,7 @@ public class APIManager : MonoBehaviour
             StartCoroutine(ErrorClose());
             return;
         }
-     
+
         if (string.IsNullOrEmpty(_mobileNumber.text))
         {
             errorMsg.text = "Mobile Number Can't be Blank";
@@ -1576,72 +1608,72 @@ public class APIManager : MonoBehaviour
         }
 
         dob = _date.text + "-" + _month.text + "-" + _year.text;
-            Debug.Log("Invalid Birth Day");
-            int Todaydate =int.Parse(DateTime.Now.ToString("dd"));
-            int TodayMOnth =int.Parse(DateTime.Now.ToString("MM"));
-            int TodayYear =int.Parse(DateTime.Now.ToString("yyyy"));
-       
+        Debug.Log("Invalid Birth Day");
+        int Todaydate = int.Parse(DateTime.Now.ToString("dd"));
+        int TodayMOnth = int.Parse(DateTime.Now.ToString("MM"));
+        int TodayYear = int.Parse(DateTime.Now.ToString("yyyy"));
+
         print("Today Date time line" + Todaydate + TodayMOnth + TodayYear);
-            if (Todaydate>= int.Parse(_date.text))
+        if (Todaydate >= int.Parse(_date.text))
+        {
+            if (TodayMOnth >= int.Parse(_month.text))
             {
-                if(TodayMOnth>=int.Parse(_month.text))
+                if (TodayYear >= int.Parse(_year.text))
                 {
-                    if(TodayYear>=int.Parse(_year.text))
-                    {
                     print("Simple calculation");
                     print("age " + (TodayYear - int.Parse(_year.text)));
                     age = (TodayYear - int.Parse(_year.text));
-                    }
-                }
-                else
-                {
-                  print("Year deducation");
-                   TodayYear--;
-                    TodayMOnth += 12;
-                    if (TodayYear >= int.Parse(_year.text))
-                    {
-                        print("age " + (TodayYear - int.Parse(_year.text)));
-                    age = (TodayYear - int.Parse(_year.text));
-                    }
-
                 }
             }
             else
             {
-              
-                TodayMOnth--;
-                Todaydate += 30;
-            print("Month deducation"+TodayMOnth+"compare with " + int.Parse(_month.text));
-            if (TodayMOnth >= int.Parse(_month.text))
-                {
-                    if (TodayYear >= int.Parse(_year.text))
-                    {
-                        print("age " + (TodayYear - int.Parse(_year.text)));
-                    age = (TodayYear - int.Parse(_year.text));
-                    }
-                }
-                else
-                {
                 print("Year deducation");
-                    TodayYear--;
-                    TodayMOnth += 12;
-                    if (TodayYear >= int.Parse(_year.text))
-                    {
-                        print("age " + (TodayYear - int.Parse(_year.text)));
-                        age = (TodayYear - int.Parse(_year.text));
-                    }
-
+                TodayYear--;
+                TodayMOnth += 12;
+                if (TodayYear >= int.Parse(_year.text))
+                {
+                    print("age " + (TodayYear - int.Parse(_year.text)));
+                    age = (TodayYear - int.Parse(_year.text));
                 }
 
             }
-        
+        }
+        else
+        {
+
+            TodayMOnth--;
+            Todaydate += 30;
+            print("Month deducation" + TodayMOnth + "compare with " + int.Parse(_month.text));
+            if (TodayMOnth >= int.Parse(_month.text))
+            {
+                if (TodayYear >= int.Parse(_year.text))
+                {
+                    print("age " + (TodayYear - int.Parse(_year.text)));
+                    age = (TodayYear - int.Parse(_year.text));
+                }
+            }
+            else
+            {
+                print("Year deducation");
+                TodayYear--;
+                TodayMOnth += 12;
+                if (TodayYear >= int.Parse(_year.text))
+                {
+                    print("age " + (TodayYear - int.Parse(_year.text)));
+                    age = (TodayYear - int.Parse(_year.text));
+                }
+
+            }
+
+        }
+
         if (age <= 17)
         {
             error.SetActive(true);
             disText.text = "You are not +18.";
             return;
         }
-      
+
         url = GameManager.apiBase1 + "signup";
         Debug.Log(url);
 
@@ -1649,37 +1681,37 @@ public class APIManager : MonoBehaviour
         form.AddField("username", _name.text);
         form.AddField("password", _SignUppassword.text);
         form.AddField("fullname", _confirmPassword.text);
-        form.AddField("dob",_date.text+"-"+_month.text+"-"+_year.text);
-        form.AddField("mobile",_mobileNumber.text);
+        form.AddField("dob", _date.text + "-" + _month.text + "-" + _year.text);
+        form.AddField("mobile", _mobileNumber.text);
         form.AddField("email", _emailIdR.text);
         form.AddField("vcode", Application.version);
-        form.AddField("token","sjdsak121");
-        Debug.Log("Password"+ _SignUppassword.text);
+        form.AddField("token", "sjdsak121");
+        Debug.Log("Password" + _SignUppassword.text);
         Debug.Log("confirm_password" + _confirmPassword.text);
-        WWW w = new WWW(url,form);
+        WWW w = new WWW(url, form);
         loadinPanel.SetActive(true);
         GameManager.mobileNumber = _mobileNumber.text;
-        Debug.Log("MobileNum"+GameManager.mobileNumber);
-        StartCoroutine(Signup_time(w));  
-     }
+        Debug.Log("MobileNum" + GameManager.mobileNumber);
+        StartCoroutine(Signup_time(w));
+    }
 
     IEnumerator Signup_time(WWW _w)
     {
         CloseSplash();
         yield return _w;
-      
-       print("responce=" + _w.text);
+
+        print("responce=" + _w.text);
         if (_w.error == null)
         {
             JsonData jsonvale = JsonMapper.ToObject(_w.text);
             //  string userID = jsonvale["result_push"][0]["my_referral_id"].ToString();
             string results = jsonvale["result_push"][0]["message"].ToString();
             status = jsonvale["result_push"][0]["status"].ToString();
-            string user= jsonvale["result_push"][0]["username"].ToString();
-             userStatus= jsonvale["result_push"][0]["status"].ToString();
+            string user = jsonvale["result_push"][0]["username"].ToString();
+            userStatus = jsonvale["result_push"][0]["status"].ToString();
             //Debug.LogError("VErsion: " + jsonvale["result_push"][0]["version"].ToString());
             GameManager.friendrefferalCode = jsonvale["result_push"][0]["reference_code"].ToString();
-            Debug.Log("Code"+ GameManager.friendrefferalCode);
+            Debug.Log("Code" + GameManager.friendrefferalCode);
             Debug.Log(results);
             // GameManager.Instance.nameMy = GetDataValue(msg, "fullname:");
             // GameManager.Instance.avatarMyIndex = UnityEngine.Random.Range(0, 22);
@@ -1688,13 +1720,13 @@ public class APIManager : MonoBehaviour
 
             if (results == "Registration successfull" || status == "True")
             {
-               
-               // SceneManager.LoadScene ("MenuScene");
-              //  LoginPanel.SetActive(true);
+
+                // SceneManager.LoadScene ("MenuScene");
+                //  LoginPanel.SetActive(true);
                 SignupPanel.SetActive(false);
                 loadinPanel.SetActive(false);
                 successPanel.SetActive(true);
-                Invoke(nameof(RegisterDone),2);
+                Invoke(nameof(RegisterDone), 2);
                 //  CloseSplash();
                 //  ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new   ExitGames.Client.Photon.Hashtable() {{"name", GameManager.Instance.nameMy},{"avatarId",  GameManager.Instance.avatarMyIndex}};
                 //  PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
@@ -1739,9 +1771,9 @@ public class APIManager : MonoBehaviour
                 StartCoroutine(ErrorClose());
             }
             Debug.Log("error");
-                Debug.Log(results);
+            Debug.Log(results);
             GetErrors abc = JsonUtility.FromJson<GetErrors>(_w.text);
-                errorMsg.text = abc.errors[0]; 
+            errorMsg.text = abc.errors[0];
             loadinPanel.SetActive(false);
             StopCoroutine(ErrorClose());
             StartCoroutine(ErrorClose());
@@ -1776,11 +1808,11 @@ public class APIManager : MonoBehaviour
             Debug.LogError("Catch for version called");
         }
         userName = jsonvale["result_push"][0]["username"].ToString();
-        float coin =float.Parse(jsonvale["result_push"][0]["coins"].ToString());
+        float coin = float.Parse(jsonvale["result_push"][0]["coins"].ToString());
         GameManager.Uid = jsonvale["result_push"][0]["uid"].ToString();
         GameManager.friendrefferalCode = jsonvale["result_push"][0]["reference_code"].ToString();
-        GameManager.onlineAmount= jsonvale["result_push"][0]["online_amount"].ToString();
-        GameManager.offlineAmount= jsonvale["result_push"][0]["offline_amount"].ToString();
+        GameManager.onlineAmount = jsonvale["result_push"][0]["online_amount"].ToString();
+        GameManager.offlineAmount = jsonvale["result_push"][0]["offline_amount"].ToString();
         string activePlayer = jsonvale["result_push"][0]["active_game_info"].ToJson();
         activePlayer = "{\"result_push\":" + activePlayer + "}";
         ///*LiveGameInfo myobj = */
@@ -1789,8 +1821,24 @@ public class APIManager : MonoBehaviour
         for (int i = 0; i < jsonvale1["result_push"].Count; i++)
         {
             ActiveGamInfo temp = new ActiveGamInfo();
-            temp.game_id= jsonvale1["result_push"][i]["game_id"].ToString();
-            temp.game_room_id= jsonvale1["result_push"][i]["game_room_id"].ToString();
+            temp.game_id = jsonvale1["result_push"][i]["game_id"].ToString();
+            temp.game_room_id = jsonvale1["result_push"][i]["game_room_id"].ToString();
+            if (jsonvale1["result_push"][i]["first_player"].ToString() != null)
+            {
+                temp.first_Player_Name = jsonvale1["result_push"][i]["first_player"].ToString();
+            }
+            if (jsonvale1["result_push"][i]["second_player"].ToString() != null)
+            {
+                temp.second_Player_Name = jsonvale1["result_push"][i]["second_player"].ToString();
+            }
+            if (jsonvale1["result_push"][i]["third_player"].ToString() != null)
+            {
+                temp.third_Player_Name = jsonvale1["result_push"][i]["third_player"].ToString();
+            }
+            if (jsonvale1["result_push"][i]["fourth_player"].ToString() != null)
+            {
+                temp.fourth_Player_Name = jsonvale1["result_push"][i]["fourth_player"].ToString();
+            }
             GameManager.activeGameInfo.Add(temp);
         }
         //Debug.LogError("YAYYY WORKINGGGG : :  : : " + myobj.gameId[0]);
@@ -1825,7 +1873,7 @@ public class APIManager : MonoBehaviour
         }
         else KYCpanStatus = "Verified";
         string tempStatus = jsonvale["result_push"][0]["kyc_status"].ToString();
-        
+
         if (tempStatus == "0") KYCStatus = "Pending";
         else if (tempStatus == "1") KYCStatus = "Verified";
         else if (tempStatus == "2") KYCStatus = "Rejected";
@@ -1833,15 +1881,15 @@ public class APIManager : MonoBehaviour
         // Reedem Amount Data...!!!
 
         pytmNumber = (jsonvale["result_push"][0]["paytm"].ToString());
-            GameManager.paytmNumber = pytmNumber;
-           // Debug.Log("Pytm" + GameManager.paytmNumber);
+        GameManager.paytmNumber = pytmNumber;
+        // Debug.Log("Pytm" + GameManager.paytmNumber);
 
-            upi = (jsonvale["result_push"][0]["upi"].ToString());
-            GameManager.upiID = upi;
-           // Debug.Log("UPI" + GameManager.upiID);
+        upi = (jsonvale["result_push"][0]["upi"].ToString());
+        GameManager.upiID = upi;
+        // Debug.Log("UPI" + GameManager.upiID);
 
-            bank = (jsonvale["result_push"][0]["bank_name"].ToString());
-            GameManager.bankName = bank;
+        bank = (jsonvale["result_push"][0]["bank_name"].ToString());
+        GameManager.bankName = bank;
         // Debug.Log("bank" + GameManager.bankName);
         if (bank != "" && bank != null)
         {
@@ -1850,12 +1898,12 @@ public class APIManager : MonoBehaviour
         }
 
         ifscCode = (jsonvale["result_push"][0]["ifsc_code"].ToString());
-            GameManager.bankIfscCode = ifscCode;
-           // Debug.Log("IFSC" + GameManager.bankIfscCode);
+        GameManager.bankIfscCode = ifscCode;
+        // Debug.Log("IFSC" + GameManager.bankIfscCode);
 
-            accoutnumber = (jsonvale["result_push"][0]["account"].ToString());
-            GameManager.accountNumber = accoutnumber;
-            //Debug.Log("IFSC" + GameManager.accountNumber);
+        accoutnumber = (jsonvale["result_push"][0]["account"].ToString());
+        GameManager.accountNumber = accoutnumber;
+        //Debug.Log("IFSC" + GameManager.accountNumber);
 
 
 
@@ -1863,20 +1911,20 @@ public class APIManager : MonoBehaviour
 
         mainAccountBalance.text = coin.ToString();
 
-        GameManager.depositAmount= jsonvale["result_push"][0]["deposite_amount"].ToString();
-        totalDeposit.text=GameManager.depositAmount;
+        GameManager.depositAmount = jsonvale["result_push"][0]["deposite_amount"].ToString();
+        totalDeposit.text = GameManager.depositAmount;
 
         GameManager.withdraw = jsonvale["result_push"][0]["withdraw_amount"].ToString();
-        totalWithDrawal.text= GameManager.withdraw;
+        totalWithDrawal.text = GameManager.withdraw;
 
         GameManager.gamesWon = jsonvale["result_push"][0]["games_won"].ToString();
-        totalgamePlay.text= GameManager.gamesWon;
+        totalgamePlay.text = GameManager.gamesWon;
 
         GameManager.cashWon = jsonvale["result_push"][0]["cash_won"].ToString();
-        totalCashWin.text= GameManager.cashWon;
+        totalCashWin.text = GameManager.cashWon;
 
         GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
-        nameP.text= GameManager.playerName;
+        nameP.text = GameManager.playerName;
 
         playername.text = GameManager.playerName;
         // kyc Verification...!!!!
@@ -1884,27 +1932,27 @@ public class APIManager : MonoBehaviour
         newTotalBalance.text = GameManager.Instance.coinsCount.ToString();
         newAddedAmount.text = GameManager.depositAmount;
         newWithdrawableAmount.text = GameManager.withdraw;
-        Debug.Log("Profile Plan"+GameManager.Uid);
+        Debug.Log("Profile Plan" + GameManager.Uid);
         GameManager.Instance.nameMy = userName;
         GameManager.Instance.avatarMyIndex = UnityEngine.Random.Range(0, 22);
-        GameManager.Instance.avatarMy = GameManager.Instance.playfabManager.staticGameVariables.avatars[ GameManager.Instance.avatarMyIndex];
-        ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new   ExitGames.Client.Photon.Hashtable() {{"name", GameManager.Instance.nameMy},{"avatarId",  GameManager.Instance.avatarMyIndex}};
+        GameManager.Instance.avatarMy = GameManager.Instance.playfabManager.staticGameVariables.avatars[GameManager.Instance.avatarMyIndex];
+        ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex } };
         PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
-        Debug.Log("playername "+   PhotonNetwork.player.CustomProperties["name"]);
+        Debug.Log("playername " + PhotonNetwork.player.CustomProperties["name"]);
         GameManager.Instance.coinsCount = coin;
         LoginPanel.SetActive(false);
         splashCanvas.SetActive(false);
         LoadingPage.SetActive(true);
         GameManager.Instance.playfabManager.splashCanvas.SetActive(false);
-       // GameManager.Instance.playfabManager.Loading.SetActive(false);
+        // GameManager.Instance.playfabManager.Loading.SetActive(false);
         if (SceneManager.GetActiveScene().name != "MenuScene")
             SceneManager.LoadScene("MenuScene");
 
-      
+
 
         GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
         print(jsonvale["result_push"][0]["aadhar_first"].ToString() + "Value1");
-        if (jsonvale["result_push"][0]["aadhar_first"].ToString() !="0")
+        if (jsonvale["result_push"][0]["aadhar_first"].ToString() != "0")
         {
             adharFront.gameObject.SetActive(true);
             UnityWebRequest unityWebRequest = UnityWebRequest.Get(GameManager.adharcardFront);
@@ -1915,7 +1963,7 @@ public class APIManager : MonoBehaviour
             Sprite adharF = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
             adharFront.texture = adharF.texture;
         }
-        else 
+        else
         {
             adharFront.gameObject.SetActive(false);
         }
@@ -1929,9 +1977,9 @@ public class APIManager : MonoBehaviour
             Texture2D tex1 = new Texture2D(2, 2);
             tex1.LoadImage(bytes1);
             Sprite adharB = Sprite.Create(tex1, new Rect(0.0f, 0.0f, tex1.width, tex1.height), new Vector2(0.5f, 0.5f), 100.0f);
-            pancard.texture  = adharB.texture;
+            pancard.texture = adharB.texture;
         }
-        else 
+        else
         {
             adharBack.gameObject.SetActive(false);
         }
@@ -1948,7 +1996,7 @@ public class APIManager : MonoBehaviour
             Sprite panC = Sprite.Create(tex2, new Rect(0.0f, 0.0f, tex2.width, tex2.height), new Vector2(0.5f, 0.5f), 100.0f);
             adharBack.texture = panC.texture;
         }
-        else 
+        else
         {
             pancard.gameObject.SetActive(false);
         }
@@ -2001,7 +2049,7 @@ public class APIManager : MonoBehaviour
             {
                 item.gameObject.SetActive(false);
             }
-           
+
         }
         addCoinsNofitications.SetActive(true);
         var g = GameObject.FindObjectOfType<WebViewObject>();
@@ -2028,7 +2076,7 @@ public class APIManager : MonoBehaviour
 
     public void GuestLogin()
     {
-                LoginPanel.SetActive(false);
+        LoginPanel.SetActive(false);
         LoadingPage.SetActive(false);
         if (PlayerPrefs.HasKey("coins"))
         {
@@ -2037,9 +2085,9 @@ public class APIManager : MonoBehaviour
         }
         else
         {
-            string guestName ="Guest"+UnityEngine.Random.Range(1000,10000);
-            PlayerPrefs.SetInt("coins",500);
-            PlayerPrefs.SetString("guest",guestName);
+            string guestName = "Guest" + UnityEngine.Random.Range(1000, 10000);
+            PlayerPrefs.SetInt("coins", 500);
+            PlayerPrefs.SetString("guest", guestName);
         }
 
         SceneManager.LoadScene(1);
@@ -2047,19 +2095,19 @@ public class APIManager : MonoBehaviour
         GameManager.Instance.nameMy = PlayerPrefs.GetString("guest");
         GameManager.Instance.userID = GameManager.Instance.nameMy;
         GameManager.Instance.coinsCount = int.Parse(PlayerPrefs.GetString("coins"));
-        
+
         GameManager.Instance.avatarMyIndex = UnityEngine.Random.Range(0, 22);
-        GameManager.Instance.avatarMy = GameManager.Instance.playfabManager.staticGameVariables.avatars[ GameManager.Instance.avatarMyIndex];
-        ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new   ExitGames.Client.Photon.Hashtable() {{"name", GameManager.Instance.nameMy},{"avatarId",  GameManager.Instance.avatarMyIndex}};
+        GameManager.Instance.avatarMy = GameManager.Instance.playfabManager.staticGameVariables.avatars[GameManager.Instance.avatarMyIndex];
+        ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex } };
         PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
 
     }
 
     public void CloseSplash()
-    {  
+    {
         GameManager.Instance.playfabManager.splashCanvas.SetActive(true);
-       // Invoke("CloseSplash", 0.5f);
-       // GameManager.Instance.playfabManager.splashCanvas.SetActive(false);
+        // Invoke("CloseSplash", 0.5f);
+        // GameManager.Instance.playfabManager.splashCanvas.SetActive(false);
     }
     public void Betting()
     {
@@ -2072,46 +2120,22 @@ public class APIManager : MonoBehaviour
         using (WWW www = new WWW(getBettingApi))
         {
             yield return www;
-           // Debug.Log(www.text);
+            // Debug.Log(www.text);
             JsonData jsonvale = JsonMapper.ToObject(www.text);
             GameManager.Instance.initMenuScript.twoPlayerBetting.Clear();
             GameManager.Instance.initMenuScript.fourPlayerBetting.Clear();
             for (int i = 0; i < jsonvale["result_push"].Count; i++)
             {
                 tablevalue = jsonvale["result_push"][i]["table_id"].ToString();
-     
+
                 string playerType = jsonvale["result_push"][i]["betting type"].ToString();
                 if (playerType == "2")
                 {
                     bettingValue = float.Parse(jsonvale["result_push"][i]["betting value "].ToString());
-                    float winningAmount =float.Parse(jsonvale["result_push"][i]["winning amount"].ToString());
-                    Betting b = new Betting(BettingType.TwoPlayer,bettingValue,winningAmount);
+                    float winningAmount = float.Parse(jsonvale["result_push"][i]["winning amount"].ToString());
+                    Betting b = new Betting(BettingType.TwoPlayer, bettingValue, winningAmount);
                     GameManager.Instance.initMenuScript.twoPlayerBetting.Add(b);
                     ReferenceManager.refMngr.SetBets(tablevalue, bettingValue, winningAmount);
-                    if (i == 0)
-                    {
-                   
-                        GameManager.Instance.currentBettingIndex = 0;
-                        GameManager.Instance.currentBetAmount = bettingValue;
-                        GameManager.Instance.currentWinningAmount = winningAmount;
-                        GameManager.Instance.currentBetting = b;
-                        GameManager.Instance.payoutCoins = GameManager.Instance.currentBetAmount;
-                    }
-                  //  Debug.Log("bet amount "+GameManager.Instance.currentBetAmount);
-                }
-                if (playerType == "4")
-                {
-                    float bettingValue = float.Parse(jsonvale["result_push"][i]["betting value "].ToString());
-                    float winningAmount = float.Parse(jsonvale["result_push"][i]["winning amount"].ToString());
-                    //if (bettingValue == 50)
-                    //{
-                    //    bettingValue = 0;
-                    //}
-                    Betting b = new Betting(BettingType.FourPlayer,bettingValue ,winningAmount);
-                    GameManager.Instance.initMenuScript.fourPlayerBetting.Add(b);
-                    tablevalue = jsonvale["result_push"][i]["table_id"].ToString();
-                    ReferenceManager.refMngr.SetBets(tablevalue, bettingValue, winningAmount);
-                  //  Debug.Log("TableNum4Player" + tablevalue);
                     if (i == 0)
                     {
 
@@ -2121,7 +2145,31 @@ public class APIManager : MonoBehaviour
                         GameManager.Instance.currentBetting = b;
                         GameManager.Instance.payoutCoins = GameManager.Instance.currentBetAmount;
                     }
-                 //   Debug.Log("bet amount " + GameManager.Instance.currentBetAmount);
+                    //  Debug.Log("bet amount "+GameManager.Instance.currentBetAmount);
+                }
+                if (playerType == "4")
+                {
+                    float bettingValue = float.Parse(jsonvale["result_push"][i]["betting value "].ToString());
+                    float winningAmount = float.Parse(jsonvale["result_push"][i]["winning amount"].ToString());
+                    //if (bettingValue == 50)
+                    //{
+                    //    bettingValue = 0;
+                    //}
+                    Betting b = new Betting(BettingType.FourPlayer, bettingValue, winningAmount);
+                    GameManager.Instance.initMenuScript.fourPlayerBetting.Add(b);
+                    tablevalue = jsonvale["result_push"][i]["table_id"].ToString();
+                    ReferenceManager.refMngr.SetBets(tablevalue, bettingValue, winningAmount);
+                    //  Debug.Log("TableNum4Player" + tablevalue);
+                    if (i == 0)
+                    {
+
+                        GameManager.Instance.currentBettingIndex = 0;
+                        GameManager.Instance.currentBetAmount = bettingValue;
+                        GameManager.Instance.currentWinningAmount = winningAmount;
+                        GameManager.Instance.currentBetting = b;
+                        GameManager.Instance.payoutCoins = GameManager.Instance.currentBetAmount;
+                    }
+                    //   Debug.Log("bet amount " + GameManager.Instance.currentBetAmount);
                 }
             }
         }
@@ -2132,19 +2180,19 @@ public class APIManager : MonoBehaviour
     {
         StartCoroutine(GetBotDifficulty());
     }
-    
+
     public void BotMatch()
     {
         StartCoroutine(GetBotMatch());
     }
     IEnumerator GetBotMatch()
     {
-        using (WWW www = new WWW(getBotAvailiblity ))
+        using (WWW www = new WWW(getBotAvailiblity))
         {
             yield return www;
             JsonData jsonvale = JsonMapper.ToObject(www.text);
             string isOn = jsonvale["result_push"][0]["botswinning"].ToString();
-            Debug.Log("is on"+isOn);
+            Debug.Log("is on" + isOn);
             if (isOn == "On")
             {
                 GameManager.Instance.isMultiplayerBot = true;
@@ -2158,8 +2206,8 @@ public class APIManager : MonoBehaviour
             Debug.Log(www.text);
         }
     }
-    
-    IEnumerator GetBotDifficulty ()
+
+    IEnumerator GetBotDifficulty()
     {
         using (WWW www = new WWW(getBotDifficulty))
         {
@@ -2167,7 +2215,7 @@ public class APIManager : MonoBehaviour
             Debug.Log(www.text);
             JsonData jsonvale = JsonMapper.ToObject(www.text);
             string isHard = jsonvale["result_push"][0]["difficulty"].ToString();
-            Debug.Log("is hard"+isHard);
+            Debug.Log("is hard" + isHard);
             if (isHard == "Easy")
             {
                 GameManager.Instance.isHard = false;
@@ -2180,7 +2228,7 @@ public class APIManager : MonoBehaviour
     }
     public void DeductCoins(float amount)
     {
-        Debug.Log("Deduct coins"+amount+" "+ GameManager.Instance.coinsCount);
+        Debug.Log("Deduct coins" + amount + " " + GameManager.Instance.coinsCount);
         if (!GameManager.Instance.userID.Contains("Guest"))
         {
             StartCoroutine(DecreaseCoins(amount));
@@ -2207,24 +2255,41 @@ public class APIManager : MonoBehaviour
     }
     IEnumerator DecreaseCoins(float amount)
     {
-        url= GameManager.apiBase1 + "deduction";
+        url = GameManager.apiBase1 + "deduction";
         Debug.Log(url);
         WWWForm form = new WWWForm();
-        form.AddField("user_id",GameManager.Uid);
-        form.AddField("amount",amount.ToString());
-        form.AddField("table_id",tablevalue);
-        Debug.Log("ValueTable"+tablevalue);
-        WWW www = new WWW(url,form);
+        form.AddField("user_id", GameManager.Uid);
+        form.AddField("amount", amount.ToString());
+        form.AddField("table_id", tablevalue);
+        Debug.Log("ValueTable" + tablevalue);
+        WWW www = new WWW(url, form);
         yield return www;
         Debug.Log(www.text);
         //Debug.Log(www.error);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
         status = jsonvale["result_push"][0]["status"].ToString();
         string roomId = jsonvale["result_push"][0]["game_room_id"].ToString();
+        string first_Player_Name = "", second_Player_Name = "", third_Player_Name = "", fourth_Player_Name = "";
+        if (jsonvale["result_push"][0]["first_player"].ToString() != null)
+        {
+            first_Player_Name = jsonvale["result_push"][0]["first_player"].ToString();
+        }
+        if (jsonvale["result_push"][0]["second_player"].ToString() != null)
+        {
+            second_Player_Name = jsonvale["result_push"][0]["second_player"].ToString();
+        }
+        if (jsonvale["result_push"][0]["third_player"].ToString() != null)
+        {
+            third_Player_Name = jsonvale["result_push"][0]["third_player"].ToString();
+        }
+        if (jsonvale["result_push"][0]["fourth_player"].ToString() != null)
+        {
+            fourth_Player_Name = jsonvale["result_push"][0]["fourth_player"].ToString();
+        }
         // Debug.Log(status);
         if (status == "True")
         {
-             GameManager.Instance.coinsCount -= amount;
+            GameManager.Instance.coinsCount -= amount;
             if (isClickedPubButton)
             {
                 isClickedPubButton = false;
@@ -2234,6 +2299,14 @@ public class APIManager : MonoBehaviour
                 ActiveGamInfo temp = new ActiveGamInfo();
                 temp.game_id = tablevalue;
                 temp.game_room_id = roomId;
+                if (first_Player_Name != null)
+                    temp.first_Player_Name = first_Player_Name;
+                if (second_Player_Name != null)
+                    temp.second_Player_Name = second_Player_Name;
+                if (third_Player_Name != null)
+                    temp.third_Player_Name = third_Player_Name;
+                if (fourth_Player_Name != null)
+                    temp.first_Player_Name = fourth_Player_Name;
                 GameManager.activeGameInfo.Add(temp);
                 //ActiveGamInfo
             }
@@ -2267,11 +2340,11 @@ public class APIManager : MonoBehaviour
     }
     public void AddCoins(float amount)
     {
-        Debug.Log("Increase coins"+amount);
+        Debug.Log("Increase coins" + amount);
         if (!GameManager.Instance.userID.Contains("Guest"))
         {
             StartCoroutine(IncreaseCoins(amount));
-            
+
         }
         else
         {
@@ -2279,11 +2352,11 @@ public class APIManager : MonoBehaviour
             PlayerPrefs.SetString("coins", GameManager.Instance.coinsCount.ToString());
         }
     }
-    
+
     IEnumerator IncreaseCoins(float amount)
     {
         Debug.Log("Increase Coins");
-        url= GameManager.apiBase1 + "winning";
+        url = GameManager.apiBase1 + "winning";
 
         WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
@@ -2294,14 +2367,14 @@ public class APIManager : MonoBehaviour
         WWW www = new WWW(url, form);
 
         yield return www;
-//        Debug.Log(www.text);
+        //        Debug.Log(www.text);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
         status = jsonvale["result_push"][0]["status"].ToString();
         if (status == "True")
         {
-            
+
             GameManager.Instance.coinsCount += amount;
-            Debug.Log("Add coins"+amount+" "+ GameManager.Instance.coinsCount);
+            Debug.Log("Add coins" + amount + " " + GameManager.Instance.coinsCount);
         }
     }
     public void OnAmountValueChanged()
@@ -2321,7 +2394,7 @@ public class APIManager : MonoBehaviour
                 }
                 MinimumObject.SetActive(true);
                 MinimumText.text = "#Can only redeem earned coins";
-               // ServiceObject.SetActive(false);
+                // ServiceObject.SetActive(false);
             }
             else if (amount < GameManager.Instance.playfabManager.minimumWithdrawlAmount)
             {
@@ -2331,7 +2404,7 @@ public class APIManager : MonoBehaviour
                 }
                 MinimumObject.SetActive(true);
                 MinimumText.text = "#Minimum Withdrawl Amount is " + GameManager.Instance.playfabManager.minimumWithdrawlAmount;
-               // ServiceObject.SetActive(false);
+                // ServiceObject.SetActive(false);
             }
             else if (amount > GameManager.Instance.winAmount && amount >= GameManager.Instance.playfabManager.minimumWithdrawlAmount)
             {
@@ -2341,7 +2414,7 @@ public class APIManager : MonoBehaviour
                 }
                 MinimumObject.SetActive(true);
                 MinimumText.text = "#Amount should be less or equal to earned coins";
-               // ServiceObject.SetActive(false);
+                // ServiceObject.SetActive(false);
             }
             else
             {
@@ -2350,12 +2423,12 @@ public class APIManager : MonoBehaviour
                     WithdrawBtn[i].interactable = true;
                 }
                 MinimumObject.SetActive(false);
-               // ServiceObject.SetActive(true);
+                // ServiceObject.SetActive(true);
                 MinimumText.text = "";
-               /* serviceTax = ((int)(amount * 0.05f));
-                amountToWithdraw = (amount - (int)(amount * 0.05f));
-                serviceChargeTxt.text = "5%";
-                redeemAmountTxt.text = amountToWithdraw.ToString();*/
+                /* serviceTax = ((int)(amount * 0.05f));
+                 amountToWithdraw = (amount - (int)(amount * 0.05f));
+                 serviceChargeTxt.text = "5%";
+                 redeemAmountTxt.text = amountToWithdraw.ToString();*/
             }
         }
         else
@@ -2365,7 +2438,7 @@ public class APIManager : MonoBehaviour
                 WithdrawBtn[i].interactable = false;
             }
             MinimumObject.SetActive(false);
-          //  ServiceObject.SetActive(false);
+            //  ServiceObject.SetActive(false);
         }
         /*
                     if (amount <= GameManager.Instance.winAmount && amount >= GameManager.Instance.playfabManager.minimumWithdrawlAmount)
@@ -2406,7 +2479,7 @@ public class APIManager : MonoBehaviour
 
     }
     public void OnWithDrawBtnClick()
-     {
+    {
         if (!GameManager.Instance.userID.Contains("Guest"))
         {
             //url = "http://ludo-cash.knickglobal.co.in/public/api/withdrawal";
@@ -2432,16 +2505,16 @@ public class APIManager : MonoBehaviour
                     return;
                 }
             }
-           
+
             Debug.Log(url);
 
             WWWForm form = new WWWForm();
             form.AddField("user_id", GameManager.Uid);
             form.AddField("amount", _amountWithdraw.text);
-            WWW w = new WWW(url,form);
+            WWW w = new WWW(url, form);
             StartCoroutine(Withdraw(w));
         }
-     }
+    }
     IEnumerator Withdraw(WWW _w)
     {
         yield return _w;
@@ -2456,13 +2529,13 @@ public class APIManager : MonoBehaviour
             msg = msg.Replace(@"""", string.Empty);
             results = GetDataValue(msg, "message:");
             status = GetDataValue(msg, "status:");
-           // Debug.Log(results);
-           // Debug.Log(status);
+            // Debug.Log(results);
+            // Debug.Log(status);
             if (results == "Transaction Successfully" || status == "True")
             {
                 withdrawPanel.SetActive(false);
                 notificationPanel.SetActive(true);
-               // loginPanel.SetActive(false);
+                // loginPanel.SetActive(false);
                 _amountWithdraw.text = "";
             }
             else
@@ -2484,16 +2557,16 @@ public class APIManager : MonoBehaviour
         paymentHistoryPanel.SetActive(true);
         StartCoroutine(PaymentList());
     }
-    
+
     IEnumerator PaymentList()
     {
         Dictionary<string, string> headers = new Dictionary<string, string>();
         string url = "https://onlystore.in/api/transaction_history.php?my_referral_code=" + GameManager.Instance.userID;
-       // string url = "https://onlystore.in/ludomoney/api/show-transaction.php?userid=" + "USR101";
+        // string url = "https://onlystore.in/ludomoney/api/show-transaction.php?userid=" + "USR101";
         // Debug.Log(auth);
         WWW www = new WWW(url);
 
-        yield return www;    
+        yield return www;
         Debug.Log(www.text);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
         if (jsonvale["result_push"][0]["transaction_id"] != null)
@@ -2512,8 +2585,8 @@ public class APIManager : MonoBehaviour
                 string date = jsonvale["result_push"][i]["date"].ToString();
                 payment.date.text = date;
                 string game = jsonvale["result_push"][i]["game"].ToString();
-               // payment.game.text = game;
-            
+                // payment.game.text = game;
+
             }
         }
     }
@@ -2525,9 +2598,9 @@ public class APIManager : MonoBehaviour
     {
         if (!GameManager.Instance.userID.Contains("Guest"))
         {
- 
+
             url = "https://onlystore.in/api/client_plan.php";
-            
+
             WWW w = new WWW(url);
             StartCoroutine(RequestPlan(w));
         }
@@ -2535,7 +2608,7 @@ public class APIManager : MonoBehaviour
     IEnumerator RequestPlan(WWW www)
     {
         yield return www;
-      
+
         Debug.Log(www.text);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
         GameManager.Instance.shopCost.Clear();
@@ -2548,7 +2621,7 @@ public class APIManager : MonoBehaviour
             GameManager.Instance.shopCoins.Add(int.Parse(coinsString));
         }
     }
-    
+
     public void ResetPassword()
     {
         string url = GameManager.apiBase1 + "forgot-password";
@@ -2562,25 +2635,25 @@ public class APIManager : MonoBehaviour
         }
         WWWForm form = new WWWForm();
         form.AddField("email", _forgotPasswordEmail.text);
-        WWW www = new WWW(url,form);
+        WWW www = new WWW(url, form);
         StartCoroutine(ForgetPassword(www));
         loadinPanel.SetActive(true);
     }
-    
+
     IEnumerator ForgetPassword(WWW _w)
     {
-      
+
         yield return _w;
         print("response=" + _w.text);
-      
+
         if (_w.error == null)
         {
             JsonData jsonvale = JsonMapper.ToObject(_w.text);
-           results = jsonvale["result_push"].ToString();
+            results = jsonvale["result_push"].ToString();
             status = jsonvale["status"].ToString();
-        
-            Debug.Log("get player info"+ results);
-            if (results== "OTP containing mail sent." || status == "true")
+
+            Debug.Log("get player info" + results);
+            if (results == "OTP containing mail sent." || status == "true")
             {
                 ferrorText.text = "OTP sent to email id";
                 loadinPanel.SetActive(false);
@@ -2600,13 +2673,13 @@ public class APIManager : MonoBehaviour
             Debug.Log("error");
             StopCoroutine(ErrorClose());
             StartCoroutine(ErrorClose());
-           
+
         }
     }
 
     public void OnChangePasswordBtnClick()
     {
-       
+
         if (string.IsNullOrEmpty(changeForgetPasswordEmail.text))
         {
             cerrorText.text = "Email Id Can't be Blank";
@@ -2650,7 +2723,7 @@ public class APIManager : MonoBehaviour
     {
         yield return w;
         print("response=" + w.text);
-       
+
         if (w.error == null)
         {
             string msg = w.text;
@@ -2705,31 +2778,31 @@ public class APIManager : MonoBehaviour
         SignupPanel.SetActive(false);
         GameManager.Instance.playfabManager.splashCanvas.SetActive(false);
     }
-    public void UpdatePlayerStats(int mode ,int gameStatus)
+    public void UpdatePlayerStats(int mode, int gameStatus)
     {
-      //  playerNameTxt.text = GameManager.Instance.nameMy;
-      //  playerStatsPanel.SetActive(true);
+        //  playerNameTxt.text = GameManager.Instance.nameMy;
+        //  playerStatsPanel.SetActive(true);
 
-      if (!GameManager.Instance.userID.Contains("Guest"))
-      {
-          string url = "https://onlystore.in/api/player_stats.php?my_referral_code=" + GameManager.Instance.userID+"&game_mode="+mode+"&game_status="+gameStatus;
-          Debug.Log(url);
-          WWW www = new WWW(url);
-          StartCoroutine(UpdateStats(www));
-      }
+        if (!GameManager.Instance.userID.Contains("Guest"))
+        {
+            string url = "https://onlystore.in/api/player_stats.php?my_referral_code=" + GameManager.Instance.userID + "&game_mode=" + mode + "&game_status=" + gameStatus;
+            Debug.Log(url);
+            WWW www = new WWW(url);
+            StartCoroutine(UpdateStats(www));
+        }
     }
-    
+
     IEnumerator UpdateStats(WWW _w)
     {
-      
+
         yield return _w;
         print("response=" + _w.text);
         if (_w.error == null)
         {
-           JsonData jsonvale = JsonMapper.ToObject(_w.text);
+            JsonData jsonvale = JsonMapper.ToObject(_w.text);
             status = jsonvale["result_push"][0]["status"].ToString();
-        
-            Debug.Log("get player info"+status);
+
+            Debug.Log("get player info" + status);
             if (status == "True")
             {
                 Debug.Log("Stats Updated");
@@ -2744,7 +2817,7 @@ public class APIManager : MonoBehaviour
             Debug.Log("error");
             StopCoroutine(ErrorClose());
             StartCoroutine(ErrorClose());
-           
+
         }
     }
     public void PlayerStats()
@@ -2766,24 +2839,24 @@ public class APIManager : MonoBehaviour
             GameManager.Instance.playfabManager.apiManager.LoginPanel.SetActive(true);
         }
         //  GetPlayerStats(www);
-        
+
     }
-    
+
     IEnumerator GetPlayerStats(WWW _w)
     {
-      
+
         yield return _w;
         print("response=" + _w.text);
         if (_w.error == null)
         {
-           
+
             string msg = _w.text;
             msg = msg.Replace("{", "");
             msg = msg.Replace("}", "");
             msg = msg.Replace("]", "");
             msg = msg.Replace(@"""", string.Empty);
             status = GetDataValue(msg, "status:");
-            Debug.Log("get player info"+status);
+            Debug.Log("get player info" + status);
             if (status == "True")
             {
                 Debug.Log("get player info");
@@ -2794,7 +2867,7 @@ public class APIManager : MonoBehaviour
                 gamesWonTxt.text = gamesWin;
                 twoWonTxt.text = twoWin;
                 fourWonTxt.text = fourWin;
-               
+
             }
             else
             {
@@ -2806,7 +2879,7 @@ public class APIManager : MonoBehaviour
             Debug.Log("error");
             StopCoroutine(ErrorClose());
             StartCoroutine(ErrorClose());
-           
+
         }
     }
 
@@ -2876,7 +2949,7 @@ public class APIManager : MonoBehaviour
         cerrorText.text = "";
         withdrwal.text = "";
         newBankDetailsError.text = "";
-       yield return null;
+        yield return null;
     }
     public void OnBtn()
     {
@@ -3020,7 +3093,8 @@ public class APIManager : MonoBehaviour
     public AudioSource[] soundEffects;
 
 
-    [SerializeField] List<string> statesName = new List<string>() { "Andaman and Nicobar Islands",
+    [SerializeField]
+    List<string> statesName = new List<string>() { "Andaman and Nicobar Islands",
     "Andhra Pradesh","Arunachal Pradesh","Assam", "Bihar", "Chandigarh", "Chhattisgarh",
     "Dadra and Nagar Haveli and Daman and Diu", "Delhi","Goa", "Gujarat", "Haryana","Himachal Pradesh"
     ,"Jammu and Kashmir", "Jharkhand", "Karnataka","Kerala", "Ladakh", "Lakshadweep",
@@ -3236,7 +3310,7 @@ public class APIManager : MonoBehaviour
 
     public void OpenKYCPanel()
     {
-        if(KYCadhaarStatus=="Verified" || KYCpanStatus == "Verified")
+        if (KYCadhaarStatus == "Verified" || KYCpanStatus == "Verified")
         {
             kycDateOfBirth.text = KYCDob;
             for (int i = 0; i < kycState.options.Count; i++)

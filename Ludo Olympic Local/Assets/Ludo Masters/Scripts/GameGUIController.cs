@@ -639,6 +639,14 @@ public class GameGUIController : PunBehaviour
         playerObjects[index].id = PlayersIDs[index];
         playerObjects[index].avatar = avatars[index];
         ActivePlayers[index + 1].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[index].name;
+        string playersInfo = "";
+        for (int i = 0; i < playerObjects.Count; i++)
+        {
+            playersInfo += "," + playerObjects[i].timer.GetComponent<UpdatePlayerTimer>().turnCount + "," +
+                playerObjects[i].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount;
+        }
+        string data = gameDuration.text + "," + currentPlayerIndex + playersInfo;
+        PhotonNetwork.RaiseEvent((int)EnumPhoton.SynchronizeTurn, data, true, null);
     }
 
     void LateJoinedStart()
@@ -1610,6 +1618,24 @@ public class GameGUIController : PunBehaviour
         PhotonNetwork.OnEventCall -= this.OnEvent;
     }
 
+    void SynchronizeData(string dataa)
+    {
+        string[] dataPiece = dataa.Split(',');
+        currentPlayerIndex = int.Parse(dataPiece[0]);
+        gameDuration.text = dataPiece[1];
+        playerObjects[0].timer.GetComponent<UpdatePlayerTimer>().turnCount = int.Parse(dataPiece[2]);
+        playerObjects[0].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = int.Parse(dataPiece[3]);
+        playerObjects[1].timer.GetComponent<UpdatePlayerTimer>().turnCount = int.Parse(dataPiece[4]);
+        playerObjects[1].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = int.Parse(dataPiece[5]);
+        if (ReferenceManager.refMngr.onlineNoOfPlayer > 2)
+        {
+            playerObjects[2].timer.GetComponent<UpdatePlayerTimer>().turnCount = int.Parse(dataPiece[6]);
+            playerObjects[2].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = int.Parse(dataPiece[7]);
+            playerObjects[3].timer.GetComponent<UpdatePlayerTimer>().turnCount = int.Parse(dataPiece[8]);
+            playerObjects[3].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = int.Parse(dataPiece[9]);
+        }
+    }
+
     private void OnEvent(byte eventcode, object content, int senderid)
     {
         Debug.Log("received event: " + eventcode);
@@ -1633,6 +1659,10 @@ public class GameGUIController : PunBehaviour
                 else NextTurnSet = false;
             }
 
+        }
+        else if (eventcode == (int)EnumPhoton.SynchronizeTurn)
+        {
+            
         }
         else if (eventcode == (int)EnumPhoton.SendChatMessage)
         {
@@ -1729,7 +1759,6 @@ public class GameGUIController : PunBehaviour
 
     private void SetTurn()
     {
-        Debug.Log("SET TURN CALLED");
         for (int i = 0; i < playerObjects.Count; i++)
         {
             playerObjects[i].dice.GetComponent<GameDiceController>().EnableDiceShadow();

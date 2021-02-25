@@ -282,4 +282,8 @@ public class ActiveGamInfo
 {
     public string game_id;
     public string game_room_id;
+    public string first_Player_Name;
+    public string second_Player_Name;
+    public string third_Player_Name;
+    public string fourth_Player_Name;
 }

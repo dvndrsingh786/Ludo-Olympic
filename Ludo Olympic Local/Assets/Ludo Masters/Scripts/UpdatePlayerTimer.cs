@@ -8,7 +8,7 @@ public class UpdatePlayerTimer : MonoBehaviour
 {
     private float playerTime;
     public GameObject timerObject;
-    private Image timer;
+    public Image timer;
     private bool timeSoundsStarted;
     public AudioSource[] audioSources;
     public GameObject GUIController;

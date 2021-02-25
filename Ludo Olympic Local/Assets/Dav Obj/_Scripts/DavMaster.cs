@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
@@ -54,6 +54,11 @@ public class DavMaster : MonoBehaviour
         return flipped;
     }
 
+    public static string SpriteToString(Sprite sprite)
+    {
+        return Texture2DToString(sprite.texture);
+    }
+
     public static string Texture2DToString(Texture2D texture)
     {
         Texture2D tex = new Texture2D(texture.width, texture.height);
@@ -61,6 +66,11 @@ public class DavMaster : MonoBehaviour
         byte[] bArray = tex.EncodeToPNG();
         string code = Convert.ToBase64String(bArray);
         return code;
+    }
+
+    public static Sprite StringToSprite(string codee)
+    {
+        return  Texture2DToSprite(StringToTexture2D(codee));
     }
 
     public static Texture2D StringToTexture2D(string code)
@@ -193,5 +203,175 @@ public class DavMaster : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(time);
         target.SetActive(state);
+    }
+    
+    public static string GetTodayDate(char formatSymbol)
+    {
+        string month, day, year;
+        DateTime datetime = DateTime.Now;
+        month = datetime.Month.ToString();
+        day = datetime.Day.ToString();
+        year = datetime.Year.ToString();
+        if (month.Length == 1)
+        {
+            month = "0" + month;
+        }
+        if (day.Length == 1)
+        {
+            day = "0" + day;
+        }
+        string date = year + formatSymbol + month + formatSymbol + day;
+        return date;
+    }
+
+    public static string GetCurrentTime(char formatSymbol)
+    {
+        string hour, minutes, seconds;
+        DateTime datetime = DateTime.Now;
+        hour = datetime.Hour.ToString();
+        minutes = datetime.Minute.ToString();
+        seconds = datetime.Second.ToString();
+        if (hour.Length == 1) hour = "0" + hour;
+        if (minutes.Length == 1) minutes = "0" + minutes;
+        if (seconds.Length == 1) seconds = "0" + seconds;
+        string time = hour + formatSymbol + minutes + formatSymbol + seconds;
+        return time;
+    }
+
+    public static int GetCurrentTimeInSeconds(string currentTime, char formatSymbol)
+    {
+        string[] currentTimeArray = currentTime.Split(formatSymbol);
+        int timeInSeconds;
+        timeInSeconds = (int.Parse(currentTimeArray[0]) * 3600) + (int.Parse(currentTimeArray[1]) * 60) + int.Parse(currentTimeArray[2]);
+        return timeInSeconds;
+    }
+
+    Hashtable daysInMonth = new Hashtable()
+    {
+         {"1","31"},  {"2","28"}, {"3","31"}, {"4","30"}, {"5","31"}, {"6","30"},
+          {"7","31"}, {"8","31"}, {"9","30"}, {"10","31"}, {"11","30"}, {"12","31"},
+    };
+
+    public int CheckDayOfYear(int date, int month, int year)
+    {
+        bool isLeapYear = false;
+        int day = 0;
+        if (year % 4 == 0)
+        {
+            isLeapYear = true;
+        }
+        for (int i = 1; i < month; i++)
+        {
+            day += int.Parse(daysInMonth[i.ToString()].ToString());
+            if (isLeapYear && i == 2)
+            {
+                day += 1;
+            }
+        }
+        day += date;
+        return day;
+    }
+
+    public static bool IsLessThanTwentyFourHours(string requiredDate, string currentDate, string currentTimee, string startTimee)
+    {
+        string[] reqDate = new string[3];
+        string[] curDate = new string[3];
+        string[] startTime = startTimee.Split(':');
+        string[] curTime = currentTimee.Split(':');
+        reqDate = requiredDate.Split('-');
+        curDate = currentDate.Split('-');
+        if (int.Parse(reqDate[0]) < int.Parse(curDate[0]))
+        {
+            return false;
+        }
+        else if (int.Parse(reqDate[0]) == int.Parse(curDate[0]))
+        {
+            if (int.Parse(reqDate[1]) < int.Parse(curDate[1]))
+            {
+                return false;
+            }
+            else
+            {
+                if (int.Parse(reqDate[2]) < int.Parse(curDate[2]))
+                {
+                    return false;
+                }
+            }
+        }
+
+        if (int.Parse(reqDate[1]) - int.Parse(curDate[1]) <= 1 && int.Parse(reqDate[1]) - int.Parse(curDate[1]) >= 0)
+        {
+            if (int.Parse(reqDate[1]) == int.Parse(curDate[1]))
+            {
+                int startOne, curOne;
+                if (startTime.Length == 2) startOne = (int.Parse(startTime[0]) * 3600) + (int.Parse(startTime[1]) * 60);
+                else startOne = (int.Parse(startTime[0]) * 3600) + (int.Parse(startTime[1]) * 60) + int.Parse(startTime[2]);
+
+                if (curTime.Length == 2) curOne = (int.Parse(curTime[0]) * 3600) + (int.Parse(curTime[1]) * 60);
+                else curOne = (int.Parse(curTime[0]) * 3600) + (int.Parse(curTime[1]) * 60) + int.Parse(curTime[2]);
+
+                if (startOne < curOne)
+                {
+                    return false;
+                }
+
+                int a = startOne - curOne;
+                return true;
+            }
+            else
+            {
+                int startOne, curOne;
+                if (startTime.Length == 2) startOne = (int.Parse(startTime[0]) * 3600) + (int.Parse(startTime[1]) * 60);
+                else startOne = (int.Parse(startTime[0]) * 3600) + (int.Parse(startTime[1]) * 60) + int.Parse(startTime[2]);
+
+                if (curTime.Length == 2) curOne = (int.Parse(curTime[0]) * 3600) + (int.Parse(curTime[1]) * 60);
+                else curOne = (int.Parse(curTime[0]) * 3600) + (int.Parse(curTime[1]) * 60) + int.Parse(curTime[2]);
+
+                if ((86400 - curOne) + startOne <= 86400)
+                {
+                    int a = (86400 - curOne) + startOne;
+                    return true;
+                }
+                else
+                {
+                    int a = (86400 - curOne) + startOne;
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static int[] SecondsToTime(int secondss)
+    {
+        int hr, mnts, scnds;
+        hr = secondss / 3600;
+        mnts = (secondss % 3600) / 60;
+        scnds = (secondss % 3600) % 60;
+        int[] temp = new int[3];
+        temp[0] = hr;
+        temp[1] = mnts;
+        temp[2] = scnds;
+        return temp;
+    }
+
+    public static string TwentyFourToTweleveFormat(string twentyFourFormat)
+    {
+        string[] time = twentyFourFormat.Split(':');
+        string ampm;
+        int hour = int.Parse(time[0]);
+        if (hour > 11) ampm = "pm";
+        else ampm = "am";
+        hour = hour % 12;
+        if (hour == 0) hour = 12;
+        return hour.ToString() + ":" + time[1] + ampm;
+    }
+
+    public static Sprite Texture2DToSprite(Texture2D tex)
+    {
+        return Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
     }
 }

@@ -37,6 +37,7 @@ public enum EnumPhoton
     SendChatEmojiMessage = 176,
     AddFriend = 177,
     FinishedGame = 178,
+    SynchronizeTurn = 179,
 }
 
 public enum EnumGame
