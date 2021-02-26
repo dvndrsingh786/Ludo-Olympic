@@ -205,6 +205,14 @@ public class UpdatePlayerTimer : MonoBehaviour
 
     }
 
+    public void SetOnlineTurnCountGraphic(int turnCountt)
+    {
+        turnCount = turnCountt;
+        if (turnCount < 1) return;
+        if (turnCount <= autoMoveParent.childCount)
+            autoMoveParent.GetChild(turnCount - 1).GetComponent<Image>().color = Color.red;
+    }
+
     private void updateClockOnline()
     {
         //Debug.LogError("Updating Clock");

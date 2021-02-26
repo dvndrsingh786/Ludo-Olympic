@@ -345,7 +345,8 @@ public class LudoGameController : PunBehaviour, IMiniGame
             steps = int.Parse(data[2]);
             Debug.Log("data   " + data + "  pl  " + pl + "   index  " + index);
             GameManager.Instance.playerObjects[pl].pawns[index].GetComponent<LudoPawnController>().MakeMovePC();
-            GameManager.Instance.playerObjects[pl].dice.GetComponent<GameDiceController>().IncreaseScore(steps);
+            Debug.LogError("EVENT PAWN MOVE: " + steps);
+            //GameManager.Instance.playerObjects[pl].dice.GetComponent<GameDiceController>().IncreaseScore(steps);
         }
         else if (eventcode == (int)EnumGame.PawnRemove)
         {

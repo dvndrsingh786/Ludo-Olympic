@@ -61,7 +61,11 @@ public class OfflineOnlineApiScript : MonoBehaviour
         yield return www;
         Debug.Log(www.text);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
-        totalOnlineAmount = jsonvale["result_push"][0]["total_amount"].ToString();
+        try
+        {
+            totalOnlineAmount = jsonvale["result_push"][0]["total_amount"].ToString();
+        }
+        catch { Debug.LogError("Catch has been called"); }
         number++;
         Debug.Log(totalOnlineAmount+"     Running Time   "+number);
       if(onlineAmount!=null)
@@ -73,8 +77,12 @@ public class OfflineOnlineApiScript : MonoBehaviour
        if (BankText != null)
             BankText.text = totalOnlineAmount;
 
-       
-        GameManager.Instance.coinsCount = float.Parse(totalOnlineAmount);
+
+        try
+        {
+            GameManager.Instance.coinsCount = float.Parse(totalOnlineAmount);
+        }
+        catch { }
         AmountTransferScript amsender = FindObjectOfType<AmountTransferScript>();
         if(amsender!=null)
             amsender.SetUPdateProfile(totalOnlineAmount.ToString());

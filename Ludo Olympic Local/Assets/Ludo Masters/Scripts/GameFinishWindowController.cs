@@ -139,9 +139,6 @@ public class GameFinishWindowController : MonoBehaviour
                     Names[j].GetComponent<Text>().text = playersFinished[i].name;
                 }
             }
-            
         }
-
     }
-
 }

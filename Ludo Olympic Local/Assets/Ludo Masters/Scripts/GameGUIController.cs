@@ -637,15 +637,24 @@ public class GameGUIController : PunBehaviour
         avatars[index] = GameManager.Instance.opponentsAvatars[index];
         playerObjects[index].name = names[index];
         playerObjects[index].id = PlayersIDs[index];
+        playerObjects[index].isBot = false;
         playerObjects[index].avatar = avatars[index];
         ActivePlayers[index + 1].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[index].name;
         string playersInfo = "";
         for (int i = 0; i < playerObjects.Count; i++)
         {
-            playersInfo += "," + playerObjects[i].timer.GetComponent<UpdatePlayerTimer>().turnCount + "," +
-                playerObjects[i].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount;
+            UpdatePlayerTimer timerr = playerObjects[i].timer.GetComponent<UpdatePlayerTimer>();
+            playersInfo += "," + timerr.turnCount + "," + timerr.timer.fillAmount + ",";
+            playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
+            playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
+            for (int j = 0; j < 4; j++)
+            {
+                playersInfo += "," + playerObjects[i].pawns[j].GetComponent<LudoPawnController>().mainInJoint.ToString() + ",";
+                playersInfo += playerObjects[i].pawns[j].GetComponent<LudoPawnController>().isOnBoard.ToString() + ",";
+                playersInfo += playerObjects[i].pawns[j].GetComponent<LudoPawnController>().currentPosition.ToString();
+            }
         }
-        string data = gameDuration.text + "," + currentPlayerIndex + playersInfo;
+        string data = currentPlayerIndex.ToString() + "," + gameDuration.text + playersInfo;
         PhotonNetwork.RaiseEvent((int)EnumPhoton.SynchronizeTurn, data, true, null);
     }
 
@@ -963,18 +972,42 @@ public class GameGUIController : PunBehaviour
         //GameManager.Instance.needToKillOpponentToEnterHome = false;
 
         // END LUDO
-        ReferenceManager reff = FindObjectOfType<ReferenceManager>();
-        int seconds = reff.timeToSeconds(GameManager.gameDuration, ':');
-        reff.SecondsToTime(seconds);
-        hr = reff.hour;
-        mns = reff.minutes;
-        secs = reff.seconds;
-        if (GameManager.Instance.type == MyGameType.TwoPlayer)
-        {
-            Invoke(nameof(UpdateGameDuration), 1);
-        }
+        //ReferenceManager reff = FindObjectOfType<ReferenceManager>();
+        //int seconds = reff.timeToSeconds(GameManager.gameDuration, ':');
+        //reff.SecondsToTime(seconds);
+        //hr = reff.hour;
+        //mns = reff.minutes;
+        //secs = reff.seconds;
+        //if (GameManager.Instance.type == MyGameType.TwoPlayer)
+        //{
+        //    Invoke(nameof(UpdateGameDuration), 1);
+        //}
     }
 
+    void SetGameDuration(string duration, char separator)
+    {
+        Debug.LogError("Duration: " + duration);
+        duration = duration.Replace("m", "");
+        duration = duration.Replace("s", "");
+        duration = duration.Replace("h", "");
+        string[] temp = duration.Split(separator);
+        if (temp.Length < 3)
+        {
+            Debug.LogError("TEMP0: " + temp[0]);
+            mns = int.Parse(temp[0]);
+            secs = int.Parse(temp[1]);
+        }
+        else
+        {
+            hr = int.Parse(temp[0]);
+            mns = int.Parse(temp[1]);
+            secs = int.Parse(temp[2]);
+        }
+        if (secs == 1) { mns--; secs = 59; }
+        else if (secs == 0) { mns--; secs = 58; }
+        else secs -= 2;
+        UpdateGameDuration();
+    }
 
     public int hr, mns, secs;
     public void UpdateGameDuration()
@@ -1033,6 +1066,7 @@ public class GameGUIController : PunBehaviour
             {
                 if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) == allScores[j])
                 {
+                    allScores.Remove(allScores[j]);
                     int newPos = allScores.Count - j;
                     Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + newPos);
                     if (playerObjects[i].id == PhotonNetwork.player.NickName)
@@ -1622,17 +1656,34 @@ public class GameGUIController : PunBehaviour
     {
         string[] dataPiece = dataa.Split(',');
         currentPlayerIndex = int.Parse(dataPiece[0]);
+        GameManager.Instance.currentPlayer = playerObjects[currentPlayerIndex];
+        SetTurn();
         gameDuration.text = dataPiece[1];
-        playerObjects[0].timer.GetComponent<UpdatePlayerTimer>().turnCount = int.Parse(dataPiece[2]);
-        playerObjects[0].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = int.Parse(dataPiece[3]);
-        playerObjects[1].timer.GetComponent<UpdatePlayerTimer>().turnCount = int.Parse(dataPiece[4]);
-        playerObjects[1].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = int.Parse(dataPiece[5]);
-        if (ReferenceManager.refMngr.onlineNoOfPlayer > 2)
+        SetGameDuration(gameDuration.text, ':');
+        SynchronizePlayerInfo(playerObjects[0], dataPiece, 2);
+        SynchronizePlayerInfo(playerObjects[1], dataPiece, 18);
+        if (playerObjects.Count > 2)
         {
-            playerObjects[2].timer.GetComponent<UpdatePlayerTimer>().turnCount = int.Parse(dataPiece[6]);
-            playerObjects[2].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = int.Parse(dataPiece[7]);
-            playerObjects[3].timer.GetComponent<UpdatePlayerTimer>().turnCount = int.Parse(dataPiece[8]);
-            playerObjects[3].timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = int.Parse(dataPiece[9]);
+            SynchronizePlayerInfo(playerObjects[2], dataPiece, 34);
+            SynchronizePlayerInfo(playerObjects[3], dataPiece, 50);
+        }
+        Debug.LogError("FINISHED");
+    }
+
+    void SynchronizePlayerInfo(PlayerObject obj, string[] data, int startIndex)
+    {
+        obj.timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(data[startIndex]));
+        obj.timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = float.Parse(data[startIndex + 1]);
+        obj.timer.SetActive(bool.Parse(data[startIndex + 2]));
+        obj.dice.GetComponent<GameDiceController>().myScore.text = data[startIndex + 3];
+        for (int i = 0; i < 4; i++)
+        {
+            obj.pawns[i].GetComponent<LudoPawnController>().mainInJoint = bool.Parse(data[0 + startIndex + 3 + (i * 3) + 1]);
+            obj.pawns[i].GetComponent<LudoPawnController>().isOnBoard = bool.Parse(data[1 + startIndex + 3 + (i * 3) + 1]);
+            int curPOS = obj.pawns[i].GetComponent<LudoPawnController>().currentPosition = int.Parse(data[2 + startIndex + 3 + (i * 3) + 1]);
+            RectTransform[] path = obj.pawns[i].GetComponent<LudoPawnController>().path;
+            if (curPOS >= 0)
+                DavMaster.CopyRectTransform(path[curPOS], obj.pawns[i].GetComponent<RectTransform>());
         }
     }
 
@@ -1662,7 +1713,7 @@ public class GameGUIController : PunBehaviour
         }
         else if (eventcode == (int)EnumPhoton.SynchronizeTurn)
         {
-            
+            SynchronizeData(content.ToString());
         }
         else if (eventcode == (int)EnumPhoton.SendChatMessage)
         {

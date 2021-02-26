@@ -886,13 +886,23 @@ public class APIManager : MonoBehaviour
         //Debug.Log(url);
 
         WWWForm form = new WWWForm();
-        form.AddField("username", socialEmail);
+        Debug.LogError("PLS check here");
+        string username = socialEmail.Remove(socialEmail.IndexOf('@'), socialEmail.Length - socialEmail.IndexOf('@') + 1);
+        Debug.LogError("PLS check here1");
+        form.AddField("username", username);
+        Debug.LogError("PLS check here12");
         form.AddField("password", "QAZWSX");
+        Debug.LogError("PLS check here123");
         form.AddField("fullname", socialName);
+        Debug.LogError("PLS check here1234");
         form.AddField("dob", "01" + "-" + "01" + "-" + "1990");
+        Debug.LogError("PLS check here12345");
         double phoneNumberrr = UnityEngine.Random.Range(1000000000, 9999999999);
+        Debug.LogError("PLS check here123456");
         form.AddField("mobile", phoneNumberrr.ToString());
+        Debug.LogError("PLS check here1234567");
         form.AddField("email", socialEmail);
+        Debug.LogError("PLS check here12345678");
         form.AddField("vcode", Application.version);
 
         Debug.LogError("USername: " + socialEmail);

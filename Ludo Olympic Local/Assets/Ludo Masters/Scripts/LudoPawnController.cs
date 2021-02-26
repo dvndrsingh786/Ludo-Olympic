@@ -132,7 +132,7 @@ public class LudoPawnController : MonoBehaviour
             // finish
             if (currentPosition + steps == path.Length - 1)
             {
-                return 1000;
+                return 900;
             }
 
             //KILL
@@ -142,7 +142,7 @@ public class LudoPawnController : MonoBehaviour
                 {
                     if (pathControl.pawns[i].GetComponent<LudoPawnController>().playerIndex != playerIndex)
                     {
-                        return 900;
+                        return 1000;
                     }
                 }
             }
@@ -572,6 +572,7 @@ public class LudoPawnController : MonoBehaviour
         //Debug.Log(GameManager.Instance.);
         if (playerIndex == GameManager.Instance.myPlayerIndex || (GameManager.Instance.isLocalMultiplayer && ludoController.gUIController.GetCurrentPlayerIndex()  == playerIndex))
         {
+            Debug.LogError("MAKE MOVE: " + ludoController.steps);
             dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
            // Debug.Log("Make move button");
            // string data = index + ";" + ludoController.gUIController.GetCurrentPlayerIndex() + ";" + ludoController.steps;
@@ -636,11 +637,12 @@ public class LudoPawnController : MonoBehaviour
         {
             GoToStartPosition();
         }
-        
-            if (pawnInJoint != null)
-            {
-                pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
-            }
+
+        if (pawnInJoint != null)
+        {
+            pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
+        }
+        Debug.LogError("MAKE MOVE PC: " + ludoController.steps);
         dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
         MoveBySteps(ludoController.steps);
 

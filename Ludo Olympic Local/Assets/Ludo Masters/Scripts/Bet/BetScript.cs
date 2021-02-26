@@ -141,7 +141,7 @@ public class BetScript : MonoBehaviour
     void ActuallyStartTable()
     {
         ReferenceManager.refMngr.botsAdded.Clear();
-        ReferenceManager.refMngr.botsAdded.Add(GameManager.playerName);
+        ReferenceManager.refMngr.botsAdded.Add(GameManager.Instance.nameMy);
         FindObjectOfType<GameConfigrationController>().SetTwoPlayerGameDav();
         ReferenceManager.refMngr.onlineNoOfPlayer = int.Parse(noOfPlayer);
         ReferenceManager.refMngr.onlineRoomId = myRoomId;
