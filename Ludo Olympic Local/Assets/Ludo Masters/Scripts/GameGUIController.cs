@@ -1043,8 +1043,6 @@ public class GameGUIController : PunBehaviour
 
     void CheckIfIWon()
     {
-        int myScore = 0;
-        List<int> otherScores = new List<int>();
         List<int> allScores = new List<int>();
         for (int i = 0; i < playerObjects.Count; i++)
         {
@@ -1059,6 +1057,7 @@ public class GameGUIController : PunBehaviour
             //}
         }
         allScores.Sort();
+        List<PlayerObject> tempPlayers = new List<PlayerObject>();
         iFinished = false;
         for (int i = 0; i < playerObjects.Count; i++)
         {
@@ -1066,17 +1065,22 @@ public class GameGUIController : PunBehaviour
             {
                 if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) == allScores[j])
                 {
-                    allScores.Remove(allScores[j]);
-                    int newPos = allScores.Count - j;
-                    Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + newPos);
-                    if (playerObjects[i].id == PhotonNetwork.player.NickName)
+                    if (!tempPlayers.Contains(playerObjects[i]))
                     {
-                        Debug.LogError("MY New Position");
-                        SetFinishGameManually(playerObjects[i].id, true, newPos);
-                    }
-                    else
-                    {
-                        SetFinishGameManually(playerObjects[i].id, false, newPos);
+                        tempPlayers.Add(playerObjects[i]);
+                        int newPos = allScores.Count - j;
+                        allScores.Remove(allScores[j]);
+                        Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + newPos);
+                        if (playerObjects[i].id == PhotonNetwork.player.NickName)
+                        {
+                            Debug.LogError("MY New Position");
+                            SetFinishGameManually(playerObjects[i].id, true, newPos);
+                        }
+                        else
+                        {
+                            SetFinishGameManually(playerObjects[i].id, false, newPos);
+                        }
+                        break;
                     }
                 }
             }

@@ -425,24 +425,27 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         GameManager.Instance.opponentsAvatars[i] = avatarSprites[UnityEngine.Random.Range(0, avatarSprites.Length - 1)];
         GameManager.Instance.opponentsIDs[i] = "_BOT" + i;
         string botName = "";
-        bool foundName = false;
-        for (int j = 0; j < ReferenceManager.refMngr.onlinePlayersNames.Length; j++)
+        if (GameManager.Instance.type == MyGameType.TwoPlayer && !GameManager.Instance.isLocalMultiplayer)
         {
-            if (ReferenceManager.refMngr.onlinePlayersNames[j] != null && ReferenceManager.refMngr.onlinePlayersNames[j] != "")
+            bool foundName = false;
+            for (int j = 0; j < ReferenceManager.refMngr.onlinePlayersNames.Length; j++)
             {
-                if (!ReferenceManager.refMngr.botsAdded.Contains(ReferenceManager.refMngr.onlinePlayersNames[j]))
+                if (ReferenceManager.refMngr.onlinePlayersNames[j] != null && ReferenceManager.refMngr.onlinePlayersNames[j] != "")
                 {
-                    foundName = true;
-                    botName = ReferenceManager.refMngr.onlinePlayersNames[j];
-                    ReferenceManager.refMngr.botsAdded.Add(ReferenceManager.refMngr.onlinePlayersNames[j]);
-                    break;
+                    if (!ReferenceManager.refMngr.botsAdded.Contains(ReferenceManager.refMngr.onlinePlayersNames[j]))
+                    {
+                        foundName = true;
+                        botName = ReferenceManager.refMngr.onlinePlayersNames[j];
+                        ReferenceManager.refMngr.botsAdded.Add(ReferenceManager.refMngr.onlinePlayersNames[j]);
+                        break;
+                    }
                 }
             }
-        }
-        if (!foundName)
-        {
-            botName = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];
-            Debug.LogError("BOT NAME: " + botName);
+            if (!foundName)
+            {
+                botName = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];
+                Debug.LogError("BOT NAME: " + botName);
+            }
         }
         if (GameManager.Instance.type == MyGameType.TwoPlayer && !GameManager.Instance.isLocalMultiplayer)
         {

@@ -87,6 +87,7 @@ public class BetScript : MonoBehaviour
                 }
                 myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
                 isJoined = true;
+                if (isTablePlaying) myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Enter";
                 break;
             }
         }
@@ -97,6 +98,7 @@ public class BetScript : MonoBehaviour
     {
         isTablePlaying = true;
         timeLeftText.text = "Table Playing";
+        if(isJoined) myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Enter";
     }
 
     public void ToggleButtonPower(Toggle theToggle)
@@ -115,19 +117,38 @@ public class BetScript : MonoBehaviour
     {
         if (!isJoined)
         {
-            float tempfloat = float.Parse(gamePrice);
-            Debug.LogError("Amount: " + tempfloat);
-            if (GameManager.Instance.coinsCount >= tempfloat)
+            if (!isTablePlaying)
             {
-                GameManager.Instance.playfabManager.apiManager.isClickedPubButton = true;
-                GameManager.Instance.playfabManager.apiManager.clickedBet = this;
-                FindObjectOfType<APIManager>().tablevalue = gameId;
-                GameManager.Instance.playfabManager.apiManager.DeductCoins(tempfloat);
+                ReferenceManager.refMngr.loadingPanel.SetActive(true);
+                float tempfloat = float.Parse(gamePrice);
+                Debug.LogError("Amount: " + tempfloat);
+                if (GameManager.Instance.coinsCount >= tempfloat)
+                {
+                    GameManager.Instance.playfabManager.apiManager.isClickedPubButton = true;
+                    GameManager.Instance.playfabManager.apiManager.clickedBet = this;
+                    FindObjectOfType<APIManager>().tablevalue = gameId;
+                    GameManager.Instance.playfabManager.apiManager.DeductCoins(tempfloat);
+                }
+                else
+                {
+                    ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                }
+            }
+            else
+            {
+                ReferenceManager.refMngr.ShowError("Table Already Started", "Oops!");
             }
         }
         else
         {
-            StartTable();
+            if (isTablePlaying || true)
+            {
+                StartTable();
+            }
+            else
+            {
+                ReferenceManager.refMngr.ShowError("Table hasn't Started yet", "Wait!!!");
+            }
             //ReferenceManager.refMngr.ShowError("Already Joined Game", "Error");
         }
     }

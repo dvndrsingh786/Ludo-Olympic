@@ -79,10 +79,14 @@ public class UIFlowHandler : MonoBehaviour
     {
         Application.Quit();
     }
-
+    int a = 0;
     public void SetPlayerImage()
     {
-        GameManager.Instance.initMenuScript.playerAvatarDav.GetComponent<RawImage>().texture = THETEXTURE;
+        try
+        {
+            GameManager.Instance.initMenuScript.playerAvatarDav.GetComponent<RawImage>().texture = THETEXTURE;
+        }
+        catch { a++; if (a < 10) { Invoke(nameof(SetPlayerImage), 1); } }
     }
 
     public Sprite TextureToSprite(Texture2D tex)

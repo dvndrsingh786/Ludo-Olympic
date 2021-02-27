@@ -130,6 +130,10 @@ public class GameFinishWindowController : MonoBehaviour
         }
         for (int i = 0; i < playersFinished.Count; i++)
         {
+            Debug.LogError("NAme::: " + playersFinished[i].name + " POSSS::: " + playersFinished[i].myPosition + " III::: " + i);
+        }
+        for (int i = 0; i < playersFinished.Count; i++)
+        {
             for (int j = 0; j < playersFinished.Count; j++)
             {
                 if (playersFinished[i].myPosition == j + 1)

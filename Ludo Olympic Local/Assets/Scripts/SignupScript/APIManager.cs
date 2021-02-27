@@ -886,34 +886,31 @@ public class APIManager : MonoBehaviour
         //Debug.Log(url);
 
         WWWForm form = new WWWForm();
-        Debug.LogError("PLS check here");
-        string username = socialEmail.Remove(socialEmail.IndexOf('@'), socialEmail.Length - socialEmail.IndexOf('@') + 1);
-        Debug.LogError("PLS check here1");
-        form.AddField("username", username);
-        Debug.LogError("PLS check here12");
+        //string username = socialEmail.Remove(socialEmail.IndexOf('@'), socialEmail.Length - socialEmail.IndexOf('@'));
+        //form.AddField("username", username);
+        //form.AddField("password", "QAZWSX");
+        //form.AddField("fullname", socialName);
+        //form.AddField("dob", "01" + "-" + "01" + "-" + "1990");
+        //double phoneNumberrr = UnityEngine.Random.Range(1000000000, 9999999999);
+        //form.AddField("mobile", phoneNumberrr.ToString());
+        //form.AddField("email", socialEmail);
+        //form.AddField("vcode", Application.version);
+        form.AddField("username", "wahoplay");
         form.AddField("password", "QAZWSX");
-        Debug.LogError("PLS check here123");
-        form.AddField("fullname", socialName);
-        Debug.LogError("PLS check here1234");
+        form.AddField("fullname", "Waho Play");
         form.AddField("dob", "01" + "-" + "01" + "-" + "1990");
-        Debug.LogError("PLS check here12345");
         double phoneNumberrr = UnityEngine.Random.Range(1000000000, 9999999999);
-        Debug.LogError("PLS check here123456");
         form.AddField("mobile", phoneNumberrr.ToString());
-        Debug.LogError("PLS check here1234567");
-        form.AddField("email", socialEmail);
-        Debug.LogError("PLS check here12345678");
+        form.AddField("email", "wahoplay@gmail.com");
         form.AddField("vcode", Application.version);
 
-        Debug.LogError("USername: " + socialEmail);
+        //Debug.LogError("USername: " + username);
         Debug.LogError("Password: " + "QAZWSX");
         Debug.LogError("fullname: " + socialName);
         Debug.LogError("DOB: " + "01" + "-" + "01" + "-" + "1990");
 
         WWW w = new WWW(uurl, form);
         loadinPanel.SetActive(true);
-        GameManager.mobileNumber = "0123456789";
-        Debug.Log("MobileNum" + GameManager.mobileNumber);
         StartCoroutine(SocialSignup_time(w));
     }
 
@@ -2275,51 +2272,65 @@ public class APIManager : MonoBehaviour
         WWW www = new WWW(url, form);
         yield return www;
         Debug.Log(www.text);
-        //Debug.Log(www.error);
-        JsonData jsonvale = JsonMapper.ToObject(www.text);
-        status = jsonvale["result_push"][0]["status"].ToString();
-        string roomId = jsonvale["result_push"][0]["game_room_id"].ToString();
-        string first_Player_Name = "", second_Player_Name = "", third_Player_Name = "", fourth_Player_Name = "";
-        if (jsonvale["result_push"][0]["first_player"].ToString() != null)
+        if (www.error == null)
         {
-            first_Player_Name = jsonvale["result_push"][0]["first_player"].ToString();
-        }
-        if (jsonvale["result_push"][0]["second_player"].ToString() != null)
-        {
-            second_Player_Name = jsonvale["result_push"][0]["second_player"].ToString();
-        }
-        if (jsonvale["result_push"][0]["third_player"].ToString() != null)
-        {
-            third_Player_Name = jsonvale["result_push"][0]["third_player"].ToString();
-        }
-        if (jsonvale["result_push"][0]["fourth_player"].ToString() != null)
-        {
-            fourth_Player_Name = jsonvale["result_push"][0]["fourth_player"].ToString();
-        }
-        // Debug.Log(status);
-        if (status == "True")
-        {
-            GameManager.Instance.coinsCount -= amount;
-            if (isClickedPubButton)
+            //Debug.Log(www.error);
+            JsonData jsonvale = JsonMapper.ToObject(www.text);
+            status = jsonvale["result_push"][0]["status"].ToString();
+            string roomId = jsonvale["result_push"][0]["game_room_id"].ToString();
+            string first_Player_Name = "", second_Player_Name = "", third_Player_Name = "", fourth_Player_Name = "";
+            if (jsonvale["result_push"][0]["first_player"].ToString() != null)
             {
-                isClickedPubButton = false;
-                clickedBet.myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
-                clickedBet.isJoined = true;
-                clickedBet.myRoomId = roomId;
-                ActiveGamInfo temp = new ActiveGamInfo();
-                temp.game_id = tablevalue;
-                temp.game_room_id = roomId;
-                if (first_Player_Name != null)
-                    temp.first_Player_Name = first_Player_Name;
-                if (second_Player_Name != null)
-                    temp.second_Player_Name = second_Player_Name;
-                if (third_Player_Name != null)
-                    temp.third_Player_Name = third_Player_Name;
-                if (fourth_Player_Name != null)
-                    temp.first_Player_Name = fourth_Player_Name;
-                GameManager.activeGameInfo.Add(temp);
-                //ActiveGamInfo
+                first_Player_Name = jsonvale["result_push"][0]["first_player"].ToString();
             }
+            if (jsonvale["result_push"][0]["second_player"].ToString() != null)
+            {
+                second_Player_Name = jsonvale["result_push"][0]["second_player"].ToString();
+            }
+            if (jsonvale["result_push"][0]["third_player"].ToString() != null)
+            {
+                third_Player_Name = jsonvale["result_push"][0]["third_player"].ToString();
+            }
+            if (jsonvale["result_push"][0]["fourth_player"].ToString() != null)
+            {
+                fourth_Player_Name = jsonvale["result_push"][0]["fourth_player"].ToString();
+            }
+            // Debug.Log(status);
+            if (status == "True")
+            {
+                GameManager.Instance.coinsCount -= amount;
+                if (isClickedPubButton)
+                {
+                    isClickedPubButton = false;
+                    clickedBet.myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
+                    clickedBet.isJoined = true;
+                    clickedBet.myRoomId = roomId;
+                    ActiveGamInfo temp = new ActiveGamInfo();
+                    temp.game_id = tablevalue;
+                    temp.game_room_id = roomId;
+                    if (first_Player_Name != null)
+                        temp.first_Player_Name = first_Player_Name;
+                    if (second_Player_Name != null)
+                        temp.second_Player_Name = second_Player_Name;
+                    if (third_Player_Name != null)
+                        temp.third_Player_Name = third_Player_Name;
+                    if (fourth_Player_Name != null)
+                        temp.first_Player_Name = fourth_Player_Name;
+                    GameManager.activeGameInfo.Add(temp);
+                    ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                    //ActiveGamInfo
+                }
+            }
+            else
+            {
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                ReferenceManager.refMngr.ShowError(status, "Error");
+            }
+        }
+        else
+        {
+            ReferenceManager.refMngr.loadingPanel.SetActive(false);
+            ReferenceManager.refMngr.ShowError(w.error, "Error");
         }
     }
 
