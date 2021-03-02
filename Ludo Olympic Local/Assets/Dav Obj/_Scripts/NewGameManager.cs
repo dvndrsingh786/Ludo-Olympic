@@ -144,6 +144,7 @@ public class NewGameManager : MonoBehaviour
 
     public void EditorTestingSK()
     {
+        apimngr.isTestingLogin = false;
         apimngr.phoneEmail = "911234527890";
         apimngr.phoneEmail.Replace("+", "");
         apimngr.PhoneMediaSignInStart();
@@ -151,6 +152,7 @@ public class NewGameManager : MonoBehaviour
 
     public void EditorTestingDS()
     {
+        apimngr.isTestingLogin = false;
         apimngr.phoneEmail = "919876152916";
         apimngr.phoneEmail.Replace("+", "");
         apimngr.PhoneMediaSignInStart();
@@ -158,7 +160,9 @@ public class NewGameManager : MonoBehaviour
 
     public void EditorSahilTesterLogin()
     {
-        apimngr.phoneEmail = "919805101052";
+        apimngr.isTestingLogin = true;
+        apimngr.phoneEmail = "pooja";
+        //apimngr.phoneEmail = "919805101052";
         apimngr.phoneEmail.Replace("+", "");
         apimngr.PhoneMediaSignInStart();
     }

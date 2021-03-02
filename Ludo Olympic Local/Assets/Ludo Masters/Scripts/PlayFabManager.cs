@@ -312,7 +312,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     IEnumerator waitForPlayerCo()
     {
-        yield return new WaitForSeconds(12f);
+        yield return new WaitForSeconds(10f);
         //yield return new WaitForSeconds(1f);
         if (PhotonNetwork.isMasterClient && GameManager.Instance.type != MyGameType.Private)
         {
@@ -443,7 +443,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             }
             if (!foundName)
             {
-                botName = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];
+                botName = "_" + staticGameVariables.Player_name[i];
                 Debug.LogError("BOT NAME: " + botName);
             }
         }
@@ -1181,15 +1181,16 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public override void OnJoinedRoom()
     {
         //Debug.LogError("Joined room");
-        if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy)
-        {
-            ReferenceManager.refMngr.CloseLoadingPanel();
-        }
         if (!ReferenceManager.refMngr.onlineGameWaitingPanel.activeInHierarchy)
         {
             if (GameManager.Instance.type == MyGameType.TwoPlayer)
             {
+                //if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy)
+                //{
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                //}
                 ReferenceManager.refMngr.onlineGameWaitingPanel.SetActive(true);
+                ReferenceManager.refMngr.loadingPanelFullBlack.SetActive(false);
             }
         }
         if (PhotonNetwork.room.CustomProperties.ContainsKey("bt"))
@@ -1299,15 +1300,16 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public override void OnCreatedRoom()
     {
         Debug.Log("OnCreatedRoom");
-        if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy)
-        {
-            ReferenceManager.refMngr.CloseLoadingPanel();
-        }
         if (!ReferenceManager.refMngr.onlineGameWaitingPanel.activeInHierarchy)
         {
             if (GameManager.Instance.type == MyGameType.TwoPlayer)
             {
+                if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy)
+                {
+                    ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                }
                 ReferenceManager.refMngr.onlineGameWaitingPanel.SetActive(true);
+                ReferenceManager.refMngr.loadingPanelFullBlack.SetActive(false);
             }
         }
         roomOwner = true;
@@ -1353,15 +1355,25 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         return index;
     }
 
-    public int GetFirstFreeBotSlot()
+    public int GetFirstFreeBotSlot(string nameee)
     {
+        Debug.LogError("NAMEEEe: " + nameee);
         int index = 0;
         for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
         {
+            Debug.LogError(i);
+            Debug.LogError(GameManager.Instance.opponentsIDs.Count);
+            Debug.LogError(GameManager.Instance.opponentsIDs[i]);
             if (GameManager.Instance.opponentsIDs[i].Contains("_BOT"))
             {
-                index = i;
-                break;
+                Debug.LogError(i);
+                Debug.LogError(GameManager.Instance.opponentsNames.Count);
+                Debug.LogError(GameManager.Instance.opponentsNames[i]);
+                //if (GameManager.Instance.opponentsNames[i] == nameee)
+                //{
+                    index = i;
+                    break;
+                //}
             }
         }
         return index;
@@ -1436,7 +1448,8 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         }
         else
         {
-            int index = GetFirstFreeBotSlot();
+            string newname = newPlayer.CustomProperties["name"].ToString();
+            int index = GetFirstFreeBotSlot(newname);
             GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
             GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
             GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];

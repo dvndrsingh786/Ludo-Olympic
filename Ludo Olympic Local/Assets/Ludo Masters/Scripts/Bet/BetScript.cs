@@ -115,6 +115,7 @@ public class BetScript : MonoBehaviour
 
     public void EnterTable()
     {
+        ReferenceManager.refMngr.loadingPanel.SetActive(true);
         if (!isJoined)
         {
             if (!isTablePlaying)
@@ -136,6 +137,7 @@ public class BetScript : MonoBehaviour
             }
             else
             {
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
                 ReferenceManager.refMngr.ShowError("Table Already Started", "Oops!");
             }
         }
@@ -147,6 +149,7 @@ public class BetScript : MonoBehaviour
             }
             else
             {
+                ReferenceManager.refMngr.loadingPanel.SetActive(false);
                 ReferenceManager.refMngr.ShowError("Table hasn't Started yet", "Wait!!!");
             }
             //ReferenceManager.refMngr.ShowError("Already Joined Game", "Error");
@@ -214,6 +217,7 @@ public class BetScript : MonoBehaviour
         }
         else
         {
+            ReferenceManager.refMngr.loadingPanel.SetActive(false);
             ReferenceManager.refMngr.ShowError(www.error, "Error");
         }
     }

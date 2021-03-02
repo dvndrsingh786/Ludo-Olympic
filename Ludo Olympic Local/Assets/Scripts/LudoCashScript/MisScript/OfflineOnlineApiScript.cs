@@ -65,7 +65,7 @@ public class OfflineOnlineApiScript : MonoBehaviour
         {
             totalOnlineAmount = jsonvale["result_push"][0]["total_amount"].ToString();
         }
-        catch { Debug.LogError("Catch has been called"); }
+        catch { Debug.LogWarning("Catch has been called"); }
         number++;
         Debug.Log(totalOnlineAmount+"     Running Time   "+number);
       if(onlineAmount!=null)

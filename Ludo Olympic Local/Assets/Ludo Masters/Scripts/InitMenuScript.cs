@@ -102,6 +102,7 @@ public class InitMenuScript : MonoBehaviour
 
     void Start()
     {
+        GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime = false;
         refferalCodeURL = GameManager.apiBase1 + "share-code";
         if (PlayerPrefs.HasKey("Logintoken"))
         {

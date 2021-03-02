@@ -323,6 +323,7 @@ public class GameConfigrationController : MonoBehaviour
             if (GameManager.Instance.type != MyGameType.Private)
             {
                 Debug.Log("not Private");
+                ReferenceManager.refMngr.loadingPanelFullBlack.SetActive(true);
                 GameManager.Instance.facebookManager.startRandomGame();
             }
             else

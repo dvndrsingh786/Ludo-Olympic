@@ -45,6 +45,9 @@ public class LudoPawnController : MonoBehaviour
     GameObject BoardParentobj;
 
     private int currentAudioSource = 0;
+
+    GameGUIController guiCntrlr;
+
     void Start()
     {
 
@@ -52,6 +55,7 @@ public class LudoPawnController : MonoBehaviour
         //Debug.Log("Game mode: " + GameManager.Instance.mode.ToString());
         diceController = dice.GetComponent<GameDiceController>();
         ludoController = GameObject.Find("GameSpecific").GetComponent<LudoGameController>();
+        guiCntrlr = FindObjectOfType<GameGUIController>();
         rect = GetComponent<RectTransform>();
         initScale = rect.localScale;
         initPosition = rect;
@@ -394,7 +398,6 @@ public class LudoPawnController : MonoBehaviour
         controller.RemovePawn(this.gameObject);
 
         RepositionPawns(controller.pawns.Count, currentPosition);
-        Debug.LogError("222");
 
         if (controller.pawns.Count == 1)
         {
@@ -463,7 +466,6 @@ public class LudoPawnController : MonoBehaviour
 
             currentPosition++;
             StartCoroutine("Particle");
-            Debug.LogError("333");
 
             yield return StartCoroutine(MoveDelayed(i, path[currentPosition - 1], path[currentPosition], singlePathSpeed, last, true));
 
@@ -564,39 +566,42 @@ public class LudoPawnController : MonoBehaviour
 
     public void MakeMove()
     {
-        Debug.Log("Make move button");
-        string data = index + ";" + ludoController.gUIController.GetCurrentPlayerIndex() + ";" + ludoController.steps;
-        Debug.Log("Ludo Steps"+ludoController.steps);
-        Debug.Log("current player index   " + ludoController.gUIController.GetCurrentPlayerIndex() );
-        Debug.Log(playerIndex);
-        //Debug.Log(GameManager.Instance.);
-        if (playerIndex == GameManager.Instance.myPlayerIndex || (GameManager.Instance.isLocalMultiplayer && ludoController.gUIController.GetCurrentPlayerIndex()  == playerIndex))
+        if (guiCntrlr.canPlayGame)
         {
-            Debug.LogError("MAKE MOVE: " + ludoController.steps);
-            dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
-           // Debug.Log("Make move button");
-           // string data = index + ";" + ludoController.gUIController.GetCurrentPlayerIndex() + ";" + ludoController.steps;
-           // Debug.Log("data   " + data);
-
-            PhotonNetwork.RaiseEvent((int)EnumGame.PawnMove, data, true, null);
-
-            if (pawnInJoint != null) ludoController.steps /= 2;
-            GameManager.Instance.diceShot = true;
-            myTurn = true;
-            ludoController.gUIController.PauseTimers();
-            ludoController.Unhighlight();
-
-            if (!isOnBoard)
+            Debug.Log("Make move button");
+            string data = index + ";" + ludoController.gUIController.GetCurrentPlayerIndex() + ";" + ludoController.steps;
+            Debug.Log("Ludo Steps" + ludoController.steps);
+            Debug.Log("current player index   " + ludoController.gUIController.GetCurrentPlayerIndex());
+            Debug.Log(playerIndex);
+            //Debug.Log(GameManager.Instance.);
+            if (playerIndex == GameManager.Instance.myPlayerIndex || (GameManager.Instance.isLocalMultiplayer && ludoController.gUIController.GetCurrentPlayerIndex() == playerIndex))
             {
-                GoToStartPosition();
+                Debug.LogError("MAKE MOVE: " + ludoController.steps);
+                dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+                // Debug.Log("Make move button");
+                // string data = index + ";" + ludoController.gUIController.GetCurrentPlayerIndex() + ";" + ludoController.steps;
+                // Debug.Log("data   " + data);
+
+                PhotonNetwork.RaiseEvent((int)EnumGame.PawnMove, data, true, null);
+
+                if (pawnInJoint != null) ludoController.steps /= 2;
+                GameManager.Instance.diceShot = true;
+                myTurn = true;
+                ludoController.gUIController.PauseTimers();
+                ludoController.Unhighlight();
+
+                if (!isOnBoard)
+                {
+                    GoToStartPosition();
+                }
+                if (pawnInJoint != null)
+                {
+                    pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
+                }
+                Debug.LogError("111");
+                MoveBySteps(ludoController.steps);
+                isOnBoard = true;
             }
-            if (pawnInJoint != null)
-            {
-                pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
-            }
-            Debug.LogError("111");
-            MoveBySteps(ludoController.steps);
-            isOnBoard = true;
         }
     }
 
@@ -642,7 +647,6 @@ public class LudoPawnController : MonoBehaviour
         {
             pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
         }
-        Debug.LogError("MAKE MOVE PC: " + ludoController.steps);
         dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
         MoveBySteps(ludoController.steps);
 
@@ -677,7 +681,6 @@ public class LudoPawnController : MonoBehaviour
         //  rect.localScale = new Vector3(initScale.x * 1.25f, initScale.y * 1.25f, initScale.z);
         StartCoroutine("ScalingEffect");
         yield return new WaitForSeconds(0.2f);
-        Debug.LogError("444");
 
         if (playSound)
         {

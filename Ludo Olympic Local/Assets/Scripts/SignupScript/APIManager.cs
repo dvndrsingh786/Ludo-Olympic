@@ -17,6 +17,8 @@ using System.Security.Authentication.ExtendedProtection;
 
 public class APIManager : MonoBehaviour
 {
+    public bool isTestingLogin = false;
+
     [Header("SignUp Object")]
 
     public InputField _nameWithdraw;
@@ -1418,7 +1420,8 @@ public class APIManager : MonoBehaviour
         string loginurl = GameManager.apiBase1 + "login";
         WWWForm form = new WWWForm();
         form.AddField("username", phoneEmail);
-        form.AddField("password", "QAZWSX");
+        if(!isTestingLogin) form.AddField("password", "QAZWSX");
+        else form.AddField("password", "222222");
         CloseSplash();
         Debug.Log("userName" + phoneEmail);
         WWW w = new WWW(loginurl, form);

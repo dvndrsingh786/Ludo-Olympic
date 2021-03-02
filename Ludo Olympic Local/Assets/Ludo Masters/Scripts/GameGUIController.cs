@@ -121,6 +121,7 @@ public class GameGUIController : PunBehaviour
     public TempGameManager tempGame;
     public TextMeshProUGUI gameDuration;
 
+    public bool canPlayGame = true;
 
     // Use this for initialization
     void Start()
@@ -128,6 +129,8 @@ public class GameGUIController : PunBehaviour
         //dfdsDebug.LogError("Background TimeOut: " + PhotonNetwork.BackgroundTimeout);
         // LUDO
         // Rotate board and set colors
+        GameManager.exitedPlayers = 0;
+        canPlayGame = true;
         if (GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime)
         {
             PlayerManager.SetActive(false);
@@ -140,7 +143,6 @@ public class GameGUIController : PunBehaviour
             rotation = 0;
             Debug.LogWarning("Setting color selected to default(zero)");
             StartCoroutine(pic());
-
             Sprite[] colors = null;
 
             if (rotation == 0)
@@ -235,8 +237,11 @@ public class GameGUIController : PunBehaviour
 
             names = GameManager.Instance.opponentsNames;
             Debug.Log("name " + GameManager.Instance.nameMy);
-            names.Insert(0, GameManager.Instance.nameMy);
-
+            Debug.LogError("Names: " + GameManager.Instance.opponentsNames[0]);
+            //names.Insert(0, GameManager.Instance.nameMy);
+            
+            names.Insert(0, "Jhuthi");
+            Debug.LogError("Names: " + GameManager.Instance.opponentsNames[0]);
             PlayersIDs = new List<string>();
 
             Debug.LogError("OPPONENTS IDS: " + GameManager.Instance.opponentsIDs.Count);
@@ -263,7 +268,7 @@ public class GameGUIController : PunBehaviour
             {
                 for (int j = 0; j < PlayersIDs.Count - 1; j++)
                 {
-                    if (string.Compare(playerObjects[j].id, playerObjects[j + 1].id) == 1)
+                    if (string.Compare(playerObjects[j].name, playerObjects[j + 1].name) == 1)
                     {
                         // swaap ids
                         PlayerObject temp = playerObjects[j + 1];
@@ -656,6 +661,16 @@ public class GameGUIController : PunBehaviour
         }
         string data = currentPlayerIndex.ToString() + "," + gameDuration.text + playersInfo;
         PhotonNetwork.RaiseEvent((int)EnumPhoton.SynchronizeTurn, data, true, null);
+        if (GameManager.Instance.roomOwner)
+        {
+            Invoke(nameof(SendDurationAgain), 5);
+        }
+    }
+
+    void SendDurationAgain()
+    {
+        PhotonNetwork.RaiseEvent((int)EnumPhoton.SetDuration, gameDuration.text, true, null);
+        Invoke(nameof(SendDurationAgain), 5);
     }
 
     void LateJoinedStart()
@@ -718,12 +733,12 @@ public class GameGUIController : PunBehaviour
         avatars = GameManager.Instance.opponentsAvatars;
         avatars.Insert(0, GameManager.Instance.avatarMy);
 
+
         names = GameManager.Instance.opponentsNames;
         Debug.Log("name " + GameManager.Instance.nameMy);
         names.Insert(0, GameManager.Instance.nameMy);
 
         PlayersIDs = new List<string>();
-
 
         for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
         {
@@ -743,12 +758,14 @@ public class GameGUIController : PunBehaviour
             playerObjects.Add(new PlayerObject(names[i], PlayersIDs[i], avatars[i]));
         }
 
+        Debug.LogError("NAMES: " + names.Count);
+        Debug.LogError("NAaaMES: " + playerObjects.Count);
         // Bubble sort
         for (int i = 0; i < PlayersIDs.Count; i++)
         {
             for (int j = 0; j < PlayersIDs.Count - 1; j++)
             {
-                if (string.Compare(playerObjects[j].id, playerObjects[j + 1].id) == 1)
+                if (string.Compare(playerObjects[j].name, playerObjects[j + 1].name) == 1)
                 {
                     // swaap ids
                     PlayerObject temp = playerObjects[j + 1];
@@ -986,6 +1003,10 @@ public class GameGUIController : PunBehaviour
 
     void SetGameDuration(string duration, char separator)
     {
+        if (!IsInvoking(nameof(UpdateGameDuration)))
+        {
+            CancelInvoke(nameof(UpdateGameDuration));
+        }
         Debug.LogError("Duration: " + duration);
         duration = duration.Replace("m", "");
         duration = duration.Replace("s", "");
@@ -1003,10 +1024,13 @@ public class GameGUIController : PunBehaviour
             mns = int.Parse(temp[1]);
             secs = int.Parse(temp[2]);
         }
-        if (secs == 1) { mns--; secs = 59; }
-        else if (secs == 0) { mns--; secs = 58; }
-        else secs -= 2;
-        UpdateGameDuration();
+        //if (secs == 1) { mns--; secs = 59; }
+        //else if (secs == 0) { mns--; secs = 58; }
+        //else secs -= 2;
+        if (!IsInvoking(nameof(UpdateGameDuration)))
+        {
+            UpdateGameDuration();
+        }
     }
 
     public int hr, mns, secs;
@@ -1041,61 +1065,106 @@ public class GameGUIController : PunBehaviour
         }
     }
 
+    bool checkedIfWon = false;
+
     void CheckIfIWon()
     {
-        List<int> allScores = new List<int>();
-        for (int i = 0; i < playerObjects.Count; i++)
+        if (!checkedIfWon)
         {
-            allScores.Add(int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text));
-            //if (PlayersDices[i].GetComponent<GameDiceController>().isMyDice)
-            //{
-            //    myScore = int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text);
-            //}
-            //else
-            //{
-            //    otherScores.Add(int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text));
-            //}
-        }
-        allScores.Sort();
-        List<PlayerObject> tempPlayers = new List<PlayerObject>();
-        iFinished = false;
-        for (int i = 0; i < playerObjects.Count; i++)
-        {
-            for (int j = 0; j < allScores.Count; j++)
+            //if (GameManager.Instance.roomOwner)
+            PhotonNetwork.RaiseEvent((int)EnumPhoton.OnlineGameFinished, "true", true, null);
+            checkedIfWon = true;
+            List<int> allScores = new List<int>();
+            for (int i = 0; i < playerObjects.Count; i++)
             {
-                if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) == allScores[j])
+                allScores.Add(int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text));
+                //if (PlayersDices[i].GetComponent<GameDiceController>().isMyDice)
+                //{
+                //    myScore = int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text);
+                //}
+                //else
+                //{
+                //    otherScores.Add(int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text));
+                //}
+            }
+            allScores.Sort();
+            for (int i = 0; i < playerObjects.Count; i++)
+            {
+                playerObjects[i].myPosition = playerObjects.Count;
+                for (int j = 0; j < playerObjects.Count; j++)
                 {
-                    if (!tempPlayers.Contains(playerObjects[i]))
+                    if (i != j)
                     {
-                        tempPlayers.Add(playerObjects[i]);
-                        int newPos = allScores.Count - j;
-                        allScores.Remove(allScores[j]);
-                        Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + newPos);
-                        if (playerObjects[i].id == PhotonNetwork.player.NickName)
+                        if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) > int.Parse(playerObjects[j].dice.GetComponent<GameDiceController>().myScore.text))
                         {
-                            Debug.LogError("MY New Position");
-                            SetFinishGameManually(playerObjects[i].id, true, newPos);
+                            playerObjects[i].myPosition--;
                         }
-                        else
-                        {
-                            SetFinishGameManually(playerObjects[i].id, false, newPos);
-                        }
-                        break;
                     }
                 }
+                Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + playerObjects[i].myPosition);
             }
+
+            for (int i = 0; i < playerObjects.Count - 1; i++)
+            {
+                if (playerObjects[i].myPosition == playerObjects[i + 1].myPosition)
+                {
+                    playerObjects[i].myPosition--;
+                }
+                Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + playerObjects[i].myPosition);
+            }
+            for (int i = 0; i < playerObjects.Count; i++)
+            {
+                if (playerObjects[i].id == PhotonNetwork.player.NickName)
+                {
+                    SetFinishGameManually(playerObjects[i].id, true, playerObjects[i].myPosition);
+                }
+                else
+                {
+                    SetFinishGameManually(playerObjects[i].id, false, playerObjects[i].myPosition);
+                }
+            }
+            //List<PlayerObject> tempPlayers = new List<PlayerObject>();
+            //iFinished = false;
+            //for (int i = 0; i < playerObjects.Count; i++)
+            //{
+            //    for (int j = 0; j < allScores.Count; j++)
+            //    {
+            //        if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) == allScores[j])
+            //        {
+            //            if (!tempPlayers.Contains(playerObjects[i]))
+            //            {
+            //                tempPlayers.Add(playerObjects[i]);
+            //                int newPos = allScores.Count - j;
+            //                //allScores.Remove(allScores[j]);
+            //                Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + newPos);
+            //                if (playerObjects[i].id == PhotonNetwork.player.NickName)
+            //                {
+            //                    Debug.LogError("MY New Position");
+            //                    SetFinishGameManually(playerObjects[i].id, true, newPos);
+            //                }
+            //                else
+            //                {
+            //                    SetFinishGameManually(playerObjects[i].id, false, newPos);
+            //                }
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
+
+
+            //didIWin = true;
+            //for (int i = 0; i < otherScores.Count; i++)
+            //{
+            //    if (myScore < otherScores[i])
+            //    {
+            //        didIWin = false;
+            //        break;
+            //    }
+            //}
+            //Debug.LogError("FINISHED: " + didIWin + myScore);
+            //DavFinishGameOnline();
         }
-        //didIWin = true;
-        //for (int i = 0; i < otherScores.Count; i++)
-        //{
-        //    if (myScore < otherScores[i])
-        //    {
-        //        didIWin = false;
-        //        break;
-        //    }
-        //}
-        //Debug.LogError("FINISHED: " + didIWin + myScore);
-        //DavFinishGameOnline();
     }
 
     //public void DavFinishGameOnline()
@@ -1300,7 +1369,6 @@ public class GameGUIController : PunBehaviour
             controller.Active = false;
             controller.finished = true;
 
-            Debug.LogError("DICEEE");
             playerObjects[index].dice.SetActive(false);
 
             int position = playersFinished.Count;
@@ -1441,7 +1509,7 @@ public class GameGUIController : PunBehaviour
         Debug.LogError("ME: " + me + "Psoition: " + position + "IFInished: " + iFinished);
         if (!me || !iFinished || true)
         {
-            Debug.Log("SET FINISH");
+            Debug.Log("SET FINISH Manually");
             ActivePlayersInRoom--;
 
             int index = GetPlayerPosition(id);
@@ -1454,7 +1522,6 @@ public class GameGUIController : PunBehaviour
             controller.Name.GetComponent<Text>().text = "";
             controller.Active = false;
             controller.finished = true;
-            Debug.LogError("DICEEE");
             playerObjects[index].dice.SetActive(false);
             
             if (position == 1)
@@ -1614,7 +1681,7 @@ public class GameGUIController : PunBehaviour
     {
         if (!canCallFinish) return;
         canCallFinish = false;
-        Invoke(nameof(CanCallFinishTurnAgain), 1);
+        Invoke(nameof(CanCallFinishTurnAgain), 1.2f);
         Debug.Log("Send Finish Turn");
         if (!FinishWindowActive && ActivePlayersInRoom > 1)
         {
@@ -1718,6 +1785,17 @@ public class GameGUIController : PunBehaviour
         else if (eventcode == (int)EnumPhoton.SynchronizeTurn)
         {
             SynchronizeData(content.ToString());
+        }
+        else if (eventcode == (int)EnumPhoton.SetDuration)
+        {
+            gameDuration.text = content.ToString();
+            Debug.LogError("SETTING DURATiON: " + gameDuration.text);
+            SetGameDuration(gameDuration.text, ':');
+            Debug.LogError("SETTING DURATiON: " + gameDuration.text);
+        }
+        else if (eventcode == (int)EnumPhoton.OnlineGameFinished)
+        {
+            canPlayGame = false;
         }
         else if (eventcode == (int)EnumPhoton.SendChatMessage)
         {
@@ -1828,14 +1906,17 @@ public class GameGUIController : PunBehaviour
 
         if (playerObjects[currentPlayerIndex].id == myId)
         {
+            Debug.LogError("my turn");
             SetMyTurn();
         }
         else if (playerObjects[currentPlayerIndex].isBot)
         {
+            Debug.LogError("bot turn");
             BotTurn();
         }
         else
         {
+            Debug.LogError("opponent turn");
             SetOpponentTurn();
         }
     }
@@ -1931,7 +2012,21 @@ public class GameGUIController : PunBehaviour
                 break;
             }
         }
-        CheckPlayersIfShouldFinishGame();
+        if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.type == MyGameType.TwoPlayer)
+        {
+            GameManager.exitedPlayers++;
+            if (ReferenceManager.refMngr.onlineNoOfPlayer - GameManager.exitedPlayers == 1)
+            {
+                Debug.LogError("One Player Left...");
+                CancelInvoke(nameof(UpdateGameDuration));
+                StopTimers();
+                CheckIfIWon();
+            }
+        }
+        else
+        {
+            CheckPlayersIfShouldFinishGame();
+        }
     }
 
     // public void CheckPlayersIfShouldFinishGame()
@@ -2024,7 +2119,6 @@ public class GameGUIController : PunBehaviour
             playerObjects[i].AvatarObject.GetComponent<PlayerAvatarController>().PlayerLeftRoom();
 
             // LUDO
-            Debug.LogError("DICEEEE");
             playerObjects[i].dice.SetActive(false);
             if (!playerObjects[i].AvatarObject.GetComponent<PlayerAvatarController>().finished)
             {

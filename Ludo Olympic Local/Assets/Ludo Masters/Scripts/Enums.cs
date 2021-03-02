@@ -38,6 +38,8 @@ public enum EnumPhoton
     AddFriend = 177,
     FinishedGame = 178,
     SynchronizeTurn = 179,
+    SetDuration = 180,
+    OnlineGameFinished = 181,
 }
 
 public enum EnumGame

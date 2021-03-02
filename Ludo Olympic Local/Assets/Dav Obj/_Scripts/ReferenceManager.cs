@@ -28,6 +28,7 @@ public class ReferenceManager : MonoBehaviour
     public bool isOnlineBidSelected = false;
     public List<Bets> bets = new List<Bets>();
     public GameObject loadingPanel;
+    public GameObject loadingPanelFullBlack;
     public GameObject onlineGameWaitingPanel;
     [SerializeField]ReedemCoinsScript redeemCoinScript;
     int invokeCount = 0;
@@ -208,6 +209,14 @@ public class ReferenceManager : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
+            //for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+            //{
+            //    Debug.LogError("IDS: " + i + " " + GameManager.Instance.opponentsIDs[i]);
+            //}
+            //for (int i = 0; i < GameManager.Instance.opponentsNames.Count; i++)
+            //{
+            //    Debug.LogError("Names: " + i + " " + GameManager.Instance.opponentsNames[i]);
+            //}
             //Debug.LogError("Name: " + GameManager.Instance.nameMy);
             //Debug.LogError("Name: " + GameManager.playerName);
             //Debug.LogError("Name: " + GameManager.emailId);

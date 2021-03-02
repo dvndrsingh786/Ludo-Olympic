@@ -7,6 +7,7 @@ public class OnlineWaitPanel : MonoBehaviour
 {
 
     [SerializeField] TextMeshProUGUI secondsLeft;
+    [SerializeField] TextMeshProUGUI headText;
     [SerializeField] int timeToClose;
     int timeLeft;
 
@@ -28,7 +29,9 @@ public class OnlineWaitPanel : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
+            secondsLeft.text = "";
+            headText.text = "Loading. . . . .";
+            //gameObject.SetActive(false);
         }
     }
 

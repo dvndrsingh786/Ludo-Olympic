@@ -43,6 +43,8 @@ public class GameDiceController : PunBehaviour
 
     bool canDisable = true;
 
+    GameGUIController guiCntrlr;
+
     void Start()
     {
         nextSixAppearnce = Random.Range(3, 8);
@@ -50,6 +52,7 @@ public class GameDiceController : PunBehaviour
         {
             SetSprite();
         }
+        guiCntrlr = FindObjectOfType<GameGUIController>();
         Invoke(nameof(Candisableee), 1);
     }
 
@@ -70,7 +73,7 @@ public class GameDiceController : PunBehaviour
     {
         try
         {
-            Debug.LogError("Disbaled");
+            Debug.Log("Disbaled");
             if(Time.timeSinceLevelLoad<1.2f)
             myScoreText.SetActive(false);
         }
@@ -157,14 +160,17 @@ public class GameDiceController : PunBehaviour
        diceValueObject.GetComponent<Image>().sprite = diceValueSprites[steps - 1];
         diceValueObject.SetActive(true);
         diceAnim.SetActive(false);
-
+        
         controller.gUIController.restartTimer();
 
         if (isMyDice)
             controller.HighlightPawnsToMove(player, steps);
         else if (GameManager.Instance.currentPlayer.isBot)
         {
-            controller.HighlightPawnsToMove(player, steps);
+            if (GameManager.Instance.isLocalMultiplayer)
+            {
+                controller.HighlightPawnsToMove(player, steps);
+            }
         }
 
     }
@@ -343,67 +349,85 @@ public class GameDiceController : PunBehaviour
 
     public void RollDice()
     {
-        if (isMyDice)
+        if (guiCntrlr.canPlayGame)
         {
-            if (PhotonNetwork.inRoom)
+            if (isMyDice)
             {
-                TempGameManager.tempGM.view.RPC("SetAliveState", PhotonTargets.AllBuffered, true);
-                //TempGameManager.tempGM.view.RPC("SetCurrentPlayerIndex", PhotonTargets.AllBuffered, FindObjectOfType<GameGUIController>().GetCurrentPlayerIndex());
-                //timer.SynchrozeTurnCount();
-            }
-            steps = Random.Range(1, 7);
-            if (steps == 6)
-            {
-                ResetPredictOutcome();
-            }
-            else if (diceIndex == nextSixAppearnce)
-            {
-                ResetPredictOutcome();
-            }
-
-            controller.nextShotPossible = false;
-            controller.gUIController.PauseTimers();
-            button.interactable = false;
-            Debug.Log("Roll Dice");
-            arrowObject.SetActive(false);
-            if (steps == 6)
-            {
-                aa++;
-                if (aa == 2)
+                if (PhotonNetwork.inRoom)
                 {
-                    steps = Random.Range(1, 6);
+                    //TempGameManager.tempGM.view.RPC("SetAliveState", PhotonTargets.AllBuffered, true);
+                    //TempGameManager.tempGM.view.RPC("SetCurrentPlayerIndex", PhotonTargets.AllBuffered, FindObjectOfType<GameGUIController>().GetCurrentPlayerIndex());
+                    //timer.SynchrozeTurnCount();
+                }
+                steps = Random.Range(1, 7);
+                if (steps == 6)
+                {
+                    ResetPredictOutcome();
+                }
+                else if (diceIndex == nextSixAppearnce)
+                {
+                    ResetPredictOutcome();
+                }
+
+                controller.nextShotPossible = false;
+                controller.gUIController.PauseTimers();
+                button.interactable = false;
+                Debug.Log("Roll Dice");
+                arrowObject.SetActive(false);
+                if (steps == 6)
+                {
+                    aa++;
+                    if (aa == 2)
+                    {
+                        steps = Random.Range(1, 6);
+                        aa = 0;
+                    }
+                }
+                else
+                {
                     aa = 0;
                 }
-            }
-            else
-            {
-                aa = 0;
-            }
-            Debug.Log("aaa   " + aa);
+                Debug.Log("aaa   " + aa);
 
-            if (steps == 6)
-            {
-                Debug.Log("Popup Call");
-            }
-            
-            // if (aa % 2 == 0) steps = 6;
-            // else steps = 2;
-            // aa++;
-            // steps = Random.Range(1, 7);
+                if (steps == 6)
+                {
+                    Debug.Log("Popup Call");
+                }
 
-            RollDiceStart(steps);
-            string data = steps + ";" + controller.gUIController.GetCurrentPlayerIndex();
-            PhotonNetwork.RaiseEvent((int)EnumGame.DiceRoll, data, true, null);
-            diceIndex++;
-            Debug.Log("Value: " + steps);
+                // if (aa % 2 == 0) steps = 6;
+                // else steps = 2;
+                // aa++;
+                // steps = Random.Range(1, 7);
+
+                RollDiceStart(steps);
+                string data = steps + ";" + controller.gUIController.GetCurrentPlayerIndex();
+                PhotonNetwork.RaiseEvent((int)EnumGame.DiceRoll, data, true, null);
+                diceIndex++;
+                Debug.Log("Value: " + steps);
+            }
         }
     }
 
+    bool CanIncAgain = true;
+
     public void IncreaseScore(int incScore)
     {
-        int score = int.Parse(myScore.text);
-        score += incScore;
-        myScore.text = score.ToString();
+        if (guiCntrlr.canPlayGame)
+        {
+            if (CanIncAgain)
+            {
+                CanIncAgain = false;
+                Invoke(nameof(Incc), 0.8f);
+                int score = int.Parse(myScore.text);
+                score += incScore;
+                myScore.text = score.ToString();
+            }
+        }
+    }
+
+    void Incc()
+    {
+        CanIncAgain = true;
     }
 
     public void RollDiceMAnually()
@@ -449,7 +473,7 @@ public class GameDiceController : PunBehaviour
 
     public void RollDiceBot(int value)
     {
-
+        
         controller.nextShotPossible = false;
         controller.gUIController.PauseTimers();
 
