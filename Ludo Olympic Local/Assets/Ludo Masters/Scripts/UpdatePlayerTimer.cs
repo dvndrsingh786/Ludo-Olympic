@@ -26,6 +26,7 @@ public class UpdatePlayerTimer : MonoBehaviour
 
     // Use this for initialization
     List<LudoPawnController> activemyPawn = new List<LudoPawnController>();
+    GameGUIController guiCntrlr;
 
     // Use this for initialization
     void Start()
@@ -35,6 +36,7 @@ public class UpdatePlayerTimer : MonoBehaviour
         //Debug.LogError("Update Player Timer: " + gameObject.name);
         timer = gameObject.GetComponent<Image>();
         LudoPawnController[] com = FindObjectsOfType<LudoPawnController>();
+        guiCntrlr = FindObjectOfType<GameGUIController>();
         foreach (var item in com)
         {
             if (item.isMinePawn)
@@ -103,7 +105,8 @@ public class UpdatePlayerTimer : MonoBehaviour
             }
             else
             {
-                updateClockOnline();
+                if (guiCntrlr.canPlayGame)
+                    updateClockOnline();
             }
         }
     }

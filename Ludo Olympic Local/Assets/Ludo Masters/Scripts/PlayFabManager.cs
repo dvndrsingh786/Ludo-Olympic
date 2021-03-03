@@ -368,6 +368,15 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     }
 
+    public void LoadLateBots()
+    {
+        for (int i = GameManager.Instance.currentPlayersCount - 1; i < GameManager.Instance.requiredPlayers - 1; i++)
+        {
+            if (GameManager.Instance.opponentsIDs[i] != null) GameManager.Instance.opponentsIDs[i] = null;
+            AddLateBot(i);
+        }
+    }
+
     public void PlayofflineMode()
     {
       
@@ -418,10 +427,9 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         LoadGameScene();
     }
 
-    public IEnumerator AddBot(int i)
+    void AddLateBot(int i)
     {
-        yield return new WaitForSeconds(i + UnityEngine.Random.Range(0.0f, 0.9f));
-        Debug.Log("Step3");
+        Debug.LogError("Late bot I: " + i);
         GameManager.Instance.opponentsAvatars[i] = avatarSprites[UnityEngine.Random.Range(0, avatarSprites.Length - 1)];
         GameManager.Instance.opponentsIDs[i] = "_BOT" + i;
         string botName = "";
@@ -430,6 +438,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             bool foundName = false;
             for (int j = 0; j < ReferenceManager.refMngr.onlinePlayersNames.Length; j++)
             {
+                Debug.LogError("Online Player Name: " + ReferenceManager.refMngr.onlinePlayersNames[j]);
                 if (ReferenceManager.refMngr.onlinePlayersNames[j] != null && ReferenceManager.refMngr.onlinePlayersNames[j] != "")
                 {
                     if (!ReferenceManager.refMngr.botsAdded.Contains(ReferenceManager.refMngr.onlinePlayersNames[j]))
@@ -443,24 +452,63 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             }
             if (!foundName)
             {
-                botName = "_" + staticGameVariables.Player_name[i];
+                botName = "_" + staticGameVariables.Player_name[botCount];
+                botCount++;
+            }
+            Debug.LogError("Found: " + foundName + " " + botName);
+        }
+        GameManager.Instance.opponentsNames[i] = botName;
+    }
+
+    int botCount = 0;
+
+    public IEnumerator AddBot(int i)
+    {
+        if (SceneManager.GetActiveScene().name != "GameSceneOnline")
+        {
+            yield return new WaitForSeconds(i + UnityEngine.Random.Range(0.0f, 0.9f));
+            Debug.Log("Step3");
+            GameManager.Instance.opponentsAvatars[i] = avatarSprites[UnityEngine.Random.Range(0, avatarSprites.Length - 1)];
+            GameManager.Instance.opponentsIDs[i] = "_BOT" + i;
+            string botName = "";
+            if (GameManager.Instance.type == MyGameType.TwoPlayer && !GameManager.Instance.isLocalMultiplayer)
+            {
+                bool foundName = false;
+                for (int j = 0; j < ReferenceManager.refMngr.onlinePlayersNames.Length; j++)
+                {
+                    if (ReferenceManager.refMngr.onlinePlayersNames[j] != null && ReferenceManager.refMngr.onlinePlayersNames[j] != "")
+                    {
+                        if (!ReferenceManager.refMngr.botsAdded.Contains(ReferenceManager.refMngr.onlinePlayersNames[j]))
+                        {
+                            foundName = true;
+                            botName = ReferenceManager.refMngr.onlinePlayersNames[j];
+                            ReferenceManager.refMngr.botsAdded.Add(ReferenceManager.refMngr.onlinePlayersNames[j]);
+                            break;
+                        }
+                    }
+                }
+                if (!foundName)
+                {
+                    botName = "_" + staticGameVariables.Player_name[botCount];
+                    botCount++;
+                    Debug.LogError("BOT NAME: " + botName);
+                }
+            }
+            if (GameManager.Instance.type == MyGameType.TwoPlayer && !GameManager.Instance.isLocalMultiplayer)
+            {
+                GameManager.Instance.opponentsNames[i] = botName;
                 Debug.LogError("BOT NAME: " + botName);
             }
+            else
+            {
+                GameManager.Instance.opponentsNames[i] = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];//"Guest" + UnityEngine.Random.Range (100000, 999999);
+                Debug.LogError("BOT NAME: " + GameManager.Instance.opponentsNames[i]);
+            }
+            Debug.Log("Name: " + GameManager.Instance.opponentsNames[i]);
+            Debug.Log(GameManager.Instance.isLocalMultiplayer);
+            if (!GameManager.Instance.isLocalMultiplayer)
+                GameManager.Instance.controlAvatars.PlayerJoined(i, "_BOT" + i);
         }
-        if (GameManager.Instance.type == MyGameType.TwoPlayer && !GameManager.Instance.isLocalMultiplayer)
-        {
-            GameManager.Instance.opponentsNames[i] = botName;
-            Debug.LogError("BOT NAME: " + botName);
-        }
-        else
-        {
-            GameManager.Instance.opponentsNames[i] = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];//"Guest" + UnityEngine.Random.Range (100000, 999999);
-            Debug.LogError("BOT NAME: " + GameManager.Instance.opponentsNames[i]);
-        } 
-        Debug.Log("Name: " + GameManager.Instance.opponentsNames[i]);
-        Debug.Log(GameManager.Instance.isLocalMultiplayer);
-       if (!GameManager.Instance.isLocalMultiplayer)
-        GameManager.Instance.controlAvatars.PlayerJoined(i, "_BOT" + i);
     }
 
 
@@ -1271,6 +1319,12 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString();
             Debug.Log(" Name " + PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
             string otherID = PhotonNetwork.otherPlayers[ii].NickName;
+            GameManager.Instance.currentPlayersCount++;
+            if (!ReferenceManager.refMngr.botsAdded.Contains(PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString()))
+            {
+                Debug.LogError("OTher Player Added name: " + PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
+                ReferenceManager.refMngr.botsAdded.Add(PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
+            }
             //getOpponentData(index + 1, otherID);
         }
     }
@@ -1357,23 +1411,16 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public int GetFirstFreeBotSlot(string nameee)
     {
-        Debug.LogError("NAMEEEe: " + nameee);
         int index = 0;
         for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
         {
-            Debug.LogError(i);
-            Debug.LogError(GameManager.Instance.opponentsIDs.Count);
-            Debug.LogError(GameManager.Instance.opponentsIDs[i]);
             if (GameManager.Instance.opponentsIDs[i].Contains("_BOT"))
             {
-                Debug.LogError(i);
-                Debug.LogError(GameManager.Instance.opponentsNames.Count);
-                Debug.LogError(GameManager.Instance.opponentsNames[i]);
-                //if (GameManager.Instance.opponentsNames[i] == nameee)
-                //{
+                if (GameManager.Instance.opponentsNames[i] == nameee)
+                {
                     index = i;
                     break;
-                //}
+                }
             }
         }
         return index;
@@ -1420,7 +1467,6 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         Debug.Log("PLayer id" + newPlayer.ID + " nick name" + newPlayer.NickName);
         if (!FindObjectOfType<TempGameManager>())
         {
-
             if (PhotonNetwork.room.PlayerCount >= GameManager.Instance.requiredPlayers)
             {
                 if (GameManager.Instance.type == MyGameType.Private)

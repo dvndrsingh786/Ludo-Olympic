@@ -232,18 +232,18 @@ public class GameGUIController : PunBehaviour
             emojiSprites = GameManager.Instance.playfabManager.staticGameVariables.emoji;
             myId = GameManager.Instance.playfabManager.PlayFabId;
             playerObjects = new List<PlayerObject>();
-            avatars = GameManager.Instance.opponentsAvatars;
+            //avatars = GameManager.Instance.opponentsAvatars;
+            Debug.LogError(GameManager.Instance.opponentsAvatars.Count);
+            avatars = new List<Sprite>();
+            Debug.LogError(avatars.Count);
+            avatars.AddRange(GameManager.Instance.opponentsAvatars);
             avatars.Insert(0, GameManager.Instance.avatarMy);
 
-            names = GameManager.Instance.opponentsNames;
-            Debug.Log("name " + GameManager.Instance.nameMy);
-            Debug.LogError("Names: " + GameManager.Instance.opponentsNames[0]);
-            //names.Insert(0, GameManager.Instance.nameMy);
-            
-            names.Insert(0, "Jhuthi");
-            Debug.LogError("Names: " + GameManager.Instance.opponentsNames[0]);
+            //names = GameManager.Instance.opponentsNames;
+            names = new List<string>();
+            names.AddRange(GameManager.Instance.opponentsNames);
+            names.Insert(0, GameManager.Instance.nameMy);
             PlayersIDs = new List<string>();
-
             Debug.LogError("OPPONENTS IDS: " + GameManager.Instance.opponentsIDs.Count);
 
             for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
@@ -259,7 +259,6 @@ public class GameGUIController : PunBehaviour
             for (int i = 0; i < PlayersIDs.Count; i++)
             {
                 Debug.Log(PlayersIDs[i]);
-                Debug.Log(GameManager.Instance.opponentsNames[i]);
                 playerObjects.Add(new PlayerObject(names[i], PlayersIDs[i], avatars[i]));
             }
 
@@ -635,16 +634,33 @@ public class GameGUIController : PunBehaviour
             LateJoinedStart();
         }
     }
+
+    int GetCorrespondingPlayerSlot(string nameeee)
+    {
+        for (int i = 0; i < playerObjects.Count; i++)
+        {
+            if (playerObjects[i].name == nameeee)
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
+
     public void SetDesigns(int index)
     {
         PlayersIDs[index] = GameManager.Instance.opponentsIDs[index];
         names[index] = GameManager.Instance.opponentsNames[index];
         avatars[index] = GameManager.Instance.opponentsAvatars[index];
-        playerObjects[index].name = names[index];
-        playerObjects[index].id = PlayersIDs[index];
-        playerObjects[index].isBot = false;
-        playerObjects[index].avatar = avatars[index];
-        ActivePlayers[index + 1].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[index].name;
+        Debug.LogError("PHAKKK: " + names[index]);
+        Debug.LogError("PHAKKK2: " + GameManager.Instance.opponentsNames[index]);
+
+        int index1 = GetCorrespondingPlayerSlot(names[index]);
+
+        playerObjects[index1].name = names[index];
+        playerObjects[index1].id = PlayersIDs[index];
+        playerObjects[index1].isBot = false;
+        playerObjects[index1].avatar = avatars[index];
         string playersInfo = "";
         for (int i = 0; i < playerObjects.Count; i++)
         {
@@ -722,22 +738,31 @@ public class GameGUIController : PunBehaviour
             }
         }
 
-        
+        GameManager.Instance.currentPlayersCount = 1;
         GameManager.Instance.playfabManager.GetOpponentDetails();
+        GameManager.Instance.playfabManager.LoadLateBots();
+
+        for (int i = 0; i < GameManager.Instance.opponentsNames.Count; i++)
+        {
+            Debug.LogError(GameManager.Instance.opponentsNames[i]);
+        }
 
         currentPlayerIndex = 0;
         emojiSprites = GameManager.Instance.playfabManager.staticGameVariables.emoji;
         myId = GameManager.Instance.playfabManager.PlayFabId;
 
         playerObjects = new List<PlayerObject>();
-        avatars = GameManager.Instance.opponentsAvatars;
+        //avatars = GameManager.Instance.opponentsAvatars;
+        //Debug.LogError(GameManager.Instance.opponentsAvatars.Count);
+        avatars = new List<Sprite>();
+        //Debug.LogError(avatars.Count);
+        avatars.AddRange(GameManager.Instance.opponentsAvatars);
         avatars.Insert(0, GameManager.Instance.avatarMy);
 
-
-        names = GameManager.Instance.opponentsNames;
-        Debug.Log("name " + GameManager.Instance.nameMy);
+        //names = GameManager.Instance.opponentsNames;
+        names = new List<string>();
+        names.AddRange(GameManager.Instance.opponentsNames);
         names.Insert(0, GameManager.Instance.nameMy);
-
         PlayersIDs = new List<string>();
 
         for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
@@ -754,7 +779,6 @@ public class GameGUIController : PunBehaviour
         for (int i = 0; i < PlayersIDs.Count; i++)
         {
             Debug.Log(PlayersIDs[i]);
-            Debug.Log(GameManager.Instance.opponentsNames[i]);
             playerObjects.Add(new PlayerObject(names[i], PlayersIDs[i], avatars[i]));
         }
 
@@ -1073,10 +1097,12 @@ public class GameGUIController : PunBehaviour
         {
             //if (GameManager.Instance.roomOwner)
             PhotonNetwork.RaiseEvent((int)EnumPhoton.OnlineGameFinished, "true", true, null);
+            canPlayGame = false;
             checkedIfWon = true;
             List<int> allScores = new List<int>();
             for (int i = 0; i < playerObjects.Count; i++)
             {
+                //playerObjects[i].myPosition = 0;
                 allScores.Add(int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text));
                 //if (PlayersDices[i].GetComponent<GameDiceController>().isMyDice)
                 //{
@@ -1333,6 +1359,11 @@ public class GameGUIController : PunBehaviour
         {
             Debug.LogError("Finish Game Disabled here");
             //FinishedGame();
+        }
+        for (int i = 0; i < playerObjects.Count; i++)
+        {
+            Debug.LogError("ID: " + playerObjects[i].id);
+            Debug.LogError("NAME: " + playerObjects[i].name);
         }
     }
 
