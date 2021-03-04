@@ -268,6 +268,10 @@ public class UpdatePlayerTimer : MonoBehaviour
             {
                 FindObjectOfType<GameGUIController>().SendFinishTurn();
             }
+            else
+            {
+                FindObjectOfType<GameGUIController>().SendFinishTurnOther();
+            }
             //StartCoroutine(autoMove());
         }
 

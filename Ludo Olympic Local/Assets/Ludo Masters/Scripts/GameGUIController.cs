@@ -1705,6 +1705,42 @@ public class GameGUIController : PunBehaviour
         }
     }
 
+    public void SendFinishTurnOther()
+    {
+        if (!canCallFinish) return;
+        canCallFinish = false;
+        Invoke(nameof(CanCallFinishTurnAgain), 1.2f);
+        Debug.Log("Send Finish Turn Other");
+        if (!FinishWindowActive && ActivePlayersInRoom > 1)
+        {
+            if (GameManager.Instance.currentPlayer.isBot)
+            {
+                BotDelay();
+            }
+            else
+            {
+                if (!GameManager.Instance.isLocalMultiplayer)
+                {
+                    if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                    {
+                        PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, GetCurrentPlayerIndex(currentPlayerIndex), true, null);
+                    }
+                }
+
+                //currentPlayerIndex = (myIndex + 1) % playerObjects.Count;
+
+                Debug.Log("PLAYER BEFORE: " + currentPlayerIndex);
+
+                setCurrentPlayerIndex(currentPlayerIndex);
+
+                SetTurn();
+                //SetOpponentTurn();
+
+                //GameManager.Instance.miniGame.setOpponentTurn();
+            }
+        }
+    }
+
     /// <summary>
     /// Awake is called when the script instance is being loaded.
     /// </summary>
