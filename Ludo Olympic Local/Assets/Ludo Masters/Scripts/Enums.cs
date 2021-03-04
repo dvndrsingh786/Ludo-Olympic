@@ -40,6 +40,7 @@ public enum EnumPhoton
     SynchronizeTurn = 179,
     SetDuration = 180,
     OnlineGameFinished = 181,
+    NextPlayerTurnWithName = 182,
 }
 
 public enum EnumGame

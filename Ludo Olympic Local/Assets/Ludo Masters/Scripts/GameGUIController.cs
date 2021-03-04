@@ -1053,6 +1053,7 @@ public class GameGUIController : PunBehaviour
         //else secs -= 2;
         if (!IsInvoking(nameof(UpdateGameDuration)))
         {
+            canRunTime = true;
             UpdateGameDuration();
         }
     }
@@ -1060,23 +1061,26 @@ public class GameGUIController : PunBehaviour
     public int hr, mns, secs;
     public void UpdateGameDuration()
     {
-        if (hr <= 0)
+        if (canRunTime)
         {
-            gameDuration.text = mns.ToString() + "m:" + secs.ToString() + "s";
-        }
-        else
-        {
-            gameDuration.text = hr.ToString() + "h:" + mns.ToString() + "m:" + secs.ToString() + "s";
-        }
-        secs--;
-        if (secs < 0)
-        {
-            mns--;
-            secs = 59;
-            if (mns < 0)
+            if (hr <= 0)
             {
-                hr--;
-                mns = 59;
+                gameDuration.text = mns.ToString() + "m:" + secs.ToString() + "s";
+            }
+            else
+            {
+                gameDuration.text = hr.ToString() + "h:" + mns.ToString() + "m:" + secs.ToString() + "s";
+            }
+            secs--;
+            if (secs < 0)
+            {
+                mns--;
+                secs = 59;
+                if (mns < 0)
+                {
+                    hr--;
+                    mns = 59;
+                }
             }
         }
         if (hr != 0 || mns != 0 || secs != 0)
@@ -1096,110 +1100,61 @@ public class GameGUIController : PunBehaviour
         if (!checkedIfWon)
         {
             //if (GameManager.Instance.roomOwner)
-            PhotonNetwork.RaiseEvent((int)EnumPhoton.OnlineGameFinished, "true", true, null);
+            if (canPlayGame)
+                PhotonNetwork.RaiseEvent((int)EnumPhoton.OnlineGameFinished, "true", true, null);
             canPlayGame = false;
             checkedIfWon = true;
-            List<int> allScores = new List<int>();
+
             for (int i = 0; i < playerObjects.Count; i++)
             {
-                //playerObjects[i].myPosition = 0;
-                allScores.Add(int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text));
-                //if (PlayersDices[i].GetComponent<GameDiceController>().isMyDice)
-                //{
-                //    myScore = int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text);
-                //}
-                //else
-                //{
-                //    otherScores.Add(int.Parse(PlayersDices[i].GetComponent<GameDiceController>().myScore.text));
-                //}
-            }
-            allScores.Sort();
-            for (int i = 0; i < playerObjects.Count; i++)
-            {
-                playerObjects[i].myPosition = playerObjects.Count;
-                for (int j = 0; j < playerObjects.Count; j++)
+                for (int j = playerObjects.Count - 1; j > i; j--)
                 {
-                    if (i != j)
+                    if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) < int.Parse(playerObjects[j].dice.GetComponent<GameDiceController>().myScore.text))
                     {
-                        if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) > int.Parse(playerObjects[j].dice.GetComponent<GameDiceController>().myScore.text))
-                        {
-                            playerObjects[i].myPosition--;
-                        }
+                        PlayerObject tmp = playerObjects[i];
+                        playerObjects[i] = playerObjects[j];
+                        playerObjects[j] = tmp;
                     }
                 }
-                Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + playerObjects[i].myPosition);
             }
 
-            for (int i = 0; i < playerObjects.Count - 1; i++)
-            {
-                if (playerObjects[i].myPosition == playerObjects[i + 1].myPosition)
-                {
-                    playerObjects[i].myPosition--;
-                }
-                Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + playerObjects[i].myPosition);
-            }
             for (int i = 0; i < playerObjects.Count; i++)
             {
+                Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + (i + 1));
                 if (playerObjects[i].id == PhotonNetwork.player.NickName)
                 {
-                    SetFinishGameManually(playerObjects[i].id, true, playerObjects[i].myPosition);
+                    SetFinishGameManually(playerObjects[i].id, true, i + 1);
                 }
                 else
                 {
-                    SetFinishGameManually(playerObjects[i].id, false, playerObjects[i].myPosition);
+                    SetFinishGameManually(playerObjects[i].id, false, i + 1);
                 }
             }
-            //List<PlayerObject> tempPlayers = new List<PlayerObject>();
-            //iFinished = false;
-            //for (int i = 0; i < playerObjects.Count; i++)
-            //{
-            //    for (int j = 0; j < allScores.Count; j++)
-            //    {
-            //        if (int.Parse(playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text) == allScores[j])
-            //        {
-            //            if (!tempPlayers.Contains(playerObjects[i]))
-            //            {
-            //                tempPlayers.Add(playerObjects[i]);
-            //                int newPos = allScores.Count - j;
-            //                //allScores.Remove(allScores[j]);
-            //                Debug.LogError("Check: " + playerObjects[i].name + ", POS: " + newPos);
-            //                if (playerObjects[i].id == PhotonNetwork.player.NickName)
-            //                {
-            //                    Debug.LogError("MY New Position");
-            //                    SetFinishGameManually(playerObjects[i].id, true, newPos);
-            //                }
-            //                else
-            //                {
-            //                    SetFinishGameManually(playerObjects[i].id, false, newPos);
-            //                }
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
-
-
-            //didIWin = true;
-            //for (int i = 0; i < otherScores.Count; i++)
-            //{
-            //    if (myScore < otherScores[i])
-            //    {
-            //        didIWin = false;
-            //        break;
-            //    }
-            //}
-            //Debug.LogError("FINISHED: " + didIWin + myScore);
-            //DavFinishGameOnline();
         }
     }
 
-    //public void DavFinishGameOnline()
-    //{
-    //    //SetFinishGame(GameManager.Instance.currentPlayer.id, iWon);
-    //    SetFinishGameManually(GameManager.Instance.currentPlayer.id, didIWin);
-    //}
+    bool canRunTime = true;
 
-    bool didIWin = false;
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            canRunTime = false;
+        }
+        else
+        {
+            canRunTime = false;
+            Invoke(nameof(CheckIfCallFinish), 8);
+        }
+    }
+
+    void CheckIfCallFinish()
+    {
+        if (!IsInvoking(nameof(UpdateGameDuration)))
+        {
+            CheckIfIWon();
+        }
+    }
 
     void LoadPreviousGame(string key)
     {
@@ -1673,7 +1628,7 @@ public class GameGUIController : PunBehaviour
     {
         NextTurnSet = true;
         //Debug.LogError("Sent Manually");
-        PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurn, currentPlayerIndex, true, null);
+        //PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurn, currentPlayerIndex, true, null);
 
         //currentPlayerIndex = (myIndex + 1) % playerObjects.Count;
 
@@ -1723,7 +1678,16 @@ public class GameGUIController : PunBehaviour
             else
             {
                 if (!GameManager.Instance.isLocalMultiplayer)
-                    PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurn, myIndex, true, null);
+                {
+                    if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                    {
+                        PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, GetCurrentPlayerIndex(myIndex), true, null);
+                    }
+                    else
+                    {
+                        PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurn, myIndex, true, null);
+                    }
+                }
 
                 //currentPlayerIndex = (myIndex + 1) % playerObjects.Count;
 
@@ -1811,7 +1775,27 @@ public class GameGUIController : PunBehaviour
                 }
                 else NextTurnSet = false;
             }
+        }
+        else if (eventcode == (int)EnumPhoton.NextPlayerTurnWithName)
+        {
+            if (!FinishWindowActive)
+            {
+                if (!NextTurnSet)
+                {
+                    Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
+                    SetCurrentPlayerIndexDav((int)content);
 
+                    //if (playerObjects[currentPlayerIndex].id.Contains("_BOT"))
+                    // {
+                    //     BotTurn();
+                    // }
+                    // else
+                    // {
+                    SetTurn();
+                    // }
+                }
+                else NextTurnSet = false;
+            }
         }
         else if (eventcode == (int)EnumPhoton.SynchronizeTurn)
         {
@@ -1820,13 +1804,12 @@ public class GameGUIController : PunBehaviour
         else if (eventcode == (int)EnumPhoton.SetDuration)
         {
             gameDuration.text = content.ToString();
-            Debug.LogError("SETTING DURATiON: " + gameDuration.text);
             SetGameDuration(gameDuration.text, ':');
-            Debug.LogError("SETTING DURATiON: " + gameDuration.text);
         }
         else if (eventcode == (int)EnumPhoton.OnlineGameFinished)
         {
             canPlayGame = false;
+            CheckIfIWon();
         }
         else if (eventcode == (int)EnumPhoton.SendChatMessage)
         {
@@ -1975,6 +1958,22 @@ public class GameGUIController : PunBehaviour
             if (playerObjects[currentPlayerIndex].AvatarObject.GetComponent<PlayerAvatarController>().Active) break;
         }
 
+    }
+
+    public int GetCurrentPlayerIndex(int current)
+    {
+        int returnInt = 0;
+        while (true)
+        {
+            current = current + 1;
+            returnInt = (current) % playerObjects.Count;
+            //GameManager.Instance.currentPlayerTurnIndex = currentPlayerIndex;
+            if (playerObjects[returnInt].AvatarObject.GetComponent<PlayerAvatarController>().Active)
+            {
+                return returnInt;
+                break;
+            }
+        }
     }
 
     public void SetCurrentPlayerIndexDav(int index)

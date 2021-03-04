@@ -154,6 +154,6 @@ public class TempGameManager : MonoBehaviour
             //FindObjectOfType<GameGUIController>().PlayersTimers[i].GetComponent<UpdatePlayerTimer>().SetTurn(four, id4);
             //}
         }
-        SetCurrentPlayerIndex(currentPlayerIndex);
+        //SetCurrentPlayerIndex(currentPlayerIndex);
     }
 }
