@@ -577,7 +577,10 @@ public class LudoPawnController : MonoBehaviour
             if (playerIndex == GameManager.Instance.myPlayerIndex || (GameManager.Instance.isLocalMultiplayer && ludoController.gUIController.GetCurrentPlayerIndex() == playerIndex))
             {
                 Debug.LogError("MAKE MOVE: " + ludoController.steps);
-                dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+                if (false)
+                {
+                    dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+                }
                 // Debug.Log("Make move button");
                 // string data = index + ";" + ludoController.gUIController.GetCurrentPlayerIndex() + ";" + ludoController.steps;
                 // Debug.Log("data   " + data);
@@ -647,7 +650,10 @@ public class LudoPawnController : MonoBehaviour
         {
             pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
         }
-        dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+        if (false)
+        {
+            dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+        }
         MoveBySteps(ludoController.steps);
 
         isOnBoard = true;
@@ -680,7 +686,7 @@ public class LudoPawnController : MonoBehaviour
 
         //  rect.localScale = new Vector3(initScale.x * 1.25f, initScale.y * 1.25f, initScale.z);
         StartCoroutine("ScalingEffect");
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
 
         if (playSound)
         {
@@ -782,6 +788,7 @@ public class LudoPawnController : MonoBehaviour
 
     private void MoveFinished()
     {
+        dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
         resetScale();
         bool isKilled = false;
 

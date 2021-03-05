@@ -1298,7 +1298,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 GameManager.Instance.opponentsIDs[index] = PhotonNetwork.otherPlayers[ii].NickName;
                 GameManager.Instance.opponentsNames[index] = PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString();
                 GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(PhotonNetwork.otherPlayers[ii].CustomProperties["avatarId"].ToString())];
-                PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString();
+                ReferenceManager.refMngr.botsAdded.Add(PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
                 Debug.Log(" Name " + PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
                 string otherID = PhotonNetwork.otherPlayers[ii].NickName;
                 getOpponentData(index + 1, otherID);
@@ -1489,6 +1489,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
             GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
             GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
+            ReferenceManager.refMngr.botsAdded.Add(newPlayer.CustomProperties["name"].ToString());
             //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
             getOpponentData(newPlayer.ID, newPlayer.NickName);
         }

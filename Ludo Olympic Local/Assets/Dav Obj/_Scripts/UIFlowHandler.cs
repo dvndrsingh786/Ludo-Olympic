@@ -21,6 +21,10 @@ public class UIFlowHandler : MonoBehaviour
     public bool isInputField = false;
     public GameObject updateAppPopup;
     public GameObject loadingPanel;
+    public GameObject errordialogBox;
+    public Text errorTitle;
+    public Text errorMsg;
+
 
     public Texture THETEXTURE;
 
@@ -41,6 +45,13 @@ public class UIFlowHandler : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
         List<int> a = new List<int>();
+    }
+
+    public void ShowError(string error, string errorTitlee)
+    {
+        errorMsg.text = error;
+        errorTitle.text = errorTitlee;
+        errordialogBox.SetActive(true);
     }
 
     void Update()

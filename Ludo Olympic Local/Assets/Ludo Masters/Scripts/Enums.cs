@@ -41,6 +41,7 @@ public enum EnumPhoton
     SetDuration = 180,
     OnlineGameFinished = 181,
     NextPlayerTurnWithName = 182,
+    NeedDuration = 183,
 }
 
 public enum EnumGame

@@ -228,7 +228,7 @@ public class UpdatePlayerTimer : MonoBehaviour
 
         timer.fillAmount -= minus;
 
-        if (timer.fillAmount < 0.05f)
+        if (timer.fillAmount < 0.01f)
         {
             //Debug.LogError("Inside");
             audioSources[0].Play();

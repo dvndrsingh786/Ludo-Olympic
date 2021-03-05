@@ -665,7 +665,12 @@ public class GameGUIController : PunBehaviour
         for (int i = 0; i < playerObjects.Count; i++)
         {
             UpdatePlayerTimer timerr = playerObjects[i].timer.GetComponent<UpdatePlayerTimer>();
-            playersInfo += "," + timerr.turnCount + "," + timerr.timer.fillAmount + ",";
+            playersInfo += "," + timerr.turnCount + ",";
+            if (timerr.timer.fillAmount <= 0.2)
+            {
+                playersInfo += 0.01f + ",";
+            }
+            else playersInfo += (timerr.timer.fillAmount - 0.2f) + ",";
             playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
             playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
             for (int j = 0; j < 4; j++)
@@ -1144,15 +1149,7 @@ public class GameGUIController : PunBehaviour
         else
         {
             canRunTime = false;
-            Invoke(nameof(CheckIfCallFinish), 8);
-        }
-    }
-
-    void CheckIfCallFinish()
-    {
-        if (!IsInvoking(nameof(UpdateGameDuration)))
-        {
-            CheckIfIWon();
+            PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedDuration, "No Content", true, null);
         }
     }
 
@@ -1841,6 +1838,11 @@ public class GameGUIController : PunBehaviour
         {
             gameDuration.text = content.ToString();
             SetGameDuration(gameDuration.text, ':');
+        }
+        else if (eventcode == (int)EnumPhoton.NeedDuration)
+        {
+            if (IsInvoking(nameof(SendDurationAgain))) CancelInvoke(nameof(SendDurationAgain));
+            SendDurationAgain();
         }
         else if (eventcode == (int)EnumPhoton.OnlineGameFinished)
         {

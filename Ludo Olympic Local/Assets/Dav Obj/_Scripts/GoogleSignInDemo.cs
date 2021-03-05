@@ -47,6 +47,11 @@ public class GoogleSignInDemo : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Update()
+    {
+        Debug.LogError("Auth: " + auth);
+    }
+
     private void CheckFirebaseDependencies()
     {
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>

@@ -83709,7 +83709,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02264487, y: 0.17045516}
   m_AnchorMax: {x: 0.15158622, y: 0.7955608}
-  m_AnchoredPosition: {x: 0.039978027, y: 0}
+  m_AnchoredPosition: {x: 0.039916992, y: 0}
   m_SizeDelta: {x: 0.08231926, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1584460288
@@ -84926,6 +84926,7 @@ MonoBehaviour:
   playerName4: {fileID: 1625212336}
   tempGame: {fileID: 1011231414}
   gameDuration: {fileID: 544743518}
+  canPlayGame: 1
   hr: 0
   mns: 0
   secs: 0
@@ -101016,7 +101017,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02264487, y: 0.17045516}
   m_AnchorMax: {x: 0.15158622, y: 0.7955608}
-  m_AnchoredPosition: {x: 0.039978027, y: 0}
+  m_AnchoredPosition: {x: 0.039916992, y: 0}
   m_SizeDelta: {x: 0.08231926, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1878121267
@@ -101613,7 +101614,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02264487, y: 0.17045516}
   m_AnchorMax: {x: 0.15158622, y: 0.7955608}
-  m_AnchoredPosition: {x: 0.039978027, y: 0}
+  m_AnchoredPosition: {x: 0.039916992, y: 0}
   m_SizeDelta: {x: 0.08231926, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1910782538
@@ -110217,7 +110218,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02264487, y: 0.17045516}
   m_AnchorMax: {x: 0.15158622, y: 0.7955608}
-  m_AnchoredPosition: {x: 0.039978027, y: 0}
+  m_AnchoredPosition: {x: 0.039916992, y: 0}
   m_SizeDelta: {x: 0.08231926, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2064701974

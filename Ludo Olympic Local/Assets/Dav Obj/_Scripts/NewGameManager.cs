@@ -24,7 +24,7 @@ public class NewGameManager : MonoBehaviour
     private uint phoneAuthTimeoutMs;
     [SerializeField] TMP_InputField otpField;
     [SerializeField] APIManager apimngr;
-    
+    ForceResendingToken tokenn;
 
     string verificationId;
 
@@ -58,7 +58,60 @@ public class NewGameManager : MonoBehaviour
     {
         UIFlowHandler.uihandler.loadingPanel.SetActive(true);
         PhoneAuthProvider provider = PhoneAuthProvider.GetInstance(googleInstance.auth);
+        
         provider.VerifyPhoneNumber("+91" + phoneNumberField.text, phoneAuthTimeoutMs, null,
+          verificationCompleted: (credential) =>
+          {
+              // Auto-sms-retrieval or instant validation has succeeded (Android only).
+              // There is no need to input the verification code.
+              // `credential` can be used instead of calling GetCredential().
+              UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+              Debug.LogError("Completed: " + credential.ToString());
+              SignIn(credential);
+              
+          },
+          verificationFailed: (error) =>
+          {
+              // The verification code was not sent.
+              // `error` contains a human readable explanation of the problem.
+              UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+              UIFlowHandler.uihandler.ShowError(error, "Error");
+              Debug.LogError("Error: " + error);
+          },
+          codeSent: (id, token) =>
+          {
+              // Verification code was successfully sent via SMS.
+              // `id` contains the verification id that will need to passed in with
+              // the code from the user when calling GetCredential().
+              // `token` can be used if the user requests the code be sent again, to
+              // tie the two requests together.
+              UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+              verificationId = id;
+              Debug.LogError("id: " + id);
+              tokenn = token;
+              UIFlowHandler.uihandler.ShowError("OTP Sent Successfully", "Success");
+              Debug.LogError("token: " + token.ToString());
+
+          },
+          codeAutoRetrievalTimeOut: (id) =>
+          {
+              // Called when the auto-sms-retrieval has timed out, based on the given
+              // timeout parameter.
+              // `id` contains the verification id of the request that timed out.
+              UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+              verificationId = id;
+              Debug.LogError("timeout id: " + id);
+          });
+    }
+
+
+    public void ResendOtpToPhoneNumber()
+    {
+
+        UIFlowHandler.uihandler.loadingPanel.SetActive(true);
+        PhoneAuthProvider provider = PhoneAuthProvider.GetInstance(googleInstance.auth);
+
+        provider.VerifyPhoneNumber("+91" + phoneNumberField.text, phoneAuthTimeoutMs, tokenn,
           verificationCompleted: (credential) =>
           {
               // Auto-sms-retrieval or instant validation has succeeded (Android only).
@@ -73,6 +126,7 @@ public class NewGameManager : MonoBehaviour
               // The verification code was not sent.
               // `error` contains a human readable explanation of the problem.
               UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+              UIFlowHandler.uihandler.ShowError(error, "Error");
               Debug.LogError("Error: " + error);
           },
           codeSent: (id, token) =>
@@ -84,9 +138,7 @@ public class NewGameManager : MonoBehaviour
               // tie the two requests together.
               UIFlowHandler.uihandler.loadingPanel.SetActive(false);
               verificationId = id;
-              Debug.LogError("id: " + id);
-              Debug.LogError("token: " + token.ToString());
-
+              UIFlowHandler.uihandler.ShowError("OTP Sent Successfully", "Success");
           },
           codeAutoRetrievalTimeOut: (id) =>
           {

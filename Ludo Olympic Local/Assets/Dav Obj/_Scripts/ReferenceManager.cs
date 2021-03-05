@@ -209,6 +209,9 @@ public class ReferenceManager : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
+            //Debug.LogError("Is Master Client: " + PhotonNetwork.isMasterClient);
+            //Debug.LogError("Is Inside Room: " + PhotonNetwork.inRoom);
+            //Debug.LogError("Is Inside Lobby: " + PhotonNetwork.insideLobby);
             //for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
             //{
             //    Debug.LogError("IDS: " + i + " " + GameManager.Instance.opponentsIDs[i]);
