@@ -49,7 +49,7 @@ public class GoogleSignInDemo : MonoBehaviour
 
     private void Update()
     {
-        Debug.LogError("Auth: " + auth);
+        //Debug.LogError("Auth: " + auth);
     }
 
     private void CheckFirebaseDependencies()

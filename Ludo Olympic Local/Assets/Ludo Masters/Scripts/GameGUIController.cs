@@ -619,7 +619,7 @@ public class GameGUIController : PunBehaviour
 
             // END LUDO
             ReferenceManager reff = FindObjectOfType<ReferenceManager>();
-            int seconds = reff.timeToSeconds(GameManager.gameDuration, ':');
+            int seconds = reff.timeToSecondsMnsScs(GameManager.gameDuration, ':');
             reff.SecondsToTime(seconds);
             hr = reff.hour;
             mns = reff.minutes;

@@ -19,20 +19,27 @@ public class NotificationCenter : MonoBehaviour
             Importance = Importance.Default,
         };
         AndroidNotificationCenter.RegisterNotificationChannel(defaultchannel);
-        ShowNotification();
+        //ShowNotification();
     }
 
 
-    public void ShowNotification(int secondsss = 0)
+    public void ShowNotification(int secondsss = 0, string left = "one")
     {
+        string fullString;
+        if (left == "one")
+        {
+            fullString = "one minute";
+        }
+        else fullString = left + " minutes";
         AndroidNotification notification = new AndroidNotification()
         {
             Title = "Ludo Olympic",
-            Text = "Your online table will start in few minutes",
+            Text = "Your Game will start in " + fullString,
             SmallIcon = "small_icon",
             LargeIcon = "large_icon",
             FireTime = System.DateTime.Now.AddSeconds(secondsss),
         };
+        
         var identifier = AndroidNotificationCenter.SendNotification(notification, "default_Channel");
     }
 }

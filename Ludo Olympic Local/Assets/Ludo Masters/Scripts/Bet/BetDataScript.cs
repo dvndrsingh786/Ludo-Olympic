@@ -88,7 +88,7 @@ public class BetDataScript : MonoBehaviour
                 thirdPrize = jsonvale["result_push"][i]["third_prize"].ToString();
                 fourthPrize = jsonvale["result_push"][i]["fourth_prize"].ToString();
                 playerCount = jsonvale["result_push"][i]["public_table_count"].ToString();
-                int durationToAddddd = ReferenceManager.refMngr.timeToSeconds(gameDuration, ':');
+                int durationToAddddd = ReferenceManager.refMngr.timeToSecondsMnsScs(gameDuration, ':');
                 BetScript betScript;
                 if (true)
                 {

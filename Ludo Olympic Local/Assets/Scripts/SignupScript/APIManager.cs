@@ -2308,6 +2308,7 @@ public class APIManager : MonoBehaviour
                     clickedBet.myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Joined";
                     clickedBet.isJoined = true;
                     clickedBet.myRoomId = roomId;
+                    clickedBet.SetThisTableNotification();
                     ActiveGamInfo temp = new ActiveGamInfo();
                     temp.game_id = tablevalue;
                     temp.game_room_id = roomId;

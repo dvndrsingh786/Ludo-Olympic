@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 using LitJson;
 
 public class BetScript : MonoBehaviour
@@ -44,13 +45,17 @@ public class BetScript : MonoBehaviour
     public int Callingfunction;
     public int hr, mns, secs;
 
+    int day, month, year;
+
     public void SetTexts()
     {
         string rupeee = FindObjectOfType<InitMenuScript>().rupeeText.text;
         gamePriceText.text = rupeee + gamePrice;
         winPriceText.text = rupeee + winPrice;
         totalJoinedPlayersText.text = "Players Joined: " + totalPlayerJoined;
+        //Debug.LogError("Day of year: " + ReferenceManager.refMngr.CheckDayOfYear());
         //timeLeftText.text = gameDuration;
+        //SetThisTableNotification();
         if (noOfPlayer == "2")
         {
             pubTitle.text = "1v1 Battle";
@@ -58,6 +63,49 @@ public class BetScript : MonoBehaviour
         else pubTitle.text = "3 Winners";
         if (isTablePlaying) SetTableAsPlaying();
         CheckIfJoined();
+    }
+
+    void SetDateDetails(string date)
+    {
+        string[] dates = date.Split('-');
+        if (dates.Length == 3)
+        {
+            year = int.Parse(dates[0]);
+            month = int.Parse(dates[1]);
+            day = int.Parse(dates[2]);
+        }
+        else { Debug.LogError("Invalid date format"); }
+    }
+
+    public void SetThisTableNotification()
+    {
+        int gameDay, today, gameSeconds, nowSeconds;
+        gameSeconds = ReferenceManager.refMngr.timeToSecondsHrMns(startTime, ':');
+        SetDateDetails(startDate);
+        gameDay = ReferenceManager.refMngr.CheckDayOfYear(day, month, year);
+        int total;
+        total = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second;
+        nowSeconds = total;
+        today = DateTime.Now.DayOfYear;
+        int totalToAddSeconds = 0;
+        int offset = gameDay - today + 1;
+        if (gameDay == today)
+        {
+            totalToAddSeconds = gameSeconds - nowSeconds;
+        }
+        else
+        {
+            if (offset > 0)
+            {
+                totalToAddSeconds = offset * 86400;
+            }
+            totalToAddSeconds += gameSeconds;
+            totalToAddSeconds += 86400 - nowSeconds;
+        }
+        totalToAddSeconds = totalToAddSeconds - 60;
+        FindObjectOfType<NotificationCenter>().ShowNotification(totalToAddSeconds);
+        //FindObjectOfType<NotificationCenter>().ShowNotification(0,totalToAddSeconds.ToString());
+        //FindObjectOfType<NotificationCenter>().ShowNotification(10,totalToAddSeconds.ToString());
     }
 
     void CheckIfJoined()

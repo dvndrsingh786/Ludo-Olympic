@@ -427,16 +427,34 @@ public class ReferenceManager : MonoBehaviour
         seconds = scnds;
     }
 
-    public int timeToSeconds(string time, char charToDiffer)
+    public int timeToSecondsMnsScs(string time, char charToDiffer)
     {
         string[] theTime = time.Split(charToDiffer);
-        int hr, mns, secs;
+        int mns, secs;
         int totalSeconds;
         if (theTime.Length == 2)
         {
             mns = int.Parse(theTime[0]) * 60;
             secs = int.Parse(theTime[1]);
             totalSeconds = mns + secs;
+            return totalSeconds;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+
+    public int timeToSecondsHrMns(string time, char charToDiffer)
+    {
+        string[] theTime = time.Split(charToDiffer);
+        int hr, mns;
+        int totalSeconds;
+        if (theTime.Length == 2)
+        {
+            hr = int.Parse(theTime[0]) * 3600;
+            mns = int.Parse(theTime[1]) * 60;
+            totalSeconds = hr + mns;
             return totalSeconds;
         }
         else
@@ -544,15 +562,15 @@ public class ReferenceManager : MonoBehaviour
          {"1","31"},  {"2","28"}, {"3","31"}, {"4","30"}, {"5","31"}, {"6","30"},
           {"7","31"}, {"8","31"}, {"9","30"}, {"10","31"}, {"11","30"}, {"12","31"},
     };
-    int CheckDayOfYear(int date, int month, int year)
+    public int CheckDayOfYear(int datee, int monthh, int yearr)
     {
         bool isLeapYear = false;
         int day = 0;
-        if (year % 4 == 0)
+        if (yearr % 4 == 0)
         {
             isLeapYear = true;
         }
-        for (int i = 1; i < month; i++)
+        for (int i = 1; i < monthh; i++)
         {
             day += int.Parse(daysInMonth[i.ToString()].ToString());
             if(isLeapYear && i == 2)
@@ -560,7 +578,7 @@ public class ReferenceManager : MonoBehaviour
                 day += 1;
             }
         }
-        day += date;
+        day += datee;
         return day;
     }
 }
