@@ -1235,12 +1235,12 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             {
                 //if (ReferenceManager.refMngr.loadingPanel.activeInHierarchy)
                 //{
-                ReferenceManager.refMngr.loadingPanel.SetActive(false);
                 //}
                 ReferenceManager.refMngr.onlineGameWaitingPanel.SetActive(true);
                 ReferenceManager.refMngr.loadingPanelFullBlack.SetActive(false);
             }
         }
+        ReferenceManager.refMngr.loadingPanel.SetActive(false);
         if (PhotonNetwork.room.CustomProperties.ContainsKey("bt"))
         {
             Debug.Log("room proper   " + PhotonNetwork.room.CustomProperties["bt"].ToString());

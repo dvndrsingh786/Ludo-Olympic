@@ -888,23 +888,26 @@ public class APIManager : MonoBehaviour
         //Debug.Log(url);
 
         WWWForm form = new WWWForm();
-        //string username = socialEmail.Remove(socialEmail.IndexOf('@'), socialEmail.Length - socialEmail.IndexOf('@'));
-        //form.AddField("username", username);
-        //form.AddField("password", "QAZWSX");
-        //form.AddField("fullname", socialName);
-        //form.AddField("dob", "01" + "-" + "01" + "-" + "1990");
-        //double phoneNumberrr = UnityEngine.Random.Range(1000000000, 9999999999);
-        //form.AddField("mobile", phoneNumberrr.ToString());
-        //form.AddField("email", socialEmail);
-        //form.AddField("vcode", Application.version);
-        form.AddField("username", "wahoplay");
+        string username;
+        if (socialEmail.Contains("@"))
+            username = socialEmail.Remove(socialEmail.IndexOf('@'), socialEmail.Length - socialEmail.IndexOf('@'));
+        else username = socialEmail;
+        form.AddField("username", username);
         form.AddField("password", "QAZWSX");
-        form.AddField("fullname", "Waho Play");
+        form.AddField("fullname", socialName);
         form.AddField("dob", "01" + "-" + "01" + "-" + "1990");
         double phoneNumberrr = UnityEngine.Random.Range(1000000000, 9999999999);
         form.AddField("mobile", phoneNumberrr.ToString());
-        form.AddField("email", "wahoplay@gmail.com");
+        form.AddField("email", socialEmail);
         form.AddField("vcode", Application.version);
+        //form.AddField("username", "wahoplay");
+        //form.AddField("password", "QAZWSX");
+        //form.AddField("fullname", "Waho Play");
+        //form.AddField("dob", "01" + "-" + "01" + "-" + "1990");
+        //double phoneNumberrr = UnityEngine.Random.Range(1000000000, 9999999999);
+        //form.AddField("mobile", phoneNumberrr.ToString());
+        //form.AddField("email", "wahoplay@gmail.com");
+        //form.AddField("vcode", Application.version);
 
         //Debug.LogError("USername: " + username);
         Debug.LogError("Password: " + "QAZWSX");
@@ -925,7 +928,11 @@ public class APIManager : MonoBehaviour
         UIFlowHandler.uihandler.loadingPanel.SetActive(true);
         string loginurl = GameManager.apiBase1 + "login";
         WWWForm form = new WWWForm();
-        form.AddField("username", socialEmail);
+        string username;
+        if (socialEmail.Contains("@"))
+            username = socialEmail.Remove(socialEmail.IndexOf('@'), socialEmail.Length - socialEmail.IndexOf('@'));
+        else username = socialEmail;
+        form.AddField("username", username);
         form.AddField("password", "QAZWSX");
         CloseSplash();
         Debug.Log("userName" + socialEmail);

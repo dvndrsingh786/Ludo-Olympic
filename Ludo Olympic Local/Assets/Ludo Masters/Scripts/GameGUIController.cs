@@ -663,6 +663,11 @@ public class GameGUIController : PunBehaviour
         playerObjects[index1].id = PlayersIDs[index];
         playerObjects[index1].isBot = false;
         playerObjects[index1].avatar = avatars[index];
+        SendSynchronization();
+    }
+
+    void SendSynchronization()
+    {
         string playersInfo = "";
         for (int i = 0; i < playerObjects.Count; i++)
         {
@@ -672,7 +677,7 @@ public class GameGUIController : PunBehaviour
             {
                 playersInfo += 0.01f + ",";
             }
-            else playersInfo += (timerr.timer.fillAmount - 0.2f) + ",";
+            else playersInfo += (timerr.timer.fillAmount) + ",";
             playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
             playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
             for (int j = 0; j < 4; j++)
@@ -1077,11 +1082,11 @@ public class GameGUIController : PunBehaviour
         {
             if (hr <= 0)
             {
-                gameDuration.text = mns.ToString() + "m:" + secs.ToString() + "s";
+                //gameDuration.text = mns.ToString() + "m:" + secs.ToString() + "s";
             }
             else
             {
-                gameDuration.text = hr.ToString() + "h:" + mns.ToString() + "m:" + secs.ToString() + "s";
+                //gameDuration.text = hr.ToString() + "h:" + mns.ToString() + "m:" + secs.ToString() + "s";
             }
             secs--;
             if (secs < 0)
@@ -1174,16 +1179,20 @@ public class GameGUIController : PunBehaviour
 
     bool canRunTime = true;
 
+    public bool CanSynchronize = true;
+
     private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
             canRunTime = false;
+            CanSynchronize = true;
         }
         else
         {
             canRunTime = false;
-            PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedDuration, "No Content", true, null);
+            //PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedDuration, "No Content", true, null);
+            PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedSynchronize, "No Content", true, null);
         }
     }
 
@@ -1341,7 +1350,6 @@ public class GameGUIController : PunBehaviour
     }
     private void Update()
     {
-        Debug.LogError("Can run time: " + canRunTime);
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.LogError("Finish Game Disabled here");
@@ -1792,7 +1800,7 @@ public class GameGUIController : PunBehaviour
         currentPlayerIndex = int.Parse(dataPiece[0]);
         GameManager.Instance.currentPlayer = playerObjects[currentPlayerIndex];
         SetTurn();
-        gameDuration.text = dataPiece[1];
+        //gameDuration.text = dataPiece[1];
         SetGameDuration(gameDuration.text, ':');
         SynchronizePlayerInfo(playerObjects[0], dataPiece, 2);
         SynchronizePlayerInfo(playerObjects[1], dataPiece, 18);
@@ -1867,17 +1875,28 @@ public class GameGUIController : PunBehaviour
         }
         else if (eventcode == (int)EnumPhoton.SynchronizeTurn)
         {
-            SynchronizeData(content.ToString());
+            if (CanSynchronize)
+            {
+                Debug.LogError("I am synchronizing");
+                CanSynchronize = false;
+                SynchronizeData(content.ToString());
+            }
+            else Debug.LogError("I am unable to synchronize");
         }
         else if (eventcode == (int)EnumPhoton.SetDuration)
         {
-            gameDuration.text = content.ToString();
+            //gameDuration.text = content.ToString();
             SetGameDuration(gameDuration.text, ':');
         }
         else if (eventcode == (int)EnumPhoton.NeedDuration)
         {
             if (IsInvoking(nameof(SendDurationAgain))) CancelInvoke(nameof(SendDurationAgain));
             SendDurationAgain();
+        }
+        else if (eventcode == (int)EnumPhoton.NeedSynchronize)
+        {
+            Debug.LogError("I am sending Synchronize.");
+            SendSynchronization();
         }
         else if (eventcode == (int)EnumPhoton.OnlineGameFinished)
         {

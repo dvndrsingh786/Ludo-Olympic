@@ -362,7 +362,14 @@ public class LudoPawnController : MonoBehaviour
         canCallFinish = true;
         rect.SetAsLastSibling();
         currentPosition = 0;
-        StartCoroutine(MoveDelayed(0, initPosition, path[currentPosition], MoveToStartPositionSpeed, true, true));
+        if (GameManager.Instance.type == MyGameType.TwoPlayer && !GameManager.Instance.isLocalMultiplayer)
+        {
+            StartCoroutine(MoveDelayed1(0, initPosition, path[currentPosition], MoveToStartPositionSpeed, true, true));
+        }
+        else
+        {
+            StartCoroutine(MoveDelayed1(0, initPosition, path[currentPosition], MoveToStartPositionSpeed, true, true));
+        }
 
         if (pawnInJoint != null)
         {
@@ -377,8 +384,16 @@ public class LudoPawnController : MonoBehaviour
         canCallFinish = true;
        // killedPawnSound.Play();
         rect.SetAsLastSibling();
-        isOnBoard = false;
-        currentPosition = -1;
+        if (true)
+        {
+            isOnBoard = true;
+            currentPosition = 0;
+        }
+        else
+        {
+            isOnBoard = false;
+            currentPosition = -1;
+        }
         //pawnTop.SetActive(true);
         pawnTopMultiple.SetActive(false);
         StartCoroutine(MoveDelayed(0, rect, initPosition, MoveToStartPositionSpeed, true, false));
@@ -408,7 +423,7 @@ public class LudoPawnController : MonoBehaviour
         }
 
         rect.SetAsLastSibling();
-        Debug.LogError("Moving steps slowlyyy::::");
+        //Debug.LogError("Moving steps slowlyyy::::");
         StartCoroutine(MoveStepsSlowly(steps));
 
     }
@@ -471,7 +486,7 @@ public class LudoPawnController : MonoBehaviour
 
             currentPosition++;
             StartCoroutine("Particle");
-            Debug.LogError("BRUHHH::: " + last);
+            //Debug.LogError("BRUHHH::: " + last);
             yield return StartCoroutine(MoveDelayed(i, path[currentPosition - 1], path[currentPosition], singlePathSpeed, last, true));
 
 
@@ -735,6 +750,7 @@ public class LudoPawnController : MonoBehaviour
             if (canCallFinish)
             {
                 canCallFinish = false;
+                Debug.LogError("CUURRENT POSITIIOn: " + currentPosition);
                 MoveFinished();
             }
         }
@@ -799,12 +815,12 @@ public class LudoPawnController : MonoBehaviour
 
     private void MoveFinished()
     {
-        Debug.LogError("Move finished:::");
+        //Debug.LogError("Move finished:::");
         dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
         resetScale();
         bool isKilled = false;
 
-        if (currentPosition >= 0)
+        if (currentPosition >= 0 || true)
         {
             bool canSendFinishTurn = true;
 

@@ -412,17 +412,25 @@ public class GameDiceController : PunBehaviour
 
     public void IncreaseScore(int incScore)
     {
+        //Debug.LogError("1");
         if (guiCntrlr.canPlayGame)
         {
-            if (CanIncAgain)
+            //Debug.LogError("2");
+            if (CanIncAgain || true)
             {
+                //Debug.LogError("3");
                 CanIncAgain = false;
                 Invoke(nameof(Incc), 1.4f);
-                int score = int.Parse(myScore.text);
+                score = int.Parse(myScore.text);
                 score += incScore;
-                myScore.text = score.ToString();
+                Invoke(nameof(SlowScore), 0.3f);
             }
         }
+    }
+    int score = 0;
+    void SlowScore()
+    {
+        myScore.text = score.ToString();
     }
 
     void Incc()
