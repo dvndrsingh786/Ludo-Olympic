@@ -25,6 +25,7 @@ public class NewGameManager : MonoBehaviour
     [SerializeField] TMP_InputField otpField;
     [SerializeField] APIManager apimngr;
     ForceResendingToken tokenn;
+    [SerializeField] Button resendButton;
 
     string verificationId;
 
@@ -56,6 +57,7 @@ public class NewGameManager : MonoBehaviour
 
     public void SendOtpToPhoneNumber()
     {
+        resendButton.interactable = true;
         UIFlowHandler.uihandler.loadingPanel.SetActive(true);
         PhoneAuthProvider provider = PhoneAuthProvider.GetInstance(googleInstance.auth);
         
@@ -107,7 +109,7 @@ public class NewGameManager : MonoBehaviour
 
     public void ResendOtpToPhoneNumber()
     {
-
+        resendButton.interactable = false;
         UIFlowHandler.uihandler.loadingPanel.SetActive(true);
         PhoneAuthProvider provider = PhoneAuthProvider.GetInstance(googleInstance.auth);
 

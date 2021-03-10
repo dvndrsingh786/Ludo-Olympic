@@ -11,6 +11,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class GameGUIController : PunBehaviour
 {
@@ -626,7 +627,8 @@ public class GameGUIController : PunBehaviour
             secs = reff.seconds;
             if (GameManager.Instance.type == MyGameType.TwoPlayer)
             {
-                Invoke(nameof(UpdateGameDuration), 1);
+                if(false) Invoke(nameof(UpdateGameDuration), 1);
+                NewGameDuration();
             }
         }
         else
@@ -690,8 +692,11 @@ public class GameGUIController : PunBehaviour
 
     void SendDurationAgain()
     {
-        PhotonNetwork.RaiseEvent((int)EnumPhoton.SetDuration, gameDuration.text, true, null);
-        Invoke(nameof(SendDurationAgain), 5);
+        if (canRunTime)
+        {
+            PhotonNetwork.RaiseEvent((int)EnumPhoton.SetDuration, gameDuration.text, true, null);
+            Invoke(nameof(SendDurationAgain), 5);
+        }
     }
 
     void LateJoinedStart()
@@ -1024,15 +1029,17 @@ public class GameGUIController : PunBehaviour
         //hr = reff.hour;
         //mns = reff.minutes;
         //secs = reff.seconds;
-        //if (GameManager.Instance.type == MyGameType.TwoPlayer)
-        //{
-        //    Invoke(nameof(UpdateGameDuration), 1);
-        //}
+        if (GameManager.Instance.type == MyGameType.TwoPlayer)
+        {
+            //Invoke(nameof(UpdateGameDuration), 1);
+            NewGameDuration();
+        }
     }
+
 
     void SetGameDuration(string duration, char separator)
     {
-        if (!IsInvoking(nameof(UpdateGameDuration)))
+        if (IsInvoking(nameof(UpdateGameDuration)))
         {
             CancelInvoke(nameof(UpdateGameDuration));
         }
@@ -1066,7 +1073,7 @@ public class GameGUIController : PunBehaviour
     public int hr, mns, secs;
     public void UpdateGameDuration()
     {
-        if (canRunTime)
+        if (canRunTime && false)
         {
             if (hr <= 0)
             {
@@ -1094,6 +1101,33 @@ public class GameGUIController : PunBehaviour
         }
         else
         {
+            CheckIfIWon();
+        }
+    }
+
+
+    public void NewGameDuration()
+    {
+        int startSeconds = ReferenceManager.refMngr.timeToSecondsHrMns(ReferenceManager.refMngr.tableStartTime,':');
+        int currentSeconds = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second;
+        int gameSeconds = ReferenceManager.refMngr.timeToSecondsMnsScs(ReferenceManager.refMngr.gameDuration,':');
+        int secondsLeft = startSeconds + gameSeconds - currentSeconds;
+        ReferenceManager.refMngr.SecondsToTime(secondsLeft);
+        if (ReferenceManager.refMngr.hour != 0)
+        {
+            gameDuration.text = ReferenceManager.refMngr.hour.ToString() + "h:" + ReferenceManager.refMngr.minutes.ToString() + "m:" + ReferenceManager.refMngr.seconds.ToString() + "s";
+        }
+        else
+        {
+            gameDuration.text = ReferenceManager.refMngr.minutes.ToString() + "m:" + ReferenceManager.refMngr.seconds.ToString() + "s";
+        }
+        if (ReferenceManager.refMngr.hour > 0 || ReferenceManager.refMngr.minutes > 0 || ReferenceManager.refMngr.seconds > 0)
+        {
+            Invoke(nameof(NewGameDuration), 1);
+        }
+        else
+        {
+            gameDuration.text = "Game Finished";
             CheckIfIWon();
         }
     }
@@ -1307,16 +1341,17 @@ public class GameGUIController : PunBehaviour
     }
     private void Update()
     {
+        Debug.LogError("Can run time: " + canRunTime);
         if (Input.GetKeyDown(KeyCode.E))
         {
             Debug.LogError("Finish Game Disabled here");
             //FinishedGame();
         }
-        for (int i = 0; i < playerObjects.Count; i++)
-        {
-            Debug.LogError("ID: " + playerObjects[i].id);
-            Debug.LogError("NAME: " + playerObjects[i].name);
-        }
+        //for (int i = 0; i < playerObjects.Count; i++)
+        //{
+        //    Debug.LogError("ID: " + playerObjects[i].id);
+        //    Debug.LogError("NAME: " + playerObjects[i].name);
+        //}
     }
 
     
@@ -1815,7 +1850,7 @@ public class GameGUIController : PunBehaviour
             {
                 if (!NextTurnSet)
                 {
-                    Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
+                    //Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
                     SetCurrentPlayerIndexDav((int)content);
 
                     //if (playerObjects[currentPlayerIndex].id.Contains("_BOT"))
@@ -1958,17 +1993,17 @@ public class GameGUIController : PunBehaviour
 
         if (playerObjects[currentPlayerIndex].id == myId)
         {
-            Debug.LogError("my turn");
+            //Debug.LogError("my turn");
             SetMyTurn();
         }
         else if (playerObjects[currentPlayerIndex].isBot)
         {
-            Debug.LogError("bot turn");
+            //Debug.LogError("bot turn");
             BotTurn();
         }
         else
         {
-            Debug.LogError("opponent turn");
+            //Debug.LogError("opponent turn");
             SetOpponentTurn();
         }
     }

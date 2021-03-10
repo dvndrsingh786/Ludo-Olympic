@@ -417,7 +417,7 @@ public class GameDiceController : PunBehaviour
             if (CanIncAgain)
             {
                 CanIncAgain = false;
-                Invoke(nameof(Incc), 0.8f);
+                Invoke(nameof(Incc), 1.4f);
                 int score = int.Parse(myScore.text);
                 score += incScore;
                 myScore.text = score.ToString();

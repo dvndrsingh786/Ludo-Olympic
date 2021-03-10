@@ -359,6 +359,7 @@ public class LudoPawnController : MonoBehaviour
 
     public void GoToStartPosition()
     {
+        canCallFinish = true;
         rect.SetAsLastSibling();
         currentPosition = 0;
         StartCoroutine(MoveDelayed(0, initPosition, path[currentPosition], MoveToStartPositionSpeed, true, true));
@@ -373,6 +374,7 @@ public class LudoPawnController : MonoBehaviour
 
     public void GoToInitPosition(bool callEnd)
     {
+        canCallFinish = true;
        // killedPawnSound.Play();
         rect.SetAsLastSibling();
         isOnBoard = false;
@@ -406,7 +408,7 @@ public class LudoPawnController : MonoBehaviour
         }
 
         rect.SetAsLastSibling();
-
+        Debug.LogError("Moving steps slowlyyy::::");
         StartCoroutine(MoveStepsSlowly(steps));
 
     }
@@ -457,8 +459,11 @@ public class LudoPawnController : MonoBehaviour
         }
     }
 
+    bool canCallFinish = true;
+
     IEnumerator MoveStepsSlowly(int steps)
     {
+        canCallFinish = true;
         for (int i = 0; i < steps; i++)
         {
             bool last = false;
@@ -466,7 +471,7 @@ public class LudoPawnController : MonoBehaviour
 
             currentPosition++;
             StartCoroutine("Particle");
-
+            Debug.LogError("BRUHHH::: " + last);
             yield return StartCoroutine(MoveDelayed(i, path[currentPosition - 1], path[currentPosition], singlePathSpeed, last, true));
 
 
@@ -522,7 +527,7 @@ public class LudoPawnController : MonoBehaviour
         //rect.anchoredPosition = to;
         if (last)
         {
-            MoveFinished();
+            //MoveFinished();
         }
 
 
@@ -576,7 +581,7 @@ public class LudoPawnController : MonoBehaviour
             //Debug.Log(GameManager.Instance.);
             if (playerIndex == GameManager.Instance.myPlayerIndex || (GameManager.Instance.isLocalMultiplayer && ludoController.gUIController.GetCurrentPlayerIndex() == playerIndex))
             {
-                Debug.LogError("MAKE MOVE: " + ludoController.steps);
+                //Debug.LogError("MAKE MOVE: " + ludoController.steps);
                 if (false)
                 {
                     dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
@@ -601,7 +606,7 @@ public class LudoPawnController : MonoBehaviour
                 {
                     pawnInJoint.GetComponent<LudoPawnController>().MoveBySteps(ludoController.steps);
                 }
-                Debug.LogError("111");
+                //Debug.LogError("111");
                 MoveBySteps(ludoController.steps);
                 isOnBoard = true;
             }
@@ -697,6 +702,7 @@ public class LudoPawnController : MonoBehaviour
         StopCoroutine("DeScalingAnimation");
         rect.localScale = new Vector3(1f, 1f, 1);
         DavMaster.CopyRectTransform(to, rect);
+        Debug.LogError("DUHHHHHHHHHHHHHHH:::");
         //rect = to;
         //Debug.LogError(rect + "rect");
         //Debug.LogError(to + "to");
@@ -725,7 +731,12 @@ public class LudoPawnController : MonoBehaviour
         //rect.anchoredPosition = to;
         if (last)
         {
-            MoveFinished();
+            last = false;
+            if (canCallFinish)
+            {
+                canCallFinish = false;
+                MoveFinished();
+            }
         }
 
 
@@ -788,6 +799,7 @@ public class LudoPawnController : MonoBehaviour
 
     private void MoveFinished()
     {
+        Debug.LogError("Move finished:::");
         dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
         resetScale();
         bool isKilled = false;

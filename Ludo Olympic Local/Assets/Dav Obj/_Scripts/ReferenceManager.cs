@@ -47,6 +47,8 @@ public class ReferenceManager : MonoBehaviour
     public string[] onlinePlayersNames = new string[4];
     public List<string> botsAdded;
 
+    public string tableStartTime = "";
+    public string gameDuration = "";
 
     void Start()
     {

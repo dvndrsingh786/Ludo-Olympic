@@ -263,7 +263,7 @@ public class UpdatePlayerTimer : MonoBehaviour
         if (timer.fillAmount <= 0.0f)
         {
             Pause();
-            Debug.LogError("Auto Move Disabled here");
+            //Debug.LogError("Auto Move Disabled here");
             if (GameManager.Instance.currentPlayer.isBot || Gamedice.isMyDice)
             {
                 FindObjectOfType<GameGUIController>().SendFinishTurn();
