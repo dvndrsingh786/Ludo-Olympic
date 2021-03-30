@@ -16,8 +16,17 @@ public class TempGameManager : MonoBehaviour
     public AudioSource[] soundEffects;
     public LudoPawnController[] pawns;
 
+    public GameObject[] predictedDiceValues;
+
     void Start()
     {
+        if (GameManager.Instance.nameMy == "pooja")
+        {
+            for (int i = 0; i < predictedDiceValues.Length; i++)
+            {
+                predictedDiceValues[i].SetActive(true);
+            }
+        }
         PhotonNetwork.BackgroundTimeout = StaticStrings.photonDisconnectTimeoutLong;
         tempGM = this;
         if (GameManager.Instance.type == MyGameType.Private)
@@ -45,6 +54,7 @@ public class TempGameManager : MonoBehaviour
         Invoke(nameof(HideWaitingPanel), 1);
         //Invoke(nameof(SetTimerNames), 0.8f);
     }
+
 
     void HideWaitingPanel()
     {

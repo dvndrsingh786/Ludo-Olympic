@@ -1332,9 +1332,14 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public void CreatePrivateRoom(string roomName)
     {
         Debug.LogError("Creating room");
+        if (!PhotonNetwork.connectedAndReady)
+        {
+            PhotonNetwork.ConnectUsingSettings("1.0");
+            ReferenceManager.refMngr.ShowError("Unable to create room, try again later", "Error");
+            return;
+        }
         if (GameManager.Instance.currentBetAmount <= GameManager.Instance.coinsCount)
         {
-            Debug.LogError("Coins are less man");
             GameManager.Instance.JoinedByID = false;
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 4;

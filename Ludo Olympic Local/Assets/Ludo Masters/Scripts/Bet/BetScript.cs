@@ -181,7 +181,7 @@ public class BetScript : MonoBehaviour
                 else
                 {
                     ReferenceManager.refMngr.loadingPanel.SetActive(false);
-                    ReferenceManager.refMngr.ShowError("You don't have enough money", "Oops!!!");
+                    ReferenceManager.refMngr.ShowError("Insufficient Balance", "Oops!!!");
                 }
             }
             else

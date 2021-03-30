@@ -735,6 +735,11 @@ public class InitMenuScript : MonoBehaviour
         GameManager.Instance.playfabManager.apiManager.newOptionsPanel.SetActive(true);
     }
 
+    public void OpenProfilePage()
+    {
+        GameManager.Instance.playfabManager.apiManager.OpenProfilePage();
+    }
+
     public void OpenRules()
     {
         GameManager.Instance.playfabManager.apiManager.newRules.SetActive(true);

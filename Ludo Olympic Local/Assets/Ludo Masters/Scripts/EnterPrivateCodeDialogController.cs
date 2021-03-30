@@ -62,12 +62,12 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
     {
         if (createAmount.text == "")
         {
-            ReferenceManager.refMngr.ShowError("Amount Should be more than 0", "Error");
+            ReferenceManager.refMngr.ShowError("Insuficient Balance", "Error");
             return;
         }
         else if (int.Parse(createAmount.text) <= 0)
         {
-            ReferenceManager.refMngr.ShowError("Amount Should be more than 0", "Error");
+            ReferenceManager.refMngr.ShowError("Insuficient Balance", "Error");
             return;
         }
         FindObjectOfType<GameConfigrationController>().ChangeBettingAmountDav(int.Parse(createAmount.text));
@@ -94,7 +94,8 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
 
     public void JoinByRoomID()
     {
-       // GameManager.Instance.payoutCoins = 0;
+        // GameManager.Instance.payoutCoins = 0;
+
         string roomID = field.text;
 
         RoomInfo[] rooms = PhotonNetwork.GetRoomList();

@@ -199,7 +199,8 @@ public class NewGameManager : MonoBehaviour
     public void EditorTestingSK()
     {
         apimngr.isTestingLogin = false;
-        apimngr.phoneEmail = "911234527890";
+        //apimngr.phoneEmail = "911234527890";
+        apimngr.phoneEmail = "910000000000";
         apimngr.phoneEmail.Replace("+", "");
         apimngr.PhoneMediaSignInStart();
     }

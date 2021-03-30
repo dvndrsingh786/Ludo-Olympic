@@ -70,6 +70,21 @@ public class ReferenceManager : MonoBehaviour
         //    UIFlowHandler.uihandler.UpdateApp();
         //}
         GetDate();
+        Invoke(nameof(HideLoadingPanel), 2);
+        //APIManager apimngr = FindObjectOfType<APIManager>();
+        //if (apimngr.LoadingPage.activeInHierarchy || apimngr.splashCanvas.activeInHierarchy)
+        //{
+        //    Invoke(nameof(apimngr.Delayforloading), 2);
+        //}
+    }
+
+    void HideLoadingPanel()
+    {
+        APIManager apimngr = FindObjectOfType<APIManager>();
+        if (apimngr.LoadingPage.activeInHierarchy || apimngr.splashCanvas.activeInHierarchy)
+        {
+            apimngr.Delayforloading();
+        }
     }
 
     public void ShowError(string error, string errorTitlee)
@@ -211,6 +226,7 @@ public class ReferenceManager : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
+            //Debug.LogError(GameManager.Instance.nameMy);
             //Debug.LogError("Is Master Client: " + PhotonNetwork.isMasterClient);
             //Debug.LogError("Is Inside Room: " + PhotonNetwork.inRoom);
             //Debug.LogError("Is Inside Lobby: " + PhotonNetwork.insideLobby);

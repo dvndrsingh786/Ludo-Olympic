@@ -161,8 +161,8 @@ public class BetDataScript : MonoBehaviour
                         }
                         else
                         {
-                            Debug.LogError("Start Time: " + startTime);
-                            Debug.LogError("Start Date: " + startDate);
+                            //Debug.LogError("Start Time: " + startTime);
+                            //Debug.LogError("Start Date: " + startDate);
                         }
 
                         //    }

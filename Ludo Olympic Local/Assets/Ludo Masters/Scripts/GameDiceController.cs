@@ -347,6 +347,71 @@ public class GameDiceController : PunBehaviour
     int aa = 0;
     int bb = 0;
 
+    public void RollDiceDeepakS(int stepsss)
+    {
+        if (GameManager.Instance.isMyTurn)
+        {
+            if (guiCntrlr.canPlayGame)
+            {
+                if (isMyDice)
+                {
+                    if (PhotonNetwork.inRoom)
+                    {
+                        //TempGameManager.tempGM.view.RPC("SetAliveState", PhotonTargets.AllBuffered, true);
+                        //TempGameManager.tempGM.view.RPC("SetCurrentPlayerIndex", PhotonTargets.AllBuffered, FindObjectOfType<GameGUIController>().GetCurrentPlayerIndex());
+                        //timer.SynchrozeTurnCount();
+                    }
+                    //steps = Random.Range(1, 7);
+                    steps = stepsss;
+                    //if (steps == 6)
+                    //{
+                    //    ResetPredictOutcome();
+                    //}
+                    //else if (diceIndex == nextSixAppearnce)
+                    //{
+                    //    ResetPredictOutcome();
+                    //}
+
+                    controller.nextShotPossible = false;
+                    controller.gUIController.PauseTimers();
+                    button.interactable = false;
+                    Debug.Log("Roll Dice");
+                    arrowObject.SetActive(false);
+                    if (steps == 6)
+                    {
+                        aa++;
+                        if (aa == 2)
+                        {
+                            steps = Random.Range(1, 6);
+                            aa = 0;
+                        }
+                    }
+                    else
+                    {
+                        aa = 0;
+                    }
+                    Debug.Log("aaa   " + aa);
+
+                    if (steps == 6)
+                    {
+                        Debug.Log("Popup Call");
+                    }
+
+                    // if (aa % 2 == 0) steps = 6;
+                    // else steps = 2;
+                    // aa++;
+                    // steps = Random.Range(1, 7);
+
+                    RollDiceStart(steps);
+                    string data = steps + ";" + controller.gUIController.GetCurrentPlayerIndex();
+                    PhotonNetwork.RaiseEvent((int)EnumGame.DiceRoll, data, true, null);
+                    diceIndex++;
+                    Debug.Log("Value: " + steps);
+                }
+            }
+        }
+    }
+
     public void RollDice()
     {
         if (guiCntrlr.canPlayGame)
