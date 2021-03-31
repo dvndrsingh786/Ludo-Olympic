@@ -40,8 +40,11 @@ public class LudoGameController : PunBehaviour, IMiniGame
 
         botPawns = new List<GameObject>();
 
-        gUIController.restartTimer();
-
+        Debug.LogError("Not restarted timer");
+        if (false)
+        {
+            gUIController.restartTimer();
+        }
 
         GameObject[] pawns = GameManager.Instance.currentPlayer.pawns;
 
@@ -330,7 +333,11 @@ public class LudoGameController : PunBehaviour, IMiniGame
 
         if (eventcode == (int)EnumGame.DiceRoll)
         {
-            gUIController.PauseTimers();
+            Debug.LogError("Not paused timer");
+            if (false)
+            {
+                gUIController.PauseTimers();
+            }
             string[] data = ((string)content).Split(';');
             steps = int.Parse(data[0]);
             int pl = int.Parse(data[1]);

@@ -71,6 +71,7 @@ public class ReferenceManager : MonoBehaviour
         //}
         GetDate();
         Invoke(nameof(HideLoadingPanel), 2);
+        Invoke(nameof(HideLoadingPanel), 5);
         //APIManager apimngr = FindObjectOfType<APIManager>();
         //if (apimngr.LoadingPage.activeInHierarchy || apimngr.splashCanvas.activeInHierarchy)
         //{
@@ -81,10 +82,7 @@ public class ReferenceManager : MonoBehaviour
     void HideLoadingPanel()
     {
         APIManager apimngr = FindObjectOfType<APIManager>();
-        if (apimngr.LoadingPage.activeInHierarchy || apimngr.splashCanvas.activeInHierarchy)
-        {
-            apimngr.Delayforloading();
-        }
+        apimngr.Delayforloading();
     }
 
     public void ShowError(string error, string errorTitlee)

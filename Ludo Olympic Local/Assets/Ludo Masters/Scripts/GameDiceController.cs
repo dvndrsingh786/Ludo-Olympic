@@ -160,9 +160,12 @@ public class GameDiceController : PunBehaviour
        diceValueObject.GetComponent<Image>().sprite = diceValueSprites[steps - 1];
         diceValueObject.SetActive(true);
         diceAnim.SetActive(false);
-        
-        controller.gUIController.restartTimer();
 
+        Debug.LogError("Not restarted timer");
+        if (false)
+        {
+            controller.gUIController.restartTimer();
+        }
         if (isMyDice)
             controller.HighlightPawnsToMove(player, steps);
         else if (GameManager.Instance.currentPlayer.isBot)
@@ -373,7 +376,11 @@ public class GameDiceController : PunBehaviour
                     //}
 
                     controller.nextShotPossible = false;
-                    controller.gUIController.PauseTimers();
+                    Debug.LogError("Not paused timer");
+                    if (false)
+                    {
+                        controller.gUIController.PauseTimers();
+                    }
                     button.interactable = false;
                     Debug.Log("Roll Dice");
                     arrowObject.SetActive(false);
@@ -435,7 +442,11 @@ public class GameDiceController : PunBehaviour
                 }
 
                 controller.nextShotPossible = false;
-                controller.gUIController.PauseTimers();
+                Debug.LogError("Not paused timer");
+                if (false)
+                {
+                    controller.gUIController.PauseTimers();
+                }
                 button.interactable = false;
                 Debug.Log("Roll Dice");
                 arrowObject.SetActive(false);
@@ -513,8 +524,11 @@ public class GameDiceController : PunBehaviour
         }
 
         //controller.nextShotPossible = false;
-        controller.gUIController.PauseTimers();
-        //button.interactable = false;
+        Debug.LogError("Not paused timer");
+        if (false)
+        {
+            controller.gUIController.PauseTimers();
+        }//button.interactable = false;
         Debug.Log("Roll Dice");
         arrowObject.SetActive(false);
         if (steps == 6)
@@ -548,8 +562,11 @@ public class GameDiceController : PunBehaviour
     {
         
         controller.nextShotPossible = false;
-        controller.gUIController.PauseTimers();
-
+        Debug.LogError("Not paused timer");
+        if (false)
+        {
+            controller.gUIController.PauseTimers();
+        }
         Debug.Log("Roll Dice bot    " + value);
 
         // if (bb % 2 == 0) steps = 6;

@@ -619,16 +619,19 @@ public class GameGUIController : PunBehaviour
             //GameManager.Instance.needToKillOpponentToEnterHome = false;
 
             // END LUDO
-            ReferenceManager reff = FindObjectOfType<ReferenceManager>();
-            int seconds = reff.timeToSecondsMnsScs(GameManager.gameDuration, ':');
-            reff.SecondsToTime(seconds);
-            hr = reff.hour;
-            mns = reff.minutes;
-            secs = reff.seconds;
-            if (GameManager.Instance.type == MyGameType.TwoPlayer)
+            if (GameManager.Instance.type != MyGameType.Private)
             {
-                if(false) Invoke(nameof(UpdateGameDuration), 1);
-                NewGameDuration();
+                ReferenceManager reff = FindObjectOfType<ReferenceManager>();
+                int seconds = reff.timeToSecondsMnsScs(GameManager.gameDuration, ':');
+                reff.SecondsToTime(seconds);
+                hr = reff.hour;
+                mns = reff.minutes;
+                secs = reff.seconds;
+                if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                {
+                    if (false) Invoke(nameof(UpdateGameDuration), 1);
+                    NewGameDuration();
+                }
             }
         }
         else

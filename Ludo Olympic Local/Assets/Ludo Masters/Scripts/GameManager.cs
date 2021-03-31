@@ -31,7 +31,7 @@ public class GameManager
     public bool offlineMode = false;
     // public AdsController adsController;
     public int myPlayerIndex = 0;
-    public float playerTime = 20.0f; // player time in seconds
+    public float playerTime = 15.0f; // player time in seconds
     public bool readyToAnimateCoins = false;
     public bool showTargetLines = false;
     public bool callPocketBlack = false;

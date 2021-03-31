@@ -78,7 +78,7 @@ public class UpdatePlayerTimer : MonoBehaviour
         //timerObj.SetActive(true);
         playerTime = GameManager.Instance.playerTime;
         if(isPrivate)
-        secondsRemaining.text = "20s";
+        secondsRemaining.text = "15s";
     }
 
 
@@ -99,7 +99,7 @@ public class UpdatePlayerTimer : MonoBehaviour
                 if (!IsInvoking(nameof(updateClock)))
                 {
                     playerTime = GameManager.Instance.playerTime;
-                    secondsRemaining.text = "20s";
+                    secondsRemaining.text = "15s";
                     updateClock();
                 }
             }
@@ -117,7 +117,7 @@ public class UpdatePlayerTimer : MonoBehaviour
         timer.fillAmount = 1.0f;
         playerTime = GameManager.Instance.playerTime;
         if(isPrivate)
-        secondsRemaining.text = "20s";
+        secondsRemaining.text = "15s";
     }
 
 
@@ -134,7 +134,7 @@ public class UpdatePlayerTimer : MonoBehaviour
             playerTime = GameManager.Instance.playerTime;
             if (isPrivate)
             {
-                secondsRemaining.text = "20s";
+                secondsRemaining.text = "15s";
             }
             //timerObj.SetActive(false);
         }
