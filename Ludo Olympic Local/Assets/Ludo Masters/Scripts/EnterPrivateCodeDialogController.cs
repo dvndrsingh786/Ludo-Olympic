@@ -96,6 +96,12 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
     {
         // GameManager.Instance.payoutCoins = 0;
 
+        if (!PhotonNetwork.connectedAndReady)
+        {
+            PhotonNetwork.ConnectUsingSettings("1.0");
+            ReferenceManager.refMngr.ShowError("Unable to join room, try again later", "Error");
+            return;
+        }
         string roomID = field.text;
 
         RoomInfo[] rooms = PhotonNetwork.GetRoomList();
