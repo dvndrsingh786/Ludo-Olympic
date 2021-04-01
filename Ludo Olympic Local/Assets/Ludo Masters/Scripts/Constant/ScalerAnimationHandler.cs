@@ -70,6 +70,7 @@ public class ScalerAnimationHandler : MonoBehaviour
         yield return StartCoroutine(coroutine);
         if (!toOpen)
             targetObj.GetComponent<Canvas>().enabled = false;
+        if (!targetObj.activeInHierarchy) targetObj.SetActive(true);
     }
 
     IEnumerator UpScalingAnimation(GameObject obj, Vector2 targetScale, float value)

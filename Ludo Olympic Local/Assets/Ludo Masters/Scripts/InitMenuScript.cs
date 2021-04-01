@@ -466,6 +466,16 @@ public class InitMenuScript : MonoBehaviour
         }
     }
 
+    UIFlowHandler flowHandler;
+    public void AddPanelToOpenedPanelsList(GameObject objectToAdd)
+    {
+        if (!flowHandler) flowHandler = FindObjectOfType<UIFlowHandler>();
+        if (!objectToAdd.GetComponent<PanelScriptMandatory>())
+        {
+            flowHandler.openedPanels.Add(objectToAdd);
+        }
+    }
+
     public void SetEffectToMute(bool state)
     {
         for (int i = 0; i < soundEffects.Length; i++)
@@ -729,6 +739,11 @@ public class InitMenuScript : MonoBehaviour
     }
 
     #region New Functions
+
+    public void OpenPrivacyPolicy()
+    {
+        GameManager.Instance.playfabManager.apiManager.newPrivacyPolicy.SetActive(true);
+    }
 
     public void OpenSettings()
     {

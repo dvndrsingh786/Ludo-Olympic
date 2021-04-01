@@ -3,6 +3,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation project(':unityLibrary')
     }
 
@@ -18,6 +19,7 @@ android {
     defaultConfig {
         minSdkVersion **MINSDKVERSION**
         targetSdkVersion **TARGETSDKVERSION**
+        multiDexEnabled true
         applicationId '**APPLICATIONID**'
         ndk {
             abiFilters **ABIFILTERS**

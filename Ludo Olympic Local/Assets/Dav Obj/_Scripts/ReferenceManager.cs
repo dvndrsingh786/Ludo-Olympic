@@ -79,6 +79,7 @@ public class ReferenceManager : MonoBehaviour
         //}
     }
 
+
     void HideLoadingPanel()
     {
         APIManager apimngr = FindObjectOfType<APIManager>();
