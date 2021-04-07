@@ -1804,6 +1804,7 @@ public class APIManager : MonoBehaviour
 
     public void OnPlayerProfileData()
     {
+        FindObjectOfType<UIFlowHandler>().loadingPanel.SetActive(true);
         StartCoroutine(GetPlayerData());
     }
 
@@ -1959,6 +1960,7 @@ public class APIManager : MonoBehaviour
         GameManager.Instance.coinsCount = coin;
         LoginPanel.SetActive(false);
         splashCanvas.SetActive(false);
+        FindObjectOfType<UIFlowHandler>().loadingPanel.SetActive(false);
         LoadingPage.SetActive(true);
         GameManager.Instance.playfabManager.splashCanvas.SetActive(false);
         // GameManager.Instance.playfabManager.Loading.SetActive(false);
@@ -1966,7 +1968,7 @@ public class APIManager : MonoBehaviour
             SceneManager.LoadScene("MenuScene");
 
 
-
+        FindObjectOfType<UIFlowHandler>().loadingPanel.SetActive(false);
         GameManager.adharcardFront = jsonvale["result_push"][0]["aadhar_first"].ToString();
         print(jsonvale["result_push"][0]["aadhar_first"].ToString() + "Value1");
         if (jsonvale["result_push"][0]["aadhar_first"].ToString() != "0")
@@ -3128,10 +3130,10 @@ public class APIManager : MonoBehaviour
     [SerializeField]
     List<string> statesName = new List<string>() { "Andaman and Nicobar Islands",
     "Andhra Pradesh","Arunachal Pradesh","Assam", "Bihar", "Chandigarh", "Chhattisgarh",
-    "Dadra and Nagar Haveli and Daman and Diu", "Delhi","Goa", "Gujarat", "Haryana","Himachal Pradesh"
+    "Delhi","Gujarat", "Haryana","Himachal Pradesh"
     ,"Jammu and Kashmir", "Jharkhand", "Karnataka","Kerala", "Ladakh", "Lakshadweep",
     "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
-    "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana",
+    "Odisha", "Puducherry", "Punjab", "Rajasthan", "Tamil Nadu", "Telangana",
     "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"};
 
     public void SetStates()

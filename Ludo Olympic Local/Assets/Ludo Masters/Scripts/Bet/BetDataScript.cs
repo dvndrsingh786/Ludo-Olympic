@@ -27,6 +27,53 @@ public class BetDataScript : MonoBehaviour
     public GameObject privatebetscrollPanel;
 
     public bool isTwoplayer = false;
+
+    bool oneWinnerFilter = false;
+    bool threeWinnerFilter = false;
+
+    public enum FilterEnum
+    {
+        oneWinnerFilter=1,
+        threeWinnerFilter=3,
+    }
+
+    public void ApplyFilter(int filterType)
+    {
+        bool filterBool = true;
+        if (filterType == (int)FilterEnum.oneWinnerFilter)
+        {
+            oneWinnerFilter = true;
+            for (int i = 0; i < betdataPublic.childCount; i++)
+            {
+                if (!betdataPublic.GetChild(i).gameObject.name.Contains("Ad"))
+                {
+                    if (betdataPublic.GetChild(i).GetComponent<BetScript>().noOfPlayer != "2")
+                    {
+                        betdataPublic.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+        else if(filterType == (int)FilterEnum.threeWinnerFilter)
+        {
+            threeWinnerFilter = true;
+            for (int i = 0; i < betdataPublic.childCount; i++)
+            {
+                if (!betdataPublic.GetChild(i).gameObject.name.Contains("Ad"))
+                {
+                    if (betdataPublic.GetChild(i).GetComponent<BetScript>().noOfPlayer != "4")
+                    {
+                        betdataPublic.GetChild(i).gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+        else
+        {
+
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +101,10 @@ public class BetDataScript : MonoBehaviour
     {
         for (int i = 0; i < betdataPublic.childCount; i++)
         {
-            Destroy(betdataPublic.GetChild(i).gameObject);
+            if (!betdataPublic.GetChild(i).gameObject.name.Contains("Ad"))
+            {
+                Destroy(betdataPublic.GetChild(i).gameObject);
+            }
         }
         StartCoroutine(GetBetting());
     }
@@ -71,7 +121,6 @@ public class BetDataScript : MonoBehaviour
             JsonData jsonvale = JsonMapper.ToObject(www.text);
             string gameId, noOfPlayer, startDate, startTime, endDate, endTime, gamePrice, winPrice, gameDuration,
             firstPrize, secondPrize, thirdPrize, fourthPrize, playerCount;
-            betdataPublic.GetComponent<RectTransform>().sizeDelta = new Vector2(betdataPublic.GetComponent<RectTransform>().sizeDelta.x, jsonvale["result_push"].Count * 325);
             for (int i = 0; i < jsonvale["result_push"].Count; i++)
             {
                 gameId = jsonvale["result_push"][i]["game_id"].ToString();
@@ -108,6 +157,7 @@ public class BetDataScript : MonoBehaviour
                         if (isLessThanADay)
                         {
                             betScript = Instantiate(onlinebetdataPrefab, betdataPublic).GetComponent<BetScript>();
+                            betdataPublic.GetComponent<RectTransform>().sizeDelta = new Vector2(betdataPublic.GetComponent<RectTransform>().sizeDelta.x, betdataPublic.childCount * 325);
                             //}
                             //else if (isSameDate)
                             //{

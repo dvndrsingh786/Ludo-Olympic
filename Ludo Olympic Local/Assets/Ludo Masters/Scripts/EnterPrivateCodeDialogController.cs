@@ -70,6 +70,12 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
             ReferenceManager.refMngr.ShowError("Amount should be more than zero", "Error");
             return;
         }
+        if (!PhotonNetwork.connectedAndReady)
+        {
+            PhotonNetwork.ConnectUsingSettings("1.0");
+            ReferenceManager.refMngr.ShowError("Unable to create room, try again later", "Error");
+            return;
+        }
         FindObjectOfType<GameConfigrationController>().ChangeBettingAmountDav(int.Parse(createAmount.text));
         ReferenceManager.refMngr.isBidSelected = false;
         //Debug.LogError("Is master client: " + PhotonNetwork.isMasterClient) ;

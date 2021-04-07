@@ -40,7 +40,7 @@ public class LudoGameController : PunBehaviour, IMiniGame
 
         botPawns = new List<GameObject>();
 
-        Debug.LogError("Not restarted timer");
+        Debug.LogWarning("Not restarted timer");
         if (false)
         {
             gUIController.restartTimer();

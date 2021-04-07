@@ -514,8 +514,8 @@ public class LudoPawnController : MonoBehaviour
         rect.localScale = new Vector3(1f, 1f, 1);
         DavMaster.CopyRectTransform(to, rect);
         //rect = to;
-        Debug.LogError(rect + "rect");
-        Debug.LogError(to  + "to");
+        Debug.Log(rect + "rect");
+        Debug.Log(to  + "to");
 
         //Vector2 diff = to - from;
         //float x = diff.x / .17f;
@@ -717,7 +717,7 @@ public class LudoPawnController : MonoBehaviour
         StopCoroutine("DeScalingAnimation");
         rect.localScale = new Vector3(1f, 1f, 1);
         DavMaster.CopyRectTransform(to, rect);
-        Debug.LogError("DUHHHHHHHHHHHHHHH:::");
+        Debug.Log("DUHHHHHHHHHHHHHHH:::");
         //rect = to;
         //Debug.LogError(rect + "rect");
         //Debug.LogError(to + "to");
@@ -750,7 +750,7 @@ public class LudoPawnController : MonoBehaviour
             if (canCallFinish)
             {
                 canCallFinish = false;
-                Debug.LogError("CUURRENT POSITIIOn: " + currentPosition);
+                Debug.LogWarning("CUURRENT POSITIIOn: " + currentPosition);
                 MoveFinished();
             }
         }
@@ -909,8 +909,10 @@ public class LudoPawnController : MonoBehaviour
                 otherCount = pathController.pawns.Count;
 
                 if (pawnInJoint == null && otherCount > 1)
+                {
+                    Debug.LogError("Repositioning pawns");
                     RepositionPawns(otherCount, currentPosition);
-
+                }
                 if (currentPosition == path.Length - 1)
                 {
                     StartCoroutine(PawnHomeAnimation());

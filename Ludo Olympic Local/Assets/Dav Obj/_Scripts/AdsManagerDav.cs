@@ -10,13 +10,20 @@ public class AdsManagerDav : MonoBehaviour
     private BannerView bannerView;
     string test = "ca-app-pub-3940256099942544/6300978111";
     string notTest = "ca-app-pub-1545613221422810~6159753431";
+    [SerializeField] int adCount;
+    [SerializeField] string adName = "LARGE_BANNER(Clone)";
+    [SerializeField]List<Transform> ads;
+    [SerializeField] Transform pubsParent;
 
     // Start is called before the first frame update
     void Start()
     {
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(initStatus => { });
-        //RequestBanner();
+        for (int i = 0; i < adCount; i++)
+        {
+            RequestBanner();
+        }
     }
     public void RequestBanner()
     {
@@ -49,9 +56,20 @@ public class AdsManagerDav : MonoBehaviour
         bannerView.LoadAd(request);
     }
 
+    void HandleLoadedAd()
+    {
+        GameObject newAd = GameObject.Find(adName).transform.GetChild(0).gameObject;
+        newAd.name = "Ad" + (ads.Count + 1).ToString();
+        ads.Add(newAd.transform);
+        ads[0].SetParent(pubsParent);
+        ads[0].SetAsFirstSibling();
+        ads[0].localScale = Vector3.one;
+    }
+
     public void HandleOnAdLoaded(object sender, EventArgs args)
     {
         Debug.LogError("Ad Loaded");
+        HandleLoadedAd();
         MonoBehaviour.print("HandleAdLoaded event received");
     }
 

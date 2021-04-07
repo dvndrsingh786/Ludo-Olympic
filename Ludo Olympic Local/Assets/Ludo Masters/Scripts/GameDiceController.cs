@@ -442,7 +442,7 @@ public class GameDiceController : PunBehaviour
                 }
 
                 controller.nextShotPossible = false;
-                Debug.LogError("Not paused timer");
+                Debug.LogWarning("Not paused timer");
                 if (false)
                 {
                     controller.gUIController.PauseTimers();
