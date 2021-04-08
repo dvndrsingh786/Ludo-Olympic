@@ -20,12 +20,15 @@ public class AdsManagerDav : MonoBehaviour
     {
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(initStatus => { });
+        return;
         for (int i = 0; i < adCount; i++)
         {
-            RequestBanner();
+            //HandleLoadedAd();
+            Invoke(nameof(HandleLoadedAd), 2);
+            RequestLargeBanner();
         }
     }
-    public void RequestBanner()
+    public void RequestLargeBanner()
     {
         //this.bannerView = new BannerView(test, AdSize.Banner, AdPosition.Top);
         // Create a 320x50 banner at the bottom of the screen.
@@ -58,18 +61,34 @@ public class AdsManagerDav : MonoBehaviour
 
     void HandleLoadedAd()
     {
-        GameObject newAd = GameObject.Find(adName).transform.GetChild(0).gameObject;
-        newAd.name = "Ad" + (ads.Count + 1).ToString();
-        ads.Add(newAd.transform);
-        ads[0].SetParent(pubsParent);
-        ads[0].SetAsFirstSibling();
-        ads[0].localScale = Vector3.one;
+        Canvas[] a = FindObjectsOfType<Canvas>();
+        Debug.LogError("FINDINGGG");
+        foreach (var item in a)
+        {
+            Debug.LogError(item.name);
+        }
+        Debug.LogError("FINDINGGGG");
+        if (GameObject.Find(adName))
+        {
+            Debug.LogError("Found");
+            GameObject newAd = GameObject.Find(adName).transform.GetChild(0).gameObject;
+            newAd.name = "Ad" + (ads.Count + 1).ToString();
+            ads.Add(newAd.transform);
+            ads[0].SetParent(pubsParent);
+            ads[0].SetAsFirstSibling();
+            ads[0].localScale = Vector3.one;
+        }
+        else
+        {
+            Debug.LogError("Not found");
+            //Invoke(nameof(HandleLoadedAd), 0.5f);
+        }
     }
 
     public void HandleOnAdLoaded(object sender, EventArgs args)
     {
-        Debug.LogError("Ad Loaded");
-        HandleLoadedAd();
+        Debug.LogError("Ad Loaded" + args.ToString() +"$$$"+sender.ToString());
+        //HandleLoadedAd();
         MonoBehaviour.print("HandleAdLoaded event received");
     }
 
