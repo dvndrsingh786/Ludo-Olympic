@@ -174,6 +174,7 @@ public class APIManager : MonoBehaviour
 
     void Awake()
     {
+        GetStartedTable();
         isFirstTimeLogin = false;
         StartCoroutine(OpenLogin());
         StartCoroutine(LoginMenu());
@@ -2134,6 +2135,32 @@ public class APIManager : MonoBehaviour
     }
     float bettingValue;
     public string tablevalue;
+    public string startedTableValue;
+    public Tables tables;
+
+    public void AddStartedTable(string tableId)
+    {
+        tables.tables.Add(tableId);
+        PlayerPrefs.SetString("ABC", JsonUtility.ToJson(tables));
+    }
+
+    public void GetStartedTable()
+    {
+        tables = JsonUtility.FromJson<Tables>(PlayerPrefs.GetString("ABC"));
+        if (tables == null)
+        {
+            tables = new Tables();
+            tables.tables = new List<string>();
+        }
+        else
+        {
+            for (int i = 0; i < tables.tables.Count; i++)
+            {
+                Debug.LogError(tables.tables[i]);
+            }
+        }
+    }
+
     IEnumerator GetBetting()
     {
         using (WWW www = new WWW(getBettingApi))
@@ -3374,4 +3401,9 @@ public class APIManager : MonoBehaviour
     }
 
     #endregion
+}
+[System.Serializable]
+public class Tables
+{
+    public List<string> tables;
 }

@@ -30,15 +30,18 @@ public class BetDataScript : MonoBehaviour
 
     bool oneWinnerFilter = false;
     bool threeWinnerFilter = false;
+    bool allWinnerFilter = false;
 
     public enum FilterEnum
     {
+        allWinnerFilter=0,
         oneWinnerFilter=1,
         threeWinnerFilter=3,
     }
 
     public void ApplyFilter(int filterType)
     {
+        Debug.LogError("Applying filter: " + filterType);
         bool filterBool = true;
         if (filterType == (int)FilterEnum.oneWinnerFilter)
         {
@@ -50,6 +53,10 @@ public class BetDataScript : MonoBehaviour
                     if (betdataPublic.GetChild(i).GetComponent<BetScript>().noOfPlayer != "2")
                     {
                         betdataPublic.GetChild(i).gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        betdataPublic.GetChild(i).gameObject.SetActive(true);
                     }
                 }
             }
@@ -65,12 +72,22 @@ public class BetDataScript : MonoBehaviour
                     {
                         betdataPublic.GetChild(i).gameObject.SetActive(false);
                     }
+                    else
+                    {
+                        betdataPublic.GetChild(i).gameObject.SetActive(true);
+                    }
                 }
             }
         }
-        else
+        else if (filterType == (int)FilterEnum.allWinnerFilter)
         {
-
+            for (int i = 0; i < betdataPublic.childCount; i++)
+            {
+                if (!betdataPublic.GetChild(i).gameObject.name.Contains("Ad"))
+                {
+                    betdataPublic.GetChild(i).gameObject.SetActive(true);
+                }
+            }
         }
     }
 
@@ -111,6 +128,13 @@ public class BetDataScript : MonoBehaviour
 
     IEnumerator GetBetting()
     {
+        for (int i = 0; i < betdataPublic.childCount; i++)
+        {
+            if (!betdataPublic.GetChild(i).gameObject.name.Contains("Ad"))
+            {
+                Destroy(betdataPublic.GetChild(i).gameObject);
+            }
+        }
         string nowTime, nowDate;
         using (WWW www = new WWW(betURL))
         {

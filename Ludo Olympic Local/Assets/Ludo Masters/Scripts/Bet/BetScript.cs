@@ -53,6 +53,7 @@ public class BetScript : MonoBehaviour
         gamePriceText.text = rupeee + gamePrice;
         winPriceText.text = rupeee + winPrice;
         totalJoinedPlayersText.text = "Players Joined: " + totalPlayerJoined;
+        CheckIfPlayedTable();
         //Debug.LogError("Day of year: " + ReferenceManager.refMngr.CheckDayOfYear());
         //timeLeftText.text = gameDuration;
         //SetThisTableNotification();
@@ -192,7 +193,7 @@ public class BetScript : MonoBehaviour
         }
         else
         {
-            if (isTablePlaying)
+            if (isTablePlaying || true)
             {
                 ReferenceManager.refMngr.tableStartTime = startTime;
                 ReferenceManager.refMngr.gameDuration = gameDuration;
@@ -224,6 +225,7 @@ public class BetScript : MonoBehaviour
         ReferenceManager.refMngr.secondPlacePrize = secondPrize;
         ReferenceManager.refMngr.thirdPlacePrize = thirdPrize;
         GameManager.gameDuration = gameDuration;
+        FindObjectOfType<APIManager>().startedTableValue = gameId;
         FindObjectOfType<InitMenuScript>().onlineGamePlayButton.onClick.Invoke();
     }
 
@@ -245,20 +247,25 @@ public class BetScript : MonoBehaviour
                 if (temp.game_id == gameId)
                 {
                     myRoomId = jsonvale1["result_push"][i]["game_room_id"].ToString();
+                    bool foundSomeoneElse = false;
                     if (jsonvale1["result_push"][i]["first_player"].ToString() != null)
                     {
+                        if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["first_player"].ToString()) foundSomeoneElse = true;
                         ReferenceManager.refMngr.onlinePlayersNames[0] = jsonvale1["result_push"][i]["first_player"].ToString();
                     }
                     if (jsonvale1["result_push"][i]["second_player"].ToString() != null)
                     {
+                        if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["second_player"].ToString()) foundSomeoneElse = true;
                         ReferenceManager.refMngr.onlinePlayersNames[1] = jsonvale1["result_push"][i]["second_player"].ToString();
                     }
                     if (jsonvale1["result_push"][i]["third_player"].ToString() != null)
                     {
+                        if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["third_player"].ToString()) foundSomeoneElse = true;
                         ReferenceManager.refMngr.onlinePlayersNames[2] = jsonvale1["result_push"][i]["third_player"].ToString();
                     }
                     if (jsonvale1["result_push"][i]["fourth_player"].ToString() != null)
                     {
+                        if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["fourth_player"].ToString()) foundSomeoneElse = true;
                         ReferenceManager.refMngr.onlinePlayersNames[3] = jsonvale1["result_push"][i]["fourth_player"].ToString();
                     }
                     ActuallyStartTable();
@@ -285,9 +292,45 @@ public class BetScript : MonoBehaviour
         }
     }
 
+    public void RecalculateTime()
+    {
+        CancelInvoke(nameof(UpdateClock));
+        string nowTime, nowDate;
+        nowTime = ReferenceManager.refMngr.GetTime();
+        nowDate = ReferenceManager.refMngr.GetDate();
+        int durationToAddddd = ReferenceManager.refMngr.timeToSecondsMnsScs(gameDuration, ':');
+        ReferenceManager.refMngr.IsLessThanADay(startDate, nowDate, nowTime, startTime, durationToAddddd.ToString());
+        hr = ReferenceManager.refMngr.hour;
+        mns = ReferenceManager.refMngr.minutes;
+        secs = ReferenceManager.refMngr.seconds;
+        //Debug.LogError("HR: " + hr + " || MNS: " + mns + " || SECS: " + secs);
+        isTablePlaying = ReferenceManager.refMngr.isTablePlaying;
+        UpdateClock();
+    }
+
     private void OnEnable()
     {
-        UpdateClock();
+        if (!IsInvoking(nameof(UpdateClock))) UpdateClock();
+    }
+
+    public void CheckIfPlayedTable()
+    {
+        try
+        {
+            for (int i = 0; i < FindObjectOfType<APIManager>().tables.tables.Count; i++)
+            {
+                if (FindObjectOfType<APIManager>().tables.tables[i] == gameId)
+                {
+                    Debug.LogError("Destroying table disabled here");
+                    break;
+                    Destroy(gameObject);
+                }
+            }
+        }
+        catch
+        {
+
+        }
     }
 
     public void UpdateClock()
@@ -313,7 +356,7 @@ public class BetScript : MonoBehaviour
                     mns = 59;
                 }
             }
-            if (hr != 0 || mns != 0 || secs != 0)
+            if (hr > 0 || mns > 0 || secs > 0)
             {
                 Invoke(nameof(UpdateClock), 1);
             }

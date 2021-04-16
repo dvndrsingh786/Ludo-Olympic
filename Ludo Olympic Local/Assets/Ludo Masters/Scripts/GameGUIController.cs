@@ -124,6 +124,11 @@ public class GameGUIController : PunBehaviour
 
     public bool canPlayGame = true;
 
+    void AddPlayingTable()
+    {
+        FindObjectOfType<APIManager>().AddStartedTable(FindObjectOfType<APIManager>().startedTableValue);
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -132,6 +137,10 @@ public class GameGUIController : PunBehaviour
         // Rotate board and set colors
         GameManager.exitedPlayers = 0;
         canPlayGame = true;
+        if (GameManager.Instance.type != MyGameType.Private)
+        {
+            AddPlayingTable();
+        }
         if (GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime)
         {
             PlayerManager.SetActive(false);
@@ -657,8 +666,8 @@ public class GameGUIController : PunBehaviour
         PlayersIDs[index] = GameManager.Instance.opponentsIDs[index];
         names[index] = GameManager.Instance.opponentsNames[index];
         avatars[index] = GameManager.Instance.opponentsAvatars[index];
-        Debug.LogError("PHAKKK: " + names[index]);
-        Debug.LogError("PHAKKK2: " + GameManager.Instance.opponentsNames[index]);
+        //Debug.LogError("PHAKKK: " + names[index]);
+        //Debug.LogError("PHAKKK2: " + GameManager.Instance.opponentsNames[index]);
 
         int index1 = GetCorrespondingPlayerSlot(names[index]);
 
@@ -675,6 +684,7 @@ public class GameGUIController : PunBehaviour
         for (int i = 0; i < playerObjects.Count; i++)
         {
             UpdatePlayerTimer timerr = playerObjects[i].timer.GetComponent<UpdatePlayerTimer>();
+            //if (i != 0) playersInfo += timerr.turnCount + ",";
             playersInfo += "," + timerr.turnCount + ",";
             if (timerr.timer.fillAmount <= 0.2)
             {
@@ -1881,6 +1891,7 @@ public class GameGUIController : PunBehaviour
             if (CanSynchronize)
             {
                 Debug.LogError("I am synchronizing");
+                Debug.LogError(content.ToString());
                 CanSynchronize = false;
                 SynchronizeData(content.ToString());
             }

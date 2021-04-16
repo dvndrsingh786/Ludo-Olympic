@@ -714,6 +714,23 @@ public class InitMenuScript : MonoBehaviour
     }
 #endif
 
+    private void OnApplicationPause(bool pause)
+    {
+        if (!pause)
+        {
+            ReCalculateTablesTime();
+        }
+    }
+
+    void ReCalculateTablesTime()
+    {
+        BetDataScript script = FindObjectOfType<BetDataScript>();
+        for (int i = 0; i < script.betdataPublic.childCount; i++)
+        {
+            script.betdataPublic.GetChild(i).GetComponent<BetScript>().RecalculateTime();
+        }
+    }
+
     public void OFfVibration(int number)
     {
         PlayerPrefs.SetInt(StaticStrings.SoundsKey, number);
