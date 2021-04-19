@@ -333,7 +333,7 @@ public class LudoGameController : PunBehaviour, IMiniGame
 
         if (eventcode == (int)EnumGame.DiceRoll)
         {
-            Debug.LogError("Not paused timer");
+            Debug.LogWarning("Not paused timer");
             if (false)
             {
                 gUIController.PauseTimers();

@@ -1061,7 +1061,7 @@ public class GameGUIController : PunBehaviour
         {
             CancelInvoke(nameof(UpdateGameDuration));
         }
-        Debug.LogError("Duration: " + duration);
+        //Debug.LogError("Duration: " + duration);
         duration = duration.Replace("m", "");
         duration = duration.Replace("s", "");
         duration = duration.Replace("h", "");
@@ -1734,7 +1734,9 @@ public class GameGUIController : PunBehaviour
                 {
                     if (GameManager.Instance.type == MyGameType.TwoPlayer)
                     {
-                        PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, GetCurrentPlayerIndex(myIndex), true, null);
+                        string info = GetCurrentPlayerIndex(myIndex).ToString() + "," + playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().turnCount.ToString() + "," + playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text;
+                        PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, info, true, null);
+                        //PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, GetCurrentPlayerIndex(myIndex), true, null);
                     }
                     else
                     {
@@ -1776,7 +1778,9 @@ public class GameGUIController : PunBehaviour
                 {
                     if (GameManager.Instance.type == MyGameType.TwoPlayer)
                     {
-                        PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, GetCurrentPlayerIndex(currentPlayerIndex), true, null);
+                        string info = GetCurrentPlayerIndex(myIndex).ToString() + "," + playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().turnCount.ToString() + "," + playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text;
+                        PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, info, true, null);
+                        //PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, GetCurrentPlayerIndex(currentPlayerIndex), true, null);
                     }
                 }
 
@@ -1872,7 +1876,14 @@ public class GameGUIController : PunBehaviour
                 if (!NextTurnSet)
                 {
                     //Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
-                    SetCurrentPlayerIndexDav((int)content);
+                    string[] tempInfo = content.ToString().Split(',');
+                    playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(tempInfo[1]));
+                    //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().score = int.Parse(tempInfo[2]);
+                    //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text = tempInfo[2];
+                    //playerObjects[currentPlayerIndex].
+                    SetCurrentPlayerIndexDav(int.Parse(tempInfo[0]));
+
+                    //SetCurrentPlayerIndexDav((int)content);
 
                     //if (playerObjects[currentPlayerIndex].id.Contains("_BOT"))
                     // {
@@ -2145,6 +2156,10 @@ public class GameGUIController : PunBehaviour
             if (playerObjects[i].id.Equals(otherPlayer.NickName))
             {
                 setPlayerDisconnected(i);
+                if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.type == MyGameType.TwoPlayer)
+                {
+                    playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text = "0";
+                }
                 break;
             }
         }

@@ -2650,7 +2650,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.499996
+      value: 9.499994
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -10552,7 +10552,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.499996
+      value: 9.499994
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -10878,6 +10878,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &257599319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13294,6 +13295,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &290223811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16284,6 +16286,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &339170218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17808,6 +17811,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &361502451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27285,6 +27289,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &521293008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32762,6 +32767,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &631795993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36758,6 +36764,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &716152719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44853,6 +44860,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 1416551322}
   myScore: {fileID: 1951825470}
+  score: 0
 --- !u!114 &851839487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48124,6 +48132,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &926303564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48535,6 +48544,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &928294503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49885,6 +49895,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &955801146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51628,6 +51639,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &984711324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55374,6 +55386,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 2111389856}
   myScore: {fileID: 980183915}
+  score: 0
 --- !u!114 &1040318660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57034,6 +57047,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1063835730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59919,6 +59933,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1119497434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67683,6 +67698,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1248299552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70053,6 +70069,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1317923464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73319,6 +73336,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1366716104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92260,6 +92278,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 1938923239}
   myScore: {fileID: 1801448230}
+  score: 0
 --- !u!114 &1695593074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94337,6 +94356,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1731556367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96172,6 +96192,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 1487556479}
   myScore: {fileID: 272616847}
+  score: 0
 --- !u!114 &1774499977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97778,7 +97799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.64125925, y: 0.036666673}
   m_AnchorMax: {x: 0.74670374, y: 0.086666666}
-  m_AnchoredPosition: {x: 0, y: -0.00012207031}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1800545342
@@ -102426,6 +102447,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1874406861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106377,6 +106399,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1966935345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106934,6 +106957,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1974149641
 MonoBehaviour:
   m_ObjectHideFlags: 0

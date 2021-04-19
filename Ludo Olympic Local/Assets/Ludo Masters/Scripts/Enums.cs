@@ -42,7 +42,8 @@ public enum EnumPhoton
     OnlineGameFinished = 181,
     NextPlayerTurnWithName = 182,
     NeedDuration = 183,
-    NeedSynchronize = 184
+    NeedSynchronize = 184,
+    SynchronizeRecentPlayer = 185
 }
 
 public enum EnumGame

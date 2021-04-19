@@ -816,7 +816,8 @@ public class LudoPawnController : MonoBehaviour
     private void MoveFinished()
     {
         //Debug.LogError("Move finished:::");
-        dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+        if (currentPosition != 0)
+            dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
         resetScale();
         bool isKilled = false;
 
@@ -857,7 +858,7 @@ public class LudoPawnController : MonoBehaviour
                                 if (pawnsInColor == 1 || canMakeJoint)
                                 {
                                     isKilled = true;
-                                    Debug.LogError("KILLED");
+                                    Debug.LogWarning("KILLED");
                                     // Killed opponent pawn, Additional turn
                                     // for new 
                                     ludoController.nextShotPossible = true;
@@ -866,6 +867,7 @@ public class LudoPawnController : MonoBehaviour
                                     Debug.Log("canMakeJoint  Pawn Movement");
                                     // Move killed pawn to start position and remove from list
                                     killedPawnSound.Play();
+                                    pathController.pawns[i].GetComponent<LudoPawnController>().dice.GetComponent<GameDiceController>().DecreaseScore(pathController.pawns[i].GetComponent<LudoPawnController>().currentPosition);
                                     pathController.pawns[i].GetComponent<LudoPawnController>().BackToHome();
                                    // pathController.pawns[i].GetComponent<LudoPawnController>().GoToInitPosition(t);
 
@@ -1067,7 +1069,7 @@ public class LudoPawnController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //Debug.LogError("Current Position: " + currentPosition);
     }
 
     public int SiblingIndex

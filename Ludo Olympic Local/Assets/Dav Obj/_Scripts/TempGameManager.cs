@@ -158,9 +158,9 @@ public class TempGameManager : MonoBehaviour
         //{
         if (FindObjectOfType<GameGUIController>().playerObjects.Count < 3)
         {
-            FindObjectOfType<GameGUIController>().PlayersTimers[2].GetComponent<UpdatePlayerTimer>().SetTurn(one, id1);
+            //FindObjectOfType<GameGUIController>().PlayersTimers[2].GetComponent<UpdatePlayerTimer>().SetTurn(one, id1);
             //FindObjectOfType<GameGUIController>().PlayersTimers[i].GetComponent<UpdatePlayerTimer>().SetTurn(two, id2);
-            FindObjectOfType<GameGUIController>().PlayersTimers[0].GetComponent<UpdatePlayerTimer>().SetTurn(three, id3);
+            //FindObjectOfType<GameGUIController>().PlayersTimers[0].GetComponent<UpdatePlayerTimer>().SetTurn(three, id3);
             //FindObjectOfType<GameGUIController>().PlayersTimers[i].GetComponent<UpdatePlayerTimer>().SetTurn(four, id4);
             //}
         }

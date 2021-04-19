@@ -197,7 +197,16 @@ public class BetScript : MonoBehaviour
             {
                 ReferenceManager.refMngr.tableStartTime = startTime;
                 ReferenceManager.refMngr.gameDuration = gameDuration;
-                StartTable();
+                if (PhotonNetwork.connectedAndReady)
+                {
+                    StartTable();
+                }
+                else
+                {
+                    ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                    ReferenceManager.refMngr.ShowError("Cannot Start, Please try again later", "Oops!");
+                    PhotonNetwork.ConnectUsingSettings("1.0");
+                }
             }
             else
             {
