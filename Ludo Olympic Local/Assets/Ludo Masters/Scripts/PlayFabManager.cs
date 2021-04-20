@@ -309,11 +309,21 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     {
         StartCoroutine(waitForPlayerCo());
     }
-
+    public bool canStartWithBot = false;
     IEnumerator waitForPlayerCo()
     {
         yield return new WaitForSeconds(10f);
+        if (!FindObjectOfType<ControlAvatars>().StartGameAfterTimerFinishes())
+        {
+            canStartWithBot = true;
+            AddBotsManually();
+        }
         //yield return new WaitForSeconds(1f);
+        
+    }
+
+    void AddBotsManually()
+    {
         if (PhotonNetwork.isMasterClient && GameManager.Instance.type != MyGameType.Private)
         {
             Debug.Log("START INVOKE");

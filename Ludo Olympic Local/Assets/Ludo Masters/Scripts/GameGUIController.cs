@@ -690,7 +690,7 @@ public class GameGUIController : PunBehaviour
             {
                 playersInfo += 0.01f + ",";
             }
-            else playersInfo += (timerr.timer.fillAmount) + ",";
+            else playersInfo += (timerr.timer.fillAmount - 0.1f ) + ",";
             playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
             playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
             for (int j = 0; j < 4; j++)
@@ -1735,6 +1735,7 @@ public class GameGUIController : PunBehaviour
                     if (GameManager.Instance.type == MyGameType.TwoPlayer)
                     {
                         string info = GetCurrentPlayerIndex(myIndex).ToString() + "," + playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().turnCount.ToString() + "," + playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text;
+                        Debug.LogError("I sent");
                         PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, info, true, null);
                         //PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, GetCurrentPlayerIndex(myIndex), true, null);
                     }
@@ -1778,7 +1779,8 @@ public class GameGUIController : PunBehaviour
                 {
                     if (GameManager.Instance.type == MyGameType.TwoPlayer)
                     {
-                        string info = GetCurrentPlayerIndex(myIndex).ToString() + "," + playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().turnCount.ToString() + "," + playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text;
+                        string info = GetCurrentPlayerIndex(currentPlayerIndex).ToString() + "," + playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().turnCount.ToString() + "," + playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text;
+                        Debug.LogError("I sent");
                         PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, info, true, null);
                         //PhotonNetwork.RaiseEvent((int)EnumPhoton.NextPlayerTurnWithName, GetCurrentPlayerIndex(currentPlayerIndex), true, null);
                     }
@@ -1875,24 +1877,25 @@ public class GameGUIController : PunBehaviour
             {
                 if (!NextTurnSet)
                 {
-                    //Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
-                    string[] tempInfo = content.ToString().Split(',');
-                    playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(tempInfo[1]));
-                    //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().score = int.Parse(tempInfo[2]);
-                    //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text = tempInfo[2];
-                    //playerObjects[currentPlayerIndex].
-                    SetCurrentPlayerIndexDav(int.Parse(tempInfo[0]));
+                        //Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
+                        string[] tempInfo = content.ToString().Split(',');
+                        Debug.LogError("I received");
+                        playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(tempInfo[1]));
+                        //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().score = int.Parse(tempInfo[2]);
+                        //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text = tempInfo[2];
+                        //playerObjects[currentPlayerIndex].
+                        SetCurrentPlayerIndexDav(int.Parse(tempInfo[0]));
 
-                    //SetCurrentPlayerIndexDav((int)content);
+                        //SetCurrentPlayerIndexDav((int)content);
 
-                    //if (playerObjects[currentPlayerIndex].id.Contains("_BOT"))
-                    // {
-                    //     BotTurn();
-                    // }
-                    // else
-                    // {
-                    SetTurn();
-                    // }
+                        //if (playerObjects[currentPlayerIndex].id.Contains("_BOT"))
+                        // {
+                        //     BotTurn();
+                        // }
+                        // else
+                        // {
+                        SetTurn();
+                        // }
                 }
                 else NextTurnSet = false;
             }

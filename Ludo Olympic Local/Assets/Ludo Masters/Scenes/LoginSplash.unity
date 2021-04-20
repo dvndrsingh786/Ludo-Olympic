@@ -21530,7 +21530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &553134676
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37567,7 +37567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &834496873
 RectTransform:
   m_ObjectHideFlags: 0
@@ -60205,6 +60205,7 @@ MonoBehaviour:
   coinsBuyUrl: 
   closeUrl: 
   pickerController: {fileID: 0}
+  canStartWithBot: 0
 --- !u!4 &1158317469
 Transform:
   m_ObjectHideFlags: 0
@@ -92041,6 +92042,9 @@ MonoBehaviour:
   phoneEmail: 
   uu: {fileID: 738428116}
   tablevalue: 
+  startedTableValue: 
+  tables:
+    tables: []
   clickedBet: {fileID: 0}
   isClickedPubButton: 0
   referralCodeInputField: {fileID: 627202075}

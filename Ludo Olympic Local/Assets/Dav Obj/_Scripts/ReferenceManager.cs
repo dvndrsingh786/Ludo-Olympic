@@ -316,7 +316,9 @@ public class ReferenceManager : MonoBehaviour
     public string GetTime()
     {
         string hour, minutes, seconds;
-        DateTime datetime = DateTime.Now;
+        TimeZoneInfo istZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+        DateTime datetime = TimeZoneInfo.ConvertTime(DateTime.Now, istZone);
+        Debug.LogError("FFFFFF" + datetime);
         hour = datetime.Hour.ToString();
         minutes = datetime.Minute.ToString();
         seconds = datetime.Second.ToString();

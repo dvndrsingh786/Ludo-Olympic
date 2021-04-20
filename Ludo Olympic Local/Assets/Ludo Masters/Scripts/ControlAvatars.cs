@@ -257,18 +257,38 @@ public class ControlAvatars : MonoBehaviour
             if (GameManager.Instance.currentPlayersCount >= GameManager.Instance.requiredPlayers)
             {
                 Debug.Log("start game");
-                if (PhotonNetwork.isMasterClient)
+                if (GameManager.Instance.type == MyGameType.Private)
                 {
-                    for (int i = 0; i < GameManager.Instance.opponentsNames.Count; i++)
+                    if (PhotonNetwork.isMasterClient)
                     {
-                        Debug.Log("All Players Joined OP Names: " + GameManager.Instance.opponentsNames[i]);
-                    }
+                        for (int i = 0; i < GameManager.Instance.opponentsNames.Count; i++)
+                        {
+                            Debug.Log("All Players Joined OP Names: " + GameManager.Instance.opponentsNames[i]);
+                        }
 
-                    for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
-                    {
-                        Debug.Log("All Players Joined OP ID: " + GameManager.Instance.opponentsIDs[i]);
+                        for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+                        {
+                            Debug.Log("All Players Joined OP ID: " + GameManager.Instance.opponentsIDs[i]);
+                        }
+                        GameManager.Instance.playfabManager.StartGame();
                     }
-                    GameManager.Instance.playfabManager.StartGame();
+                }
+                else if (GameManager.Instance.playfabManager.canStartWithBot)
+                {
+                    GameManager.Instance.playfabManager.canStartWithBot = false;
+                    if (PhotonNetwork.isMasterClient)
+                    {
+                        for (int i = 0; i < GameManager.Instance.opponentsNames.Count; i++)
+                        {
+                            Debug.Log("All Players Joined OP Names: " + GameManager.Instance.opponentsNames[i]);
+                        }
+
+                        for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+                        {
+                            Debug.Log("All Players Joined OP ID: " + GameManager.Instance.opponentsIDs[i]);
+                        }
+                        GameManager.Instance.playfabManager.StartGame();
+                    }
                 }
             }
             else
@@ -282,6 +302,29 @@ public class ControlAvatars : MonoBehaviour
             }
         }
 
+    }
+
+    public bool StartGameAfterTimerFinishes()
+    {
+        if (GameManager.Instance.currentPlayersCount >= GameManager.Instance.requiredPlayers)
+        {
+            Debug.Log("start game");
+            if (PhotonNetwork.isMasterClient)
+            {
+                for (int i = 0; i < GameManager.Instance.opponentsNames.Count; i++)
+                {
+                    Debug.Log("All Players Joined OP Names: " + GameManager.Instance.opponentsNames[i]);
+                }
+
+                for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+                {
+                    Debug.Log("All Players Joined OP ID: " + GameManager.Instance.opponentsIDs[i]);
+                }
+                GameManager.Instance.playfabManager.StartGame();
+            }
+            return true;
+        }
+        else return false;
     }
 
     public void PlayerDisconnected(int index)
