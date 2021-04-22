@@ -42,7 +42,7 @@ public class UpdatePlayerTimer : MonoBehaviour
             if (item.isMinePawn)
                 activemyPawn.Add(item);
         }
-        if (GameManager.Instance.type == MyGameType.Private)
+        if (GameManager.Instance.type == MyGameType.Private && false)
         {
             timer.enabled = false;
             isPrivate = true;
@@ -78,8 +78,8 @@ public class UpdatePlayerTimer : MonoBehaviour
             Gamedice.timer = this;
         //timerObj.SetActive(true);
         playerTime = GameManager.Instance.playerTime;
-        if(isPrivate)
-        secondsRemaining.text = "15s";
+        //if(isPrivate && false)
+        //secondsRemaining.text = "15s";
     }
 
 
@@ -95,7 +95,7 @@ public class UpdatePlayerTimer : MonoBehaviour
     {
         if (!paused)
         {
-            if (isPrivate)
+            if (isPrivate && false)
             {
                 if (!IsInvoking(nameof(updateClock)))
                 {
@@ -117,8 +117,8 @@ public class UpdatePlayerTimer : MonoBehaviour
         paused = false;
         timer.fillAmount = 1.0f;
         playerTime = GameManager.Instance.playerTime;
-        if(isPrivate)
-        secondsRemaining.text = "15s";
+        //if(isPrivate)
+        //secondsRemaining.text = "15s";
     }
 
 
@@ -133,10 +133,10 @@ public class UpdatePlayerTimer : MonoBehaviour
             audioSources[0].Stop();
             misschance = false;
             playerTime = GameManager.Instance.playerTime;
-            if (isPrivate)
-            {
-                secondsRemaining.text = "15s";
-            }
+            //if (isPrivate)
+            //{
+            //    secondsRemaining.text = "15s";
+            //}
             //timerObj.SetActive(false);
         }
     }

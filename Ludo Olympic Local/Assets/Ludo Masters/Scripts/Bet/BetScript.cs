@@ -330,9 +330,9 @@ public class BetScript : MonoBehaviour
             {
                 if (FindObjectOfType<APIManager>().tables.tables[i] == gameId)
                 {
-                    Debug.LogError("Destroying table disabled here");
-                    break;
                     Destroy(gameObject);
+                    break;
+                    Debug.LogError("Destroying table disabled here");
                 }
             }
         }

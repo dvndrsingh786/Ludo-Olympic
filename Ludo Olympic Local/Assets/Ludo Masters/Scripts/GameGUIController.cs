@@ -135,6 +135,7 @@ public class GameGUIController : PunBehaviour
         //dfdsDebug.LogError("Background TimeOut: " + PhotonNetwork.BackgroundTimeout);
         // LUDO
         // Rotate board and set colors
+        startSeconds = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second;
         GameManager.exitedPlayers = 0;
         canPlayGame = true;
         if (GameManager.Instance.type != MyGameType.Private)
@@ -641,6 +642,10 @@ public class GameGUIController : PunBehaviour
                     if (false) Invoke(nameof(UpdateGameDuration), 1);
                     NewGameDuration();
                 }
+            }
+            else
+            {
+                NewGameDurationPrivate();
             }
         }
         else
@@ -1149,6 +1154,34 @@ public class GameGUIController : PunBehaviour
             CheckIfIWon();
         }
     }
+
+    public int startSeconds;
+
+    public void NewGameDurationPrivate()
+    {
+        int currentSeconds = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second;
+        int gameSeconds = 600;
+        int secondsLeft = startSeconds + gameSeconds - currentSeconds;
+        ReferenceManager.refMngr.SecondsToTime(secondsLeft);
+        if (ReferenceManager.refMngr.hour != 0)
+        {
+            gameDuration.text = ReferenceManager.refMngr.hour.ToString() + "h:" + ReferenceManager.refMngr.minutes.ToString() + "m:" + ReferenceManager.refMngr.seconds.ToString() + "s";
+        }
+        else
+        {
+            gameDuration.text = ReferenceManager.refMngr.minutes.ToString() + "m:" + ReferenceManager.refMngr.seconds.ToString() + "s";
+        }
+        if (ReferenceManager.refMngr.hour > 0 || ReferenceManager.refMngr.minutes > 0 || ReferenceManager.refMngr.seconds > 0)
+        {
+            Invoke(nameof(NewGameDurationPrivate), 1);
+        }
+        else
+        {
+            gameDuration.text = "Game Finished";
+            CheckIfIWon();
+        }
+    }
+
 
     bool checkedIfWon = false;
 

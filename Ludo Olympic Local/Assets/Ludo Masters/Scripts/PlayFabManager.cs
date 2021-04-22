@@ -313,10 +313,13 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     IEnumerator waitForPlayerCo()
     {
         yield return new WaitForSeconds(10f);
-        if (!FindObjectOfType<ControlAvatars>().StartGameAfterTimerFinishes())
+        if (FindObjectOfType<ControlAvatars>())
         {
-            canStartWithBot = true;
-            AddBotsManually();
+            if (!FindObjectOfType<ControlAvatars>().StartGameAfterTimerFinishes())
+            {
+                canStartWithBot = true;
+                AddBotsManually();
+            }
         }
         //yield return new WaitForSeconds(1f);
         

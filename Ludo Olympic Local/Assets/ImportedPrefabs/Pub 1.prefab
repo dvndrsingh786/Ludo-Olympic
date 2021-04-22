@@ -1163,6 +1163,12 @@ MonoBehaviour:
   totalPlayerJoined: 
   pubTitle: {fileID: 486975168735376212}
   myRoomId: 
+  myFirstPlayerName: 
+  mySecondPlayerName: 
+  myThirdPlayerName: 
+  myFourthPlayerName: 
+  isTablePlaying: 0
+  isJoined: 0
   timeLeft: 
   Callingfunction: 0
   hr: 0
