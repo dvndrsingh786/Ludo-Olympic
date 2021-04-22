@@ -71,6 +71,7 @@ public class UpdatePlayerTimer : MonoBehaviour
     /// </summary>
     void OnEnable()
     {
+        FindObjectOfType<GameGUIController>().canSendOther = true;
         if (timer == null) timer = gameObject.GetComponent<Image>();
         if (!myview) myview = GetComponent<PhotonView>();
         if (Gamedice != null)
@@ -143,18 +144,84 @@ public class UpdatePlayerTimer : MonoBehaviour
     public Text playerchnaceLeft;
     public int turnCount = 0;
     public bool misschance = false;
-    private void updateClock()
+
+    private void updateClockBackup()
     {
         //Debug.LogError("Updating Clock");
         float minus;
         playerTime--;
         secondsRemaining.text = ((int)playerTime).ToString() + "s";
-        //playerTime = GameManager.Instance.playerTime;
-        //if (GameManager.Instance.offlineMode)
-        //    playerTime = GameManager.Instance.playerTime + GameManager.Instance.cueTime;
-        //minus = 1.0f / playerTime * Time.deltaTime;
+        playerTime = GameManager.Instance.playerTime;
+        if (GameManager.Instance.offlineMode)
+            playerTime = GameManager.Instance.playerTime + GameManager.Instance.cueTime;
+        minus = 1.0f / playerTime * Time.deltaTime;
 
-        //timer.fillAmount -= minus;
+        timer.fillAmount -= minus;
+
+        //if (timer.fillAmount < 0.05f)
+        if (playerTime < 1)
+        {
+            //Debug.LogError("Inside");
+            audioSources[0].Play();
+            // timeSoundsStarted = true;
+
+            if (!misschance)
+            {
+                misschance = true;
+                turnCount++;
+                Debug.Log("TurnCount" + turnCount);
+                if (turnCount <= autoMoveParent.childCount)
+                    autoMoveParent.GetChild(turnCount - 1).GetComponent<Image>().color = Color.red;
+                //SynchrozeTurnCount();
+                //  FindObjectOfType<GameGUIController>().playerCount.text = "Auto turn Chance" + turnCount;
+                playerchnaceLeft.text = "Auto Move: " + turnCount.ToString();
+                if (turnCount == maxAutoMove)
+                {
+                    FindObjectOfType<GameGUIController>().LeaveGame(false);
+                }
+                else
+                {
+                    //  Gamedice.RollDice();
+                    if (!ismyTurn)
+                    {
+                        ismyTurn = true;
+                    }
+                }
+                //   Gamedice.RollDice();
+            }
+        }
+
+        //if (timer.fillAmount <= 0.0f)
+        if (playerTime < 1)
+        {
+            Pause();
+            //Debug.LogError("Auto Move Disabled here");
+            if (GameManager.Instance.currentPlayer.isBot || Gamedice.isMyDice)
+            {
+                FindObjectOfType<GameGUIController>().SendFinishTurn();
+            }
+            //StartCoroutine(autoMove());
+        }
+        else
+        {
+            if (gameObject.activeInHierarchy)
+                Invoke(nameof(updateClock), 1);
+        }
+
+    }
+
+    private void updateClock()
+    {
+        //Debug.LogError("Updating Clock");
+        float minus;
+        //playerTime--;
+        //secondsRemaining.text = ((int)playerTime).ToString() + "s";
+        playerTime = GameManager.Instance.playerTime;
+        if (GameManager.Instance.offlineMode)
+            playerTime = GameManager.Instance.playerTime + GameManager.Instance.cueTime;
+        minus = 1.0f / playerTime * Time.deltaTime;
+
+        timer.fillAmount -= minus;
 
         //if (timer.fillAmount < 0.05f)
         if (playerTime < 1)
@@ -275,13 +342,30 @@ public class UpdatePlayerTimer : MonoBehaviour
             }
             else
             {
-                FindObjectOfType<GameGUIController>().SendFinishTurnOther();
+                Invoke(nameof(SendFinishTurnOtherSlow), 3);
             }
             //StartCoroutine(autoMove());
         }
 
     }
 
+    void SendFinishTurnOtherSlow()
+    {
+        if (FindObjectOfType<GameGUIController>().canSendOther)
+        {
+            Debug.LogError("Sending other turn slow");
+            FindObjectOfType<GameGUIController>().SendFinishTurnOther();
+        }
+    }
+
+    public void CancelSlowInvoke()
+    {
+        if (IsInvoking(nameof(SendFinishTurnOtherSlow)))
+        {
+            Debug.LogError("Cancelled slow invoke");
+            CancelInvoke(nameof(SendFinishTurnOtherSlow));
+        }
+    }
 
     List<LudoPawnController> InBoard = new List<LudoPawnController>();
     bool ismyTurn = false;

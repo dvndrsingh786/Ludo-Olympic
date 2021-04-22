@@ -690,7 +690,7 @@ public class GameGUIController : PunBehaviour
             {
                 playersInfo += 0.01f + ",";
             }
-            else playersInfo += (timerr.timer.fillAmount - 0.1f ) + ",";
+            else playersInfo += (timerr.timer.fillAmount - 0.1f) + ",";
             playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
             playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
             for (int j = 0; j < 4; j++)
@@ -754,7 +754,7 @@ public class GameGUIController : PunBehaviour
             colors = new Sprite[] { PawnColorsSprite[1], PawnColorsSprite[2], PawnColorsSprite[3], PawnColorsSprite[0] };
             ludoBoard.GetComponent<RectTransform>().eulerAngles = new Vector3(0, 0, -270.0f);
         }
-        
+
         PlayerManager.SetActive(true);
 
         for (int i = 0; i < playersPawnsColors.Length; i++)
@@ -834,8 +834,8 @@ public class GameGUIController : PunBehaviour
 
         ActivePlayersInRoom = PlayersIDs.Count;
         Debug.LogError("Active players in room: " + ActivePlayersInRoom);
-//        int tempActivePlayer = ActivePlayersInRoom--;
-        
+        //        int tempActivePlayer = ActivePlayersInRoom--;
+
 
         if (ActivePlayersInRoom == 2)
         {
@@ -864,7 +864,7 @@ public class GameGUIController : PunBehaviour
 
                 // END LUDO
             }
-            
+
         }
         else
         {
@@ -1126,9 +1126,9 @@ public class GameGUIController : PunBehaviour
 
     public void NewGameDuration()
     {
-        int startSeconds = ReferenceManager.refMngr.timeToSecondsHrMns(ReferenceManager.refMngr.tableStartTime,':');
+        int startSeconds = ReferenceManager.refMngr.timeToSecondsHrMns(ReferenceManager.refMngr.tableStartTime, ':');
         int currentSeconds = DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second;
-        int gameSeconds = ReferenceManager.refMngr.timeToSecondsMnsScs(ReferenceManager.refMngr.gameDuration,':');
+        int gameSeconds = ReferenceManager.refMngr.timeToSecondsMnsScs(ReferenceManager.refMngr.gameDuration, ':');
         int secondsLeft = startSeconds + gameSeconds - currentSeconds;
         ReferenceManager.refMngr.SecondsToTime(secondsLeft);
         if (ReferenceManager.refMngr.hour != 0)
@@ -1375,7 +1375,7 @@ public class GameGUIController : PunBehaviour
         //}
     }
 
-    
+
 
     public void FinishedGame()
     {
@@ -1562,7 +1562,7 @@ public class GameGUIController : PunBehaviour
             controller.Active = false;
             controller.finished = true;
             playerObjects[index].dice.SetActive(false);
-            
+
             if (position == 1)
             {
                 controller.Crown.SetActive(true);
@@ -1715,6 +1715,8 @@ public class GameGUIController : PunBehaviour
     }
 
     bool canCallFinish = true;
+
+    public bool canSendOther = true;
 
     public void SendFinishTurn()
     {
@@ -1877,25 +1879,30 @@ public class GameGUIController : PunBehaviour
             {
                 if (!NextTurnSet)
                 {
-                        //Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
-                        string[] tempInfo = content.ToString().Split(',');
-                        Debug.LogError("I received");
-                        playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(tempInfo[1]));
-                        //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().score = int.Parse(tempInfo[2]);
-                        //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text = tempInfo[2];
-                        //playerObjects[currentPlayerIndex].
-                        SetCurrentPlayerIndexDav(int.Parse(tempInfo[0]));
+                    canSendOther = false;
+                    for (int i = 0; i < playerObjects.Count; i++)
+                    {
+                        playerObjects[i].timer.GetComponent<UpdatePlayerTimer>().CancelSlowInvoke();
+                    }
+                    //Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
+                    string[] tempInfo = content.ToString().Split(',');
+                    Debug.LogError("I received");
+                    playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(tempInfo[1]));
+                    //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().score = int.Parse(tempInfo[2]);
+                    //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text = tempInfo[2];
+                    //playerObjects[currentPlayerIndex].
+                    SetCurrentPlayerIndexDav(int.Parse(tempInfo[0]));
 
-                        //SetCurrentPlayerIndexDav((int)content);
+                    //SetCurrentPlayerIndexDav((int)content);
 
-                        //if (playerObjects[currentPlayerIndex].id.Contains("_BOT"))
-                        // {
-                        //     BotTurn();
-                        // }
-                        // else
-                        // {
-                        SetTurn();
-                        // }
+                    //if (playerObjects[currentPlayerIndex].id.Contains("_BOT"))
+                    // {
+                    //     BotTurn();
+                    // }
+                    // else
+                    // {
+                    SetTurn();
+                    // }
                 }
                 else NextTurnSet = false;
             }
@@ -2159,9 +2166,10 @@ public class GameGUIController : PunBehaviour
             if (playerObjects[i].id.Equals(otherPlayer.NickName))
             {
                 setPlayerDisconnected(i);
-                if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.type == MyGameType.TwoPlayer)
+                if (!GameManager.Instance.isLocalMultiplayer)
                 {
-                    playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text = "0";
+                    playerObjects[i].dice.GetComponent<GameDiceController>().score = -1;
+                    playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text = "-1";
                 }
                 break;
             }
