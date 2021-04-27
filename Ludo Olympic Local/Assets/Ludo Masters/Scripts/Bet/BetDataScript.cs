@@ -164,6 +164,7 @@ public class BetDataScript : MonoBehaviour
                 playerCount = jsonvale["result_push"][i]["public_table_count"].ToString();
                 int durationToAddddd = ReferenceManager.refMngr.timeToSecondsMnsScs(gameDuration, ':');
                 BetScript betScript;
+                Debug.LogError("!!!!");
                 if (true)
                 {
                     if (true)
@@ -181,6 +182,7 @@ public class BetDataScript : MonoBehaviour
                         //{
                         if (isLessThanADay)
                         {
+                            Debug.LogError("Less than a day");
                             betScript = Instantiate(onlinebetdataPrefab, betdataPublic).GetComponent<BetScript>();
                             betdataPublic.GetComponent<RectTransform>().sizeDelta = new Vector2(betdataPublic.GetComponent<RectTransform>().sizeDelta.x, betdataPublic.childCount * 325);
                             //}

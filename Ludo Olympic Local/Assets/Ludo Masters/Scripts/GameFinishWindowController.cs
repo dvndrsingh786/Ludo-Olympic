@@ -98,6 +98,7 @@ public class GameFinishWindowController : MonoBehaviour
 
     public void showWindowManually(List<PlayerObject> playersFinished)
     {
+        Debug.LogError("showWindowManually");
         if (GameManager.Instance.type == MyGameType.TwoPlayer)
         {
             prizeText[0].GetComponent<Text>().text = ReferenceManager.refMngr.firstPlacePrize;

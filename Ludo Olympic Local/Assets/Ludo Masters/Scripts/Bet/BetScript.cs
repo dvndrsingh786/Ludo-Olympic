@@ -193,12 +193,12 @@ public class BetScript : MonoBehaviour
         }
         else
         {
-            if (isTablePlaying || true)
+            if (isTablePlaying)
             {
-                ReferenceManager.refMngr.tableStartTime = startTime;
-                ReferenceManager.refMngr.gameDuration = gameDuration;
                 if (PhotonNetwork.connectedAndReady)
                 {
+                    ReferenceManager.refMngr.tableStartTime = startTime;
+                    ReferenceManager.refMngr.gameDuration = gameDuration;
                     StartTable();
                 }
                 else

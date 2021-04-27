@@ -93,7 +93,7 @@ public class GameGUIController : PunBehaviour
 
     private Color[] borderColors = new Color[4] { Color.yellow, Color.green, Color.red, Color.blue };
 
-    private int currentPlayerIndex;
+    public int currentPlayerIndex;
 
     private int ActivePlayersInRoom;
 
@@ -144,6 +144,15 @@ public class GameGUIController : PunBehaviour
         }
         if (GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime)
         {
+            int abc = 1;
+            for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+            {
+                if (GameManager.Instance.opponentsIDs[i] != null)
+                {
+                    abc++;
+                }
+            }
+            ReferenceManager.refMngr.onlineNoOfPlayer = abc;
             PlayerManager.SetActive(false);
             LocalPlayerManager.SetActive(false);
             ComputerManager.SetActive(false);
@@ -698,6 +707,7 @@ public class GameGUIController : PunBehaviour
             else playersInfo += (timerr.timer.fillAmount - 0.1f) + ",";
             playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
             playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
+            Debug.LogError("SCORE::::::::::::::::::::::::::: " + playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text);
             for (int j = 0; j < 4; j++)
             {
                 playersInfo += "," + playerObjects[i].pawns[j].GetComponent<LudoPawnController>().mainInJoint.ToString() + ",";
@@ -774,6 +784,16 @@ public class GameGUIController : PunBehaviour
         GameManager.Instance.currentPlayersCount = 1;
         GameManager.Instance.playfabManager.GetOpponentDetails();
         GameManager.Instance.playfabManager.LoadLateBots();
+
+        int abc = 1;
+        for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
+        {
+            if (GameManager.Instance.opponentsIDs[i] != null)
+            {
+                abc++;
+            }
+        }
+        ReferenceManager.refMngr.onlineNoOfPlayer = abc;
 
         for (int i = 0; i < GameManager.Instance.opponentsNames.Count; i++)
         {
@@ -1187,6 +1207,7 @@ public class GameGUIController : PunBehaviour
 
     void CheckIfIWon()
     {
+        Debug.LogError("Check if i won");
         if (!checkedIfWon)
         {
             //if (GameManager.Instance.roomOwner)
@@ -1227,6 +1248,8 @@ public class GameGUIController : PunBehaviour
 
     public bool CanSynchronize = true;
 
+    public bool stopIncreasingScore = false;
+
     private void OnApplicationPause(bool pause)
     {
         if (pause)
@@ -1236,6 +1259,7 @@ public class GameGUIController : PunBehaviour
         }
         else
         {
+            stopIncreasingScore = true;
             canRunTime = false;
             //PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedDuration, "No Content", true, null);
             PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedSynchronize, "No Content", true, null);
@@ -1325,6 +1349,7 @@ public class GameGUIController : PunBehaviour
 
     public void StopAndFinishGame()
     {
+        Debug.LogError("Stop And Finish Game");
         StopTimers();
 
         SetFinishGame(PhotonNetwork.player.NickName, true);
@@ -1348,6 +1373,7 @@ public class GameGUIController : PunBehaviour
 
     public void ShowGameFinishWindow()
     {
+        Debug.LogError("Show Game Finish Window");
         // AdsManager.Instance.adsScript.ShowAd(AdLocation.GameFinishWindow);
         FinishWindowActive = true;
 
@@ -1368,6 +1394,7 @@ public class GameGUIController : PunBehaviour
 
     public void ShowGameFinishedWindowManually()
     {
+        Debug.LogError("ShowGameFinishedWindowManually");
         FinishWindowActive = true;
         GameFinishWindow.GetComponent<GameFinishWindowController>().showWindowManually(playersFinished);
     }
@@ -1578,6 +1605,7 @@ public class GameGUIController : PunBehaviour
 
     private void SetFinishGameManually(string id, bool me, int position)
     {
+        Debug.LogError("Set Finish Game Manually");
         Debug.LogError("ME: " + me + "Psoition: " + position + "IFInished: " + iFinished);
         if (!me || !iFinished || true)
         {
@@ -1871,7 +1899,11 @@ public class GameGUIController : PunBehaviour
         obj.timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(data[startIndex]));
         obj.timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = float.Parse(data[startIndex + 1]);
         obj.timer.SetActive(bool.Parse(data[startIndex + 2]));
+        Debug.LogError("OLD SCORE:::: " + obj.dice.GetComponent<GameDiceController>().score);
+        obj.dice.GetComponent<GameDiceController>().score = int.Parse(data[startIndex + 3]);
+        Debug.LogError("SCORE:::: " + data[startIndex + 3]);
         obj.dice.GetComponent<GameDiceController>().myScore.text = data[startIndex + 3];
+        return;
         for (int i = 0; i < 4; i++)
         {
             obj.pawns[i].GetComponent<LudoPawnController>().mainInJoint = bool.Parse(data[0 + startIndex + 3 + (i * 3) + 1]);
@@ -2207,7 +2239,32 @@ public class GameGUIController : PunBehaviour
                 break;
             }
         }
-        if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.type == MyGameType.TwoPlayer)
+        CheckToFinishGame();
+    }
+
+    public void SetPlayerDisconnected(string id)
+    {
+        Debug.LogError("Set Player Disconnected");
+        for (int i = 0; i < playerObjects.Count; i++)
+        {
+            if (playerObjects[i].id.Equals(id))
+            {
+                setPlayerDisconnected(i);
+                if (!GameManager.Instance.isLocalMultiplayer)
+                {
+                    playerObjects[i].dice.GetComponent<GameDiceController>().score = -1;
+                    playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text = "-1";
+                }
+                break;
+            }
+        }
+        CheckToFinishGame();
+    }
+
+    public void CheckToFinishGame()
+    {
+        Debug.LogError("CheckToFinishGame");
+        if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.isPlayingWithComputer)
         {
             GameManager.exitedPlayers++;
             if (ReferenceManager.refMngr.onlineNoOfPlayer - GameManager.exitedPlayers == 1)
@@ -2244,6 +2301,7 @@ public class GameGUIController : PunBehaviour
 
     public void CheckPlayersIfShouldFinishGame()
     {
+        Debug.LogError("CheckPlayersIfShouldFinishGame");
         if (!FinishWindowActive)
         {
             if ((ActivePlayersInRoom == 1 && !iFinished))
@@ -2314,6 +2372,7 @@ public class GameGUIController : PunBehaviour
             playerObjects[i].AvatarObject.GetComponent<PlayerAvatarController>().PlayerLeftRoom();
 
             // LUDO
+            // LUDO
             playerObjects[i].dice.SetActive(false);
             if (!playerObjects[i].AvatarObject.GetComponent<PlayerAvatarController>().finished)
             {
@@ -2329,6 +2388,7 @@ public class GameGUIController : PunBehaviour
 
     public void LeaveGame(bool finishWindow)
     {
+        Debug.LogError("Leave Game");
         if (GameManager.Instance.isLocalMultiplayer && !GameManager.Instance.isPlayingWithComputer)
         {
 
@@ -2339,6 +2399,7 @@ public class GameGUIController : PunBehaviour
         {
             if (!iFinished || finishWindow)
             {
+                Debug.LogError("MAine Menu");
                 loadingPanel.SetActive(true);
                 PhotonNetwork.LeaveRoom();
                 LoadmenuScene();

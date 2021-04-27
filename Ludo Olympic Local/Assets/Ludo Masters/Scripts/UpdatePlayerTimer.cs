@@ -18,7 +18,7 @@ public class UpdatePlayerTimer : MonoBehaviour
     public string myPlayerName;
 
     public Transform autoMoveParent;
-    public int maxAutoMove = 4;
+    public int maxAutoMove = 3;
     public TextMeshProUGUI secondsRemaining;
 
     public PhotonView myview;
@@ -32,7 +32,7 @@ public class UpdatePlayerTimer : MonoBehaviour
     void Start()
     {
         myPlayerName = "";
-        maxAutoMove = 4;
+        maxAutoMove = 3;
         //Debug.LogError("Update Player Timer: " + gameObject.name);
         timer = gameObject.GetComponent<Image>();
         LudoPawnController[] com = FindObjectsOfType<LudoPawnController>();
@@ -93,6 +93,8 @@ public class UpdatePlayerTimer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        Debug.LogError(GameManager.Instance.isLocalMultiplayer);
+        Debug.LogError(GameManager.Instance.type);
         if (!paused)
         {
             if (isPrivate && false)
@@ -242,7 +244,18 @@ public class UpdatePlayerTimer : MonoBehaviour
                 playerchnaceLeft.text = "Auto Move: " + turnCount.ToString();
                 if (turnCount == maxAutoMove)
                 {
-                    FindObjectOfType<GameGUIController>().LeaveGame(false);
+                    if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.type != MyGameType.Private)
+                    {
+                        Gamedice.score = -1;
+                        Gamedice.myScore.text = "-1";
+                        FindObjectOfType<GameGUIController>().CheckToFinishGame();
+                    }
+                    else
+                    {
+                        Debug.LogError(GameManager.Instance.isLocalMultiplayer);
+                        Debug.LogError(GameManager.Instance.type);
+                        FindObjectOfType<GameGUIController>().LeaveGame(false);
+                    }
                 }
                 else
                 {
@@ -318,7 +331,16 @@ public class UpdatePlayerTimer : MonoBehaviour
                 playerchnaceLeft.text = "Auto Move: " + turnCount.ToString();
                 if (turnCount == maxAutoMove)
                 {
-                    FindObjectOfType<GameGUIController>().LeaveGame(false);
+                    if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.type != MyGameType.Private)
+                    {
+                        FindObjectOfType<GameGUIController>().SetPlayerDisconnected(FindObjectOfType<GameGUIController>().playerObjects[FindObjectOfType<GameGUIController>().currentPlayerIndex].id);
+                    }
+                    else
+                    {
+                        Debug.LogError(GameManager.Instance.isLocalMultiplayer);
+                        Debug.LogError(GameManager.Instance.type);
+                        FindObjectOfType<GameGUIController>().LeaveGame(false);
+                    }
                 }
                 else
                 {

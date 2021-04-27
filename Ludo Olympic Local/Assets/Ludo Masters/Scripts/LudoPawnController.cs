@@ -816,8 +816,14 @@ public class LudoPawnController : MonoBehaviour
     private void MoveFinished()
     {
         //Debug.LogError("Move finished:::");
-        if (currentPosition != 0)
-            dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+        if (currentPosition != 0) 
+        {
+            if (!FindObjectOfType<GameGUIController>().stopIncreasingScore)
+            {
+                dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
+            }
+            else FindObjectOfType<GameGUIController>().stopIncreasingScore = false;
+        }
         resetScale();
         bool isKilled = false;
 

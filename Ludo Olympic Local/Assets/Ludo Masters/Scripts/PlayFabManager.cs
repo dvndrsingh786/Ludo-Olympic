@@ -16,7 +16,7 @@ using ExitGames.Client.Photon.Chat;
 using System.Text.RegularExpressions;
 
 public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
-    
+
     private Sprite[] avatarSprites;
     public int minimumWithdrawlAmount;
     public string PlayFabId;
@@ -48,9 +48,9 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public string coinsBuyUrl, closeUrl;
 
     public PickerController pickerController;
-  /*Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
-    protected bool isFirebaseInitialized = false;
-    private string topic = "TestTopic";*/
+    /*Firebase.DependencyStatus dependencyStatus = Firebase.DependencyStatus.UnavailableOther;
+      protected bool isFirebaseInitialized = false;
+      private string topic = "TestTopic";*/
     void Awake()
     {
         //PlayerPrefs.DeleteAll();
@@ -95,19 +95,19 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         PhotonNetwork.automaticallySyncScene = true;
         avatarSprites = staticGameVariables.avatars;
         pickerController = FindObjectOfType<PickerController>();
-       /* Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
-            dependencyStatus = task.Result;
-            if (dependencyStatus == Firebase.DependencyStatus.Available)
-            {
-                InitializeFirebase();
-            }
-            else
-            {
-                Debug.LogError(
-                  "Could not resolve all Firebase dependencies: " + dependencyStatus);
-            }
-        });*/
-        
+        /* Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+             dependencyStatus = task.Result;
+             if (dependencyStatus == Firebase.DependencyStatus.Available)
+             {
+                 InitializeFirebase();
+             }
+             else
+             {
+                 Debug.LogError(
+                   "Could not resolve all Firebase dependencies: " + dependencyStatus);
+             }
+         });*/
+
     }
     private void OnEnable()
     {
@@ -116,33 +116,33 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
 
     // Setup message event handlers.
-   /* void InitializeFirebase()
-    {
+    /* void InitializeFirebase()
+     {
 
-        Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
-        Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
-        Firebase.Messaging.FirebaseMessaging.SubscribeAsync(topic).ContinueWithOnMainThread(task => {
-            // LogTaskCompletion(task, "SubscribeAsync");
-        });
-        Debug.Log("Firebase Messaging Initialized");
+         Firebase.Messaging.FirebaseMessaging.MessageReceived += OnMessageReceived;
+         Firebase.Messaging.FirebaseMessaging.TokenReceived += OnTokenReceived;
+         Firebase.Messaging.FirebaseMessaging.SubscribeAsync(topic).ContinueWithOnMainThread(task => {
+             // LogTaskCompletion(task, "SubscribeAsync");
+         });
+         Debug.Log("Firebase Messaging Initialized");
 
-        // This will display the prompt to request permission to receive
-        // notifications if the prompt has not already been displayed before. (If
-        // the user already responded to the prompt, thier decision is cached by
-        // the OS and can be changed in the OS settings).
+         // This will display the prompt to request permission to receive
+         // notifications if the prompt has not already been displayed before. (If
+         // the user already responded to the prompt, thier decision is cached by
+         // the OS and can be changed in the OS settings).
 
-        isFirebaseInitialized = true;
-    }
-    Firebase.Messaging.TokenReceivedEventArgs token;
-    public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
-    {
-        Debug.Log("Received Registration Token: " + token.Token);
-    }
+         isFirebaseInitialized = true;
+     }
+     Firebase.Messaging.TokenReceivedEventArgs token;
+     public void OnTokenReceived(object sender, Firebase.Messaging.TokenReceivedEventArgs token)
+     {
+         Debug.Log("Received Registration Token: " + token.Token);
+     }
 
-    public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
-    {
-       Debug.Log("Received a new message from: " + e.Message.From);
-    }*/
+     public void OnMessageReceived(object sender, Firebase.Messaging.MessageReceivedEventArgs e)
+     {
+        Debug.Log("Received a new message from: " + e.Message.From);
+     }*/
     void Update()
     {
         if (chatClient != null) { chatClient.Service(); }
@@ -265,7 +265,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         {
             GameManager.Instance.GameScene = "GameScene";
         }
-        Debug.Log("proinghhvk"+ GameManager.Instance.gameSceneStarted);
+        Debug.Log("proinghhvk" + GameManager.Instance.gameSceneStarted);
         if (!GameManager.Instance.gameSceneStarted)
         {
             //SceneManager.LoadScene(GameManager.Instance.GameScene);
@@ -322,7 +322,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             }
         }
         //yield return new WaitForSeconds(1f);
-        
+
     }
 
     void AddBotsManually()
@@ -362,16 +362,16 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         // PhotonNetwork.room.open = false;fdsgds
         // Add Bots here
         //for (int i = 0; i < GameManager.Instance.requiredPlayers - 1; i++)
-        for (int i = GameManager.Instance.currentPlayersCount - 1; i < GameManager.Instance.requiredPlayers- 1; i++)
+        for (int i = GameManager.Instance.currentPlayersCount - 1; i < GameManager.Instance.requiredPlayers - 1; i++)
         {
             //Debug.Log("Step2");
-         //   StartCoroutine(AddBot(i));
+            //   StartCoroutine(AddBot(i));
             if (GameManager.Instance.opponentsIDs[i] == null)
             {
                 Debug.Log("Step2");
                 StartCoroutine(AddBot(i));
             }
-            else 
+            else
             {
                 GameManager.Instance.opponentsIDs[i] = null;
                 StartCoroutine(AddBot(i));
@@ -392,7 +392,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public void PlayofflineMode()
     {
-      
+
         GameManager.Instance.isLocalMultiplayer = true;
         string BotMoves = generateBotMoves();
         extractBotMoves(BotMoves);
@@ -562,7 +562,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
         if (SceneManager.GetActiveScene().name == "MenuScene")
             splashCanvas.SetActive(false);
-       
+
         //if (!PlayerPrefs.HasKey("Logintoken"))
         //    apiManager.choosePanel.SetActive(true);
 
@@ -974,7 +974,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public void switchUser()
     {
-        
+
         GameManager.Instance.playfabManager.destroy();
         GameManager.Instance.facebookManager.destroy();
         GameManager.Instance.connectionLost.destroy();
@@ -1357,7 +1357,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 4;
             Debug.Log(GameManager.Instance.payoutCoins);
-            roomOptions.CustomRoomPropertiesForLobby = new String[] { "pc","betAmount", "privateRoom" };
+            roomOptions.CustomRoomPropertiesForLobby = new String[] { "pc", "betAmount", "privateRoom" };
             roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "pc", GameManager.Instance.payoutCoins }, {"betAmount",GameManager.Instance.currentBetAmount},{"privateRoom", true}
             };
             Debug.Log("Private room name: " + roomName);
@@ -1418,7 +1418,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         int index = 0;
         for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
         {
-            if (GameManager.Instance.opponentsIDs[i] == null )
+            if (GameManager.Instance.opponentsIDs[i] == null)
             {
                 index = i;
                 break;
@@ -1539,12 +1539,12 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         string url = GameManager.apiBase1 + "test-notification";
         WWWForm form = new WWWForm();
         //form.AddField("device_token",);
-        form.AddField("title","Reffer Code");
-        form.AddField("message",GameManager.Instance.nameMy+"Send you the reffer code.");
+        form.AddField("title", "Reffer Code");
+        form.AddField("message", GameManager.Instance.nameMy + "Send you the reffer code.");
         WWW w = new WWW(url, form);
-      //  Debug.Log("Device"+ token.Token);
-        Debug.Log("Title"+ "me");
-        Debug.Log("Me"+ GameManager.Instance.nameMy + "Send you the reffer code.");
+        //  Debug.Log("Device"+ token.Token);
+        Debug.Log("Title" + "me");
+        Debug.Log("Me" + GameManager.Instance.nameMy + "Send you the reffer code.");
         StartCoroutine(NotificationTest(w));
     }
     IEnumerator NotificationTest(WWW w) {
@@ -1556,11 +1556,11 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     {
         string url = GameManager.apiBase1 + "test-notification";
         WWWForm form = new WWWForm();
-      //  form.AddField("device_token",token.Token);
+        //  form.AddField("device_token",token.Token);
         form.AddField("title", "Reffer Code");
         form.AddField("message", GameManager.Instance.nameMy + "Send you Amount.");
         WWW w = new WWW(url, form);
-       // Debug.Log("Device" + token.Token);
+        // Debug.Log("Device" + token.Token);
         Debug.Log("Title" + "me");
         Debug.Log("Me" + GameManager.Instance.nameMy + "Send you the Amount.");
         StartCoroutine(Account(w));
@@ -1574,5 +1574,15 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     {
         PlayerPrefs.DeleteAll();
         SceneManager.LoadScene("LoginSplash");
+    }
+
+    public void PrivacyPolicyLink()
+    {
+        Application.OpenURL("http://ludoolympic.in/privacy-policy/");
+    }
+
+    public void AboutUsLink()
+    {
+        Application.OpenURL("http://www.ludoolympic.com/about-us/index.html");
     }
 }
