@@ -43,7 +43,8 @@ public enum EnumPhoton
     NextPlayerTurnWithName = 182,
     NeedDuration = 183,
     NeedSynchronize = 184,
-    SynchronizeRecentPlayer = 185
+    SynchronizeRecentPlayer = 185,
+    DisconnectPlayer = 186
 }
 
 public enum EnumGame

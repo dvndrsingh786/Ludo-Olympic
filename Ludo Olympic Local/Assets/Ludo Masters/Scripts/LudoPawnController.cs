@@ -818,7 +818,7 @@ public class LudoPawnController : MonoBehaviour
         //Debug.LogError("Move finished:::");
         if (currentPosition != 0) 
         {
-            if (!FindObjectOfType<GameGUIController>().stopIncreasingScore)
+            if (!FindObjectOfType<GameGUIController>().stopIncreasingScore && FindObjectOfType<GameGUIController>().hasSynchronized)
             {
                 dice.GetComponent<GameDiceController>().IncreaseScore(ludoController.steps);
             }

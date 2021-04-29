@@ -93,8 +93,8 @@ public class UpdatePlayerTimer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Debug.LogError(GameManager.Instance.isLocalMultiplayer);
-        Debug.LogError(GameManager.Instance.type);
+        //Debug.LogError(GameManager.Instance.isLocalMultiplayer);
+        //Debug.LogError(GameManager.Instance.type);
         if (!paused)
         {
             if (isPrivate && false)
@@ -303,9 +303,7 @@ public class UpdatePlayerTimer : MonoBehaviour
 
     private void updateClockOnline()
     {
-        //Debug.LogError("Updating Clock");
         float minus;
-
         playerTime = GameManager.Instance.playerTime;
         if (GameManager.Instance.offlineMode)
             playerTime = GameManager.Instance.playerTime + GameManager.Instance.cueTime;
@@ -364,7 +362,7 @@ public class UpdatePlayerTimer : MonoBehaviour
             }
             else
             {
-                Invoke(nameof(SendFinishTurnOtherSlow), 3);
+                Invoke(nameof(SendFinishTurnOtherSlow), 2);
             }
             //StartCoroutine(autoMove());
         }

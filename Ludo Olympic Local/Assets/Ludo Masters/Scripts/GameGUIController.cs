@@ -700,11 +700,11 @@ public class GameGUIController : PunBehaviour
             UpdatePlayerTimer timerr = playerObjects[i].timer.GetComponent<UpdatePlayerTimer>();
             //if (i != 0) playersInfo += timerr.turnCount + ",";
             playersInfo += "," + timerr.turnCount + ",";
-            if (timerr.timer.fillAmount <= 0.2)
+            if (timerr.timer.fillAmount >= 0.86)
             {
-                playersInfo += 0.01f + ",";
+                playersInfo += 0.95f + ",";
             }
-            else playersInfo += (timerr.timer.fillAmount - 0.1f) + ",";
+            else playersInfo += (timerr.timer.fillAmount + 0.1f) + ",";
             playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
             playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
             Debug.LogError("SCORE::::::::::::::::::::::::::: " + playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text);
@@ -1250,15 +1250,19 @@ public class GameGUIController : PunBehaviour
 
     public bool stopIncreasingScore = false;
 
+    public bool hasSynchronized = true;
+
     private void OnApplicationPause(bool pause)
     {
         if (pause)
         {
             canRunTime = false;
             CanSynchronize = true;
+            hasSynchronized = false;
         }
         else
         {
+            hasSynchronized = false;
             stopIncreasingScore = true;
             canRunTime = false;
             //PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedDuration, "No Content", true, null);
@@ -1605,8 +1609,8 @@ public class GameGUIController : PunBehaviour
 
     private void SetFinishGameManually(string id, bool me, int position)
     {
-        Debug.LogError("Set Finish Game Manually");
-        Debug.LogError("ME: " + me + "Psoition: " + position + "IFInished: " + iFinished);
+        Debug.LogWarning("Set Finish Game Manually");
+        Debug.LogWarning("ME: " + me + "Psoition: " + position + "IFInished: " + iFinished);
         if (!me || !iFinished || true)
         {
             Debug.Log("SET FINISH Manually");
@@ -1646,21 +1650,42 @@ public class GameGUIController : PunBehaviour
 
                 Dictionary<string, string> data = new Dictionary<string, string>();
                 data.Add(MyPlayerData.GamesPlayedKey, (GameManager.Instance.myPlayerData.GetPlayedGamesCount() + 1).ToString());
+
+                if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                {
+                    if (position == 1)
+                    {
+                        GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.firstPlacePrize));
+                    }
+                    else if (position == 2)
+                    {
+                        GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.secondPlacePrize));
+                    }
+                    else if (position == 3)
+                    {
+                        GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.thirdPlacePrize));
+                    }
+                    //if (PlayerPrefs.GetInt("Finishing") == 1)
+                    //{
+                    //    GameManager.Instance.playfabManager.apiManager.AddCoins(finalAmount);
+                    //}
+                }
+
                 if (position == 1)
                 {
                     WinSound.Play();
                     print("running");
-                    if (GameManager.Instance.type == MyGameType.TwoPlayer)
-                    {
-                        Debug.LogError("Changed Amount here");
-                        //int finalAmount = firstPlacePrize - (int)(firstPlacePrize * 0.10f);
-                        float finalAmount = firstPlacePrize;
-                        Debug.Log(finalAmount + " finishingvalue " + PlayerPrefs.GetInt("Finishing"));
-                        if (PlayerPrefs.GetInt("Finishing") == 1)
-                        {
-                            GameManager.Instance.playfabManager.apiManager.AddCoins(finalAmount);
-                        }
-                    }
+                    //if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                    //{
+                    //    Debug.LogError("Changed Amount here");
+                    //    //int finalAmount = firstPlacePrize - (int)(firstPlacePrize * 0.10f);
+                    //    float finalAmount = firstPlacePrize;
+                    //    Debug.Log(finalAmount + " finishingvalue " + PlayerPrefs.GetInt("Finishing"));
+                    //    if (PlayerPrefs.GetInt("Finishing") == 1)
+                    //    {
+                    //        GameManager.Instance.playfabManager.apiManager.AddCoins(finalAmount);
+                    //    }
+                    //}
                     positionText.text = "Note: 10% service charges on win amount.";
                     stars.SetActive(true);
                 }
@@ -1883,7 +1908,6 @@ public class GameGUIController : PunBehaviour
         GameManager.Instance.currentPlayer = playerObjects[currentPlayerIndex];
         SetTurn();
         //gameDuration.text = dataPiece[1];
-        SetGameDuration(gameDuration.text, ':');
         SynchronizePlayerInfo(playerObjects[0], dataPiece, 2);
         SynchronizePlayerInfo(playerObjects[1], dataPiece, 18);
         if (playerObjects.Count > 2)
@@ -1891,18 +1915,32 @@ public class GameGUIController : PunBehaviour
             SynchronizePlayerInfo(playerObjects[2], dataPiece, 34);
             SynchronizePlayerInfo(playerObjects[3], dataPiece, 50);
         }
-        Debug.LogError("FINISHED");
+        //hasSynchronized = true;
+        Invoke(nameof(Synchronize), 1);
+        SetGameDuration(gameDuration.text, ':');
+    }
+
+    void Synchronize()
+    {
+        hasSynchronized = true;
     }
 
     void SynchronizePlayerInfo(PlayerObject obj, string[] data, int startIndex)
     {
         obj.timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(data[startIndex]));
-        obj.timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = float.Parse(data[startIndex + 1]);
         obj.timer.SetActive(bool.Parse(data[startIndex + 2]));
-        Debug.LogError("OLD SCORE:::: " + obj.dice.GetComponent<GameDiceController>().score);
-        obj.dice.GetComponent<GameDiceController>().score = int.Parse(data[startIndex + 3]);
-        Debug.LogError("SCORE:::: " + data[startIndex + 3]);
-        obj.dice.GetComponent<GameDiceController>().myScore.text = data[startIndex + 3];
+        obj.timer.GetComponent<UpdatePlayerTimer>().timer.fillAmount = float.Parse(data[startIndex + 1]);
+        if (int.Parse(data[startIndex]) >= 3)
+        {
+            obj.dice.GetComponent<GameDiceController>().score = -1;
+            obj.dice.GetComponent<GameDiceController>().myScore.text = "-1";
+            SetPlayerDisconnected(obj.id);
+        }
+        else
+        {
+            obj.dice.GetComponent<GameDiceController>().score = int.Parse(data[startIndex + 3]);
+            obj.dice.GetComponent<GameDiceController>().myScore.text = data[startIndex + 3];
+        }
         return;
         for (int i = 0; i < 4; i++)
         {
@@ -2001,7 +2039,10 @@ public class GameGUIController : PunBehaviour
         else if (eventcode == (int)EnumPhoton.OnlineGameFinished)
         {
             canPlayGame = false;
-            CheckIfIWon();
+            if (hasSynchronized)
+            {
+                CheckIfIWon();
+            }
         }
         else if (eventcode == (int)EnumPhoton.SendChatMessage)
         {
@@ -2060,6 +2101,11 @@ public class GameGUIController : PunBehaviour
 
             SetFinishGame(message, false);
 
+        }
+        else if (eventcode == (int)EnumPhoton.DisconnectPlayer)
+        {
+            string message = (string)content;
+            SetPlayerDisconnectedReceived(message);
         }
     }
 
@@ -2244,7 +2290,7 @@ public class GameGUIController : PunBehaviour
 
     public void SetPlayerDisconnected(string id)
     {
-        Debug.LogError("Set Player Disconnected");
+        PhotonNetwork.RaiseEvent((int)EnumPhoton.DisconnectPlayer, id, true, null);
         for (int i = 0; i < playerObjects.Count; i++)
         {
             if (playerObjects[i].id.Equals(id))
@@ -2260,6 +2306,26 @@ public class GameGUIController : PunBehaviour
         }
         CheckToFinishGame();
     }
+
+    public void SetPlayerDisconnectedReceived(string id)
+    {
+        for (int i = 0; i < playerObjects.Count; i++)
+        {
+            if (playerObjects[i].id.Equals(id))
+            {
+                setPlayerDisconnected(i);
+                if (!GameManager.Instance.isLocalMultiplayer)
+                {
+                    playerObjects[i].dice.GetComponent<GameDiceController>().score = -1;
+                    playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text = "-1";
+                    playerObjects[i].timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(3);
+                }
+                break;
+            }
+        }
+        CheckToFinishGame();
+    }
+
 
     public void CheckToFinishGame()
     {

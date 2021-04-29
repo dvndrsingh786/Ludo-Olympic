@@ -140,14 +140,18 @@ public class BetScript : MonoBehaviour
                 break;
             }
         }
-
+        if (!IsInvoking(nameof(UpdateClock))) UpdateClock();
     }
 
     void SetTableAsPlaying()
     {
         isTablePlaying = true;
         timeLeftText.text = "Table Playing";
-        if(isJoined) myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Enter";
+        if (isJoined)
+        {
+            myJoiningButton.transform.GetChild(0).GetComponent<Text>().text = "Enter";
+            AutomaticallyEnterTable();
+        }
     }
 
     public void ToggleButtonPower(Toggle theToggle)
@@ -193,7 +197,7 @@ public class BetScript : MonoBehaviour
         }
         else
         {
-            if (isTablePlaying)
+            if (isTablePlaying || true)
             {
                 if (PhotonNetwork.connectedAndReady)
                 {
@@ -330,9 +334,9 @@ public class BetScript : MonoBehaviour
             {
                 if (FindObjectOfType<APIManager>().tables.tables[i] == gameId)
                 {
-                    Destroy(gameObject);
-                    break;
                     Debug.LogError("Destroying table disabled here");
+                    break;
+                    Destroy(gameObject);
                 }
             }
         }
@@ -344,6 +348,7 @@ public class BetScript : MonoBehaviour
 
     public void UpdateClock()
     {
+        Debug.LogError("Updating Clock");
         if (!isTablePlaying)
         {
             if (hr <= 0)
@@ -374,6 +379,24 @@ public class BetScript : MonoBehaviour
                 SetTableAsPlaying();
                 //StartTable();
                 Debug.LogError("Table Opened");
+            }
+        }
+    }
+
+    void AutomaticallyEnterTable()
+    {
+        if(isJoined && isTablePlaying)
+        {
+            if (PhotonNetwork.connectedAndReady)
+            {
+                ReferenceManager.refMngr.tableStartTime = startTime;
+                ReferenceManager.refMngr.gameDuration = gameDuration;
+                StartTable();
+            }
+            else
+            {
+                Invoke(nameof(AutomaticallyEnterTable), 1);
+                PhotonNetwork.ConnectUsingSettings("1.0");
             }
         }
     }

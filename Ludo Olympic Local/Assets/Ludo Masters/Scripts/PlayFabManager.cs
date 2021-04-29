@@ -310,6 +310,8 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         StartCoroutine(waitForPlayerCo());
     }
     public bool canStartWithBot = false;
+    public bool canStartWithBotAgain = true;
+    public bool allowNewNormalUser = true;
     IEnumerator waitForPlayerCo()
     {
         yield return new WaitForSeconds(10f);
@@ -317,8 +319,18 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         {
             if (!FindObjectOfType<ControlAvatars>().StartGameAfterTimerFinishes())
             {
+                //Debug.LogError("entering bots started");
                 canStartWithBot = true;
-                AddBotsManually();
+                if (canStartWithBotAgain)
+                {
+                    //Debug.LogError("QWER IF");
+                    allowNewNormalUser = false;
+                    AddBotsManually();
+                }
+                else
+                {
+                    //Debug.LogError("QWER ELse");
+                }
             }
         }
         //yield return new WaitForSeconds(1f);
@@ -337,7 +349,8 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 // GameManager.Instance.coinsCount -= GameManager.Instance.currentBetAmount;
                 // apiManager.DeductCoins(GameManager.Instance.currentBetAmount);
                 CancelInvoke("StartGameWithBots");
-                Invoke("StartGameWithBots", StaticStrings.WaitTimeUntilStartWithBots);
+                //Invoke("StartGameWithBots", StaticStrings.WaitTimeUntilStartWithBots);
+                Invoke("StartGameWithBots", 0.2f);
 
             }
         }
@@ -479,7 +492,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     {
         if (SceneManager.GetActiveScene().name != "GameSceneOnline")
         {
-            yield return new WaitForSeconds(i + UnityEngine.Random.Range(0.0f, 0.9f));
+            yield return new WaitForSeconds(i + UnityEngine.Random.Range(0.0f, 0.5f));
             Debug.Log("Step3");
             GameManager.Instance.opponentsAvatars[i] = avatarSprites[UnityEngine.Random.Range(0, avatarSprites.Length - 1)];
             GameManager.Instance.opponentsIDs[i] = "_BOT" + i;
@@ -1242,6 +1255,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public override void OnJoinedRoom()
     {
         //Debug.LogError("Joined room");
+        canStartWithBotAgain = true;
         if (!ReferenceManager.refMngr.onlineGameWaitingPanel.activeInHierarchy)
         {
             if (GameManager.Instance.type == MyGameType.TwoPlayer)
@@ -1372,6 +1386,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
     public override void OnCreatedRoom()
     {
         Debug.Log("OnCreatedRoom");
+        canStartWithBotAgain = true;
         if (!ReferenceManager.refMngr.onlineGameWaitingPanel.activeInHierarchy)
         {
             if (GameManager.Instance.type == MyGameType.TwoPlayer)
@@ -1429,7 +1444,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public int GetFirstFreeBotSlot(string nameee)
     {
-        int index = 0;
+        int index = -1;
         for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
         {
             if (GameManager.Instance.opponentsIDs[i].Contains("_BOT"))
@@ -1480,6 +1495,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
+        canStartWithBotAgain = false;
         Debug.Log("New player joined " + newPlayer.NickName);
         Debug.Log("Players Count: " + GameManager.Instance.currentPlayersCount);
         Debug.Log("PLayer id" + newPlayer.ID + " nick name" + newPlayer.NickName);
@@ -1502,25 +1518,66 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 GameManager.Instance.controlAvatars.startButtonPrivate.GetComponent<Button>().interactable = true;
             }
 
-            int index = GetFirstFreeSlot();
+            if (!canStartWithBot && allowNewNormalUser)
+            {
+                int index = GetFirstFreeSlot();
 
-            GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
-            GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
-            GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
-            ReferenceManager.refMngr.botsAdded.Add(newPlayer.CustomProperties["name"].ToString());
-            //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
-            getOpponentData(newPlayer.ID, newPlayer.NickName);
+                GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
+                GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
+                GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
+                ReferenceManager.refMngr.botsAdded.Add(newPlayer.CustomProperties["name"].ToString());
+                //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
+                getOpponentData(newPlayer.ID, newPlayer.NickName);
+            }
+            else
+            {
+                if (GetFirstFreeBotSlot(newPlayer.CustomProperties["name"].ToString()) != -1)
+                {
+                    temp = newPlayer;
+                    ReplaceBot();
+                }
+                else
+                {
+                    temp = newPlayer;
+                    tempCount = 0;
+                    Invoke(nameof(Slow), 1);
+                }
+            }
         }
         else
         {
-            string newname = newPlayer.CustomProperties["name"].ToString();
-            int index = GetFirstFreeBotSlot(newname);
-            GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
-            GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
-            GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
-            FindObjectOfType<GameGUIController>().SetDesigns(index);
+            temp = newPlayer;
+            ReplaceBot();
             //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
         }
+    }
+    PhotonPlayer temp;
+    int tempCount = 0;
+    void Slow()
+    {
+        tempCount++;
+        if (GetFirstFreeBotSlot(temp.CustomProperties["name"].ToString()) != -1)
+        {
+            ReplaceBot();
+        }
+        else
+        {
+            if (tempCount < 10)
+            {
+                Invoke(nameof(Slow), 0.1f);
+            }
+        }
+    }
+
+    void ReplaceBot()
+    {
+        tempCount = 0;
+        string newname = temp.CustomProperties["name"].ToString();
+        int index = GetFirstFreeBotSlot(newname);
+        GameManager.Instance.opponentsIDs[index] = temp.NickName;
+        GameManager.Instance.opponentsNames[index] = temp.CustomProperties["name"].ToString();
+        GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(temp.CustomProperties["avatarId"].ToString())];
+        if (FindObjectOfType<GameGUIController>()) FindObjectOfType<GameGUIController>().SetDesigns(index);
     }
 
     private void getOpponentData(int index, string id)
