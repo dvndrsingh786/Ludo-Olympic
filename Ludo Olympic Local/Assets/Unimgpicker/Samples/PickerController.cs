@@ -322,7 +322,7 @@ public class PickerController : MonoBehaviour
         form.AddField("user_id", GameManager.Uid);
         form.AddField("fullname", playername.text);
         form.AddField("gender", val);
-        form.AddField("profile_pic", profile.ToString());
+        //form.AddField("profile_pic", profile.ToString());
         //form.AddField("user_id", GameManager.Uid);
         //form.AddField("fullname", "HAHAHA");
         //form.AddField("gender", "0");
