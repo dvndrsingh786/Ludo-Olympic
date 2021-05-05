@@ -60427,6 +60427,8 @@ MonoBehaviour:
   closeUrl: 
   pickerController: {fileID: 0}
   canStartWithBot: 0
+  canStartWithBotAgain: 1
+  allowNewNormalUser: 1
 --- !u!4 &1158317469
 Transform:
   m_ObjectHideFlags: 0
@@ -92256,6 +92258,7 @@ MonoBehaviour:
   isFirstTimeLogin: 0
   defaultPP: {fileID: 21300000, guid: f9e7c2f35762fd541bf30d7ccc2ccb81, type: 3}
   joinedOnlineOnTime: 0
+  isEmployee: 0
   LoadingPage: {fileID: 2112649403}
   splashCanvas: {fileID: 593095842}
   socialEmail: 

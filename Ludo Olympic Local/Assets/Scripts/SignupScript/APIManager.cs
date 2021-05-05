@@ -172,6 +172,8 @@ public class APIManager : MonoBehaviour
 
     public bool joinedOnlineOnTime = false;
 
+    public bool isEmployee;
+
     void Awake()
     {
         GetStartedTable();
@@ -367,6 +369,11 @@ public class APIManager : MonoBehaviour
                     Debug.LogError("Catch for version called");
                 }
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
+                if (jsonvale["result_push"][0]["usertype"].ToString() == "1")
+                {
+                    isEmployee = true;
+                }
+                else isEmployee = false;
                 GameManager.mobileNumber = jsonvale["result_push"][0]["mobile"].ToString();
                 GameManager.emailId = jsonvale["result_push"][0]["email"].ToString();
                 PlayerPrefs.SetString("FriendRefCodePP", jsonvale["result_push"][0]["referal_refer_code"].ToString());
@@ -632,6 +639,11 @@ public class APIManager : MonoBehaviour
                     Debug.LogError("Catch for version called");
                 }
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
+                if (jsonvale["result_push"][0]["usertype"].ToString() == "1")
+                {
+                    isEmployee = true;
+                }
+                else isEmployee = false;
                 GameManager.mobileNumber = jsonvale["result_push"][0]["mobile"].ToString();
                 GameManager.emailId = jsonvale["result_push"][0]["email"].ToString();
                 PlayerPrefs.SetString("FriendRefCodePP", jsonvale["result_push"][0]["referal_refer_code"].ToString());
@@ -1135,6 +1147,11 @@ public class APIManager : MonoBehaviour
                     Debug.LogError("Catch for version called");
                 }
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
+                if (jsonvale["result_push"][0]["usertype"].ToString() == "1")
+                {
+                    isEmployee = true;
+                }
+                else isEmployee = false;
                 GameManager.mobileNumber = jsonvale["result_push"][0]["mobile"].ToString();
                 GameManager.emailId = jsonvale["result_push"][0]["email"].ToString();
                 PlayerPrefs.SetString("FriendRefCodePP", jsonvale["result_push"][0]["referal_refer_code"].ToString());
@@ -1827,6 +1844,11 @@ public class APIManager : MonoBehaviour
             Debug.LogError("Catch for version called");
         }
         userName = jsonvale["result_push"][0]["username"].ToString();
+        if (jsonvale["result_push"][0]["usertype"].ToString() == "1")
+        {
+            isEmployee = true;
+        }
+        else isEmployee = false;
         float coin = float.Parse(jsonvale["result_push"][0]["coins"].ToString());
         GameManager.Uid = jsonvale["result_push"][0]["uid"].ToString();
         GameManager.friendrefferalCode = jsonvale["result_push"][0]["reference_code"].ToString();

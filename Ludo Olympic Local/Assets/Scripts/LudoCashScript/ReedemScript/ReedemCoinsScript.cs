@@ -504,18 +504,26 @@ public class ReedemCoinsScript : MonoBehaviour
 
     public void OnpytmWithDrawBtnClick()
     {
-        print(GameManager.otp.ToString() +" difference"+ otpVerify.text);
-        if (GameManager.otp.ToString() == otpVerify.text)
+        if (GameManager.otp!=null)
         {
-            WWWForm form = new WWWForm();
-            form.AddField("user_id", GameManager.Uid);
-            form.AddField("amount", pytmamountWithdraw.text);
-            WWW w = new WWW(withdrawUrl, form);
-            StartCoroutine(pytmWithdraw(w));
+            print(GameManager.otp.ToString() + " difference" + otpVerify.text);
+            if (GameManager.otp.ToString() == otpVerify.text)
+            {
+                WWWForm form = new WWWForm();
+                form.AddField("user_id", GameManager.Uid);
+                form.AddField("amount", pytmamountWithdraw.text);
+                WWW w = new WWW(withdrawUrl, form);
+                StartCoroutine(pytmWithdraw(w));
+            }
+            else if (GameManager.otp.ToString() != otpVerify.text)
+            {
+                otpText.text = "Invalid Otp";
+                otpNotificatonPanel.SetActive(true);
+            }
         }
-        else if (GameManager.otp.ToString() != otpVerify.text)
+        else
         {
-            otpText.text = "Invalid Otp";
+            otpText.text = "Wrong OTP";
             otpNotificatonPanel.SetActive(true);
         }
     }
@@ -709,6 +717,7 @@ public class ReedemCoinsScript : MonoBehaviour
         
         WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
+        Debug.LogError("UIDDDD::: " + GameManager.Uid);
         WWW w = new WWW(OtpURL, form);
         pytmOtpPopupPanel.SetActive(true);
         paytmwithdrawPanel.SetActive(false);
@@ -785,6 +794,7 @@ public class ReedemCoinsScript : MonoBehaviour
         
         WWWForm form = new WWWForm();
         form.AddField("user_id", GameManager.Uid);
+        Debug.LogError("UIDDD::: " + GameManager.Uid);
         WWW w = new WWW(OtpURL, form);
 
         UPIOtpPopupPanel.SetActive(true);
@@ -799,6 +809,7 @@ public class ReedemCoinsScript : MonoBehaviour
         loadingPanel.SetActive(true);
         if (w.error == null)
         {
+            Debug.LogError("w.error is null");
             string msg = w.text;
             msg = msg.Replace("{", "");
             msg = msg.Replace("}", "");
@@ -809,18 +820,26 @@ public class ReedemCoinsScript : MonoBehaviour
             status = GetDataValue(msg, "status:");
             GameManager.otp = GetDataValue(msg, "otp:");
             Debug.Log(GameManager.otp);
-            
+            if (status == "true")
+            {
+                loadingPanel.SetActive(false);
+                otpText.text = results;
+                otpNotificatonPanel.SetActive(true);
+                StartCoroutine(Notify());
+            }
+            else
+            {
+                loadingPanel.SetActive(false);
+                ReferenceManager.refMngr.ShowError(status, "Error");
+            }
+        }
+        else
+        {
+            loadingPanel.SetActive(false);
+            ReferenceManager.refMngr.ShowError(w.error, "Error");
         }
         Debug.Log(results);
         Debug.Log(status);
-        if (status == "true")
-        {
-            loadingPanel.SetActive(false);
-            otpText.text = results;
-            otpNotificatonPanel.SetActive(true);
-            StartCoroutine(Notify());
-        }
-        else loadingPanel.SetActive(false);
     }
     IEnumerator Notify()
     {

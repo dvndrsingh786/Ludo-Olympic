@@ -20,7 +20,7 @@ public class TempGameManager : MonoBehaviour
 
     void Start()
     {
-        if (GameManager.Instance.nameMy == "pooja")
+        if (/*GameManager.Instance.nameMy == "pooja" || */FindObjectOfType<APIManager>().isEmployee)
         {
             for (int i = 0; i < predictedDiceValues.Length; i++)
             {
