@@ -2178,7 +2178,7 @@ public class APIManager : MonoBehaviour
         {
             for (int i = 0; i < tables.tables.Count; i++)
             {
-                Debug.LogError(tables.tables[i]);
+                Debug.LogWarning(tables.tables[i]);
             }
         }
     }

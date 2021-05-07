@@ -353,7 +353,7 @@ public class PickerController : MonoBehaviour
             Debug.Log(results + "ff");
             if (results == "Profile Updated Successfull" || status == "True")
             {
-                Debug.LogError("OH MY GOD");
+                Debug.LogWarning("OH MY GOD");
                 UIFlowHandler.uihandler.THETEXTURE = imageRenderer3.mainTexture;
                 GameManager.profileImge = UIFlowHandler.uihandler.TextureToSprite((Texture2D)imageRenderer3.mainTexture);
                 UIFlowHandler.uihandler.SetPlayerImage();

@@ -669,11 +669,17 @@ public class InitMenuScript : MonoBehaviour
             Sprite playerimage = Sprite.Create(tex3, new Rect(0.0f, 0.0f, tex3.width, tex3.height), new Vector2(0.5f, 0.5f), 100.0f);
             pImage.texture = playerimage.texture;
             pImage2.texture = playerimage.texture;
+            playerAvatarDav.texture = playerimage.texture;
             Debug.Log("TestData3");
         }
         else {
             pImage.gameObject.SetActive(false);
             pImage2.gameObject.SetActive(false);
+            try
+            {
+                playerAvatarDav.texture = GameManager.profileImge.texture;
+            }
+            catch { }
         }
         GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
         newName.text = GameManager.playerName;

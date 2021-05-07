@@ -75,7 +75,7 @@ public class FacebookManager : MonoBehaviour {
         }
     }
 
-    public void startRandomGame () 
+    public void startRandomGame() 
     {
         //		menuCanvas.SetActive (false);
         //		gameTitle.SetActive (false);

@@ -48,6 +48,7 @@ public class AvatarDataScipt : MonoBehaviour
             string name = jsonvale["result_push"][i]["name"].ToString();
             clone.avtarName.text = name;
             avataronUrl = jsonvale["result_push"][i]["image_path"].ToString();
+            //Debug.LogError("AVATAR: " + avataronUrl);
             UnityWebRequest webRequest = UnityWebRequest.Get(avataronUrl);
             yield return webRequest.SendWebRequest();
             byte[] bytes = webRequest.downloadHandler.data;
