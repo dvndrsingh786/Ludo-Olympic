@@ -692,6 +692,33 @@ public class GameGUIController : PunBehaviour
         SendSynchronization();
     }
 
+    void SendSynchronizationOfScore()
+    {
+        string playersInfo = "";
+        for (int i = 0; i < playerObjects.Count; i++)
+        {
+            UpdatePlayerTimer timerr = playerObjects[i].timer.GetComponent<UpdatePlayerTimer>();
+            //if (i != 0) playersInfo += timerr.turnCount + ",";
+            playersInfo += "," + timerr.turnCount + ",";
+            if (timerr.timer.fillAmount >= 0.86)
+            {
+                playersInfo += 0.95f + ",";
+            }
+            else playersInfo += (timerr.timer.fillAmount + 0.1f) + ",";
+            playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
+            playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
+            Debug.LogError("SCORE::::::::::::::::::::::::::: " + playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text);
+            for (int j = 0; j < 4; j++)
+            {
+                playersInfo += "," + playerObjects[i].pawns[j].GetComponent<LudoPawnController>().mainInJoint.ToString() + ",";
+                playersInfo += playerObjects[i].pawns[j].GetComponent<LudoPawnController>().isOnBoard.ToString() + ",";
+                playersInfo += playerObjects[i].pawns[j].GetComponent<LudoPawnController>().currentPosition.ToString();
+            }
+        }
+        string data = currentPlayerIndex.ToString() + "," + gameDuration.text + playersInfo;
+        PhotonNetwork.RaiseEvent((int)EnumPhoton.SynchronizeScore, data, true, null);
+    }
+
     void SendSynchronization()
     {
         string playersInfo = "";
@@ -717,9 +744,12 @@ public class GameGUIController : PunBehaviour
         }
         string data = currentPlayerIndex.ToString() + "," + gameDuration.text + playersInfo;
         PhotonNetwork.RaiseEvent((int)EnumPhoton.SynchronizeTurn, data, true, null);
+        
         if (GameManager.Instance.roomOwner)
         {
-            Invoke(nameof(SendDurationAgain), 5);
+            //if (!IsInvoking(nameof(SendSynchronization))) Invoke(nameof(SendSynchronization), 5);
+            if (!IsInvoking(nameof(SendDurationAgain)))
+                Invoke(nameof(SendDurationAgain), 5);
         }
     }
 
@@ -728,7 +758,8 @@ public class GameGUIController : PunBehaviour
         if (canRunTime)
         {
             PhotonNetwork.RaiseEvent((int)EnumPhoton.SetDuration, gameDuration.text, true, null);
-            Invoke(nameof(SendDurationAgain), 5);
+            if (!IsInvoking(nameof(SendDurationAgain)))
+                Invoke(nameof(SendDurationAgain), 5);
         }
     }
 
@@ -1116,6 +1147,7 @@ public class GameGUIController : PunBehaviour
     public int hr, mns, secs;
     public void UpdateGameDuration()
     {
+        //if()
         if (canRunTime && false)
         {
             if (hr <= 0)
@@ -1456,6 +1488,22 @@ public class GameGUIController : PunBehaviour
         // SetFinishGame(PhotonNetwork.player.NickName, true);
     }
 
+    public void FinishedPawnSoFinishGame()
+    {
+        int alive = 0;
+        for (int i = 0; i < playerObjects.Count; i++)
+        {
+            if (playerObjects[i].finishedPawns != 4)
+            {
+                alive++;
+            }
+        }
+        if (alive <= 1)
+        {
+            CheckIfIWon();
+        }
+    }
+
     private void SetFinishGame(string id, bool me)
     {
         if (!me || !iFinished)
@@ -1653,18 +1701,22 @@ public class GameGUIController : PunBehaviour
 
                 if (GameManager.Instance.type == MyGameType.TwoPlayer)
                 {
-                    if (position == 1)
+                    try
                     {
-                        GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.firstPlacePrize));
+                        if (position == 1)
+                        {
+                            GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.firstPlacePrize));
+                        }
+                        else if (position == 2)
+                        {
+                            GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.secondPlacePrize));
+                        }
+                        else if (position == 3)
+                        {
+                            GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.thirdPlacePrize));
+                        }
                     }
-                    else if (position == 2)
-                    {
-                        GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.secondPlacePrize));
-                    }
-                    else if (position == 3)
-                    {
-                        GameManager.Instance.playfabManager.apiManager.AddCoins(float.Parse(ReferenceManager.refMngr.thirdPlacePrize));
-                    }
+                    catch { }
                     //if (PlayerPrefs.GetInt("Finishing") == 1)
                     //{
                     //    GameManager.Instance.playfabManager.apiManager.AddCoins(finalAmount);
@@ -1901,6 +1953,22 @@ public class GameGUIController : PunBehaviour
         PhotonNetwork.OnEventCall -= this.OnEvent;
     }
 
+    void SynchronizeScore(string dataa)
+    {
+        string[] dataPiece = dataa.Split(',');
+        //currentPlayerIndex = int.Parse(dataPiece[0]);
+        //GameManager.Instance.currentPlayer = playerObjects[currentPlayerIndex];
+        //SetTurn();
+        //gameDuration.text = dataPiece[1];
+        SynchronizePlayerInfo(playerObjects[0], dataPiece, 2);
+        SynchronizePlayerInfo(playerObjects[1], dataPiece, 18);
+        if (playerObjects.Count > 2)
+        {
+            SynchronizePlayerInfo(playerObjects[2], dataPiece, 34);
+            SynchronizePlayerInfo(playerObjects[3], dataPiece, 50);
+        }
+    }
+
     void SynchronizeData(string dataa)
     {
         string[] dataPiece = dataa.Split(',');
@@ -1956,6 +2024,10 @@ public class GameGUIController : PunBehaviour
     private void OnEvent(byte eventcode, object content, int senderid)
     {
         Debug.Log("received event: " + eventcode);
+        if (GameManager.Instance.roomOwner)
+        {
+            if (!IsInvoking(nameof(SendSynchronizationOfScore))) Invoke(nameof(SendSynchronizationOfScore), 3);
+        }
         if (eventcode == (int)EnumPhoton.NextPlayerTurn)
         {
             if (!FinishWindowActive)
@@ -2019,7 +2091,18 @@ public class GameGUIController : PunBehaviour
                 CanSynchronize = false;
                 SynchronizeData(content.ToString());
             }
-            else Debug.LogError("I am unable to synchronize");
+            else
+            {
+                Debug.LogError("I am unable to synchronize");
+                //Invoke(nameof(CansynchronizeLater), 4);
+            }
+        }
+        else if (eventcode == (int)EnumPhoton.SynchronizeScore)
+        {
+            if (!GameManager.Instance.roomOwner)
+            {
+                SynchronizeScore(content.ToString());
+            }
         }
         else if (eventcode == (int)EnumPhoton.SetDuration)
         {
@@ -2109,6 +2192,10 @@ public class GameGUIController : PunBehaviour
         }
     }
 
+    void CansynchronizeLater()
+    {
+        CanSynchronize = true;
+    }
     private void SetMyTurn()
     {
         GameManager.Instance.isMyTurn = true;

@@ -945,7 +945,7 @@ public class LudoPawnController : MonoBehaviour
                     {
                         if (GameManager.Instance.currentPlayer.finishedPawns == 4)
                         {
-                            ludoController.gUIController.FinishedGame();
+                            ludoController.gUIController.FinishedPawnSoFinishGame();
                             return;
                         }
                     }

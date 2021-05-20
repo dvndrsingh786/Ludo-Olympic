@@ -149,6 +149,7 @@ public class BetDataScript : MonoBehaviour
             for (int i = 0; i < jsonvale["result_push"].Count; i++)
             {
                 gameId = jsonvale["result_push"][i]["game_id"].ToString();
+                Debug.LogError(gameId);
                 noOfPlayer = jsonvale["result_push"][i]["no_of_player"].ToString();
                 startDate = jsonvale["result_push"][i]["game_start_date"].ToString();
                 startTime = jsonvale["result_push"][i]["game_start_time"].ToString();

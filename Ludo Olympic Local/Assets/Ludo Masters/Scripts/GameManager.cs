@@ -212,7 +212,7 @@ public class GameManager
     public static string currentRoomID;
     public static List<ActiveGamInfo> activeGameInfo = new List<ActiveGamInfo>();
 
-    public static string apiBase1 = "http://ludolympic.knickglobal.com/api/";
+    public static string apiBase1 = "https://ludoolympic.in/api/";
     public static int exitedPlayers = 0;
 
     public void resetAllData()

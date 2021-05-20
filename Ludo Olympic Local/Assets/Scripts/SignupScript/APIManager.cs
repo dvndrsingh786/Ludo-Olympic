@@ -311,6 +311,7 @@ public class APIManager : MonoBehaviour
     {
         yield return _w;
         print("responce=" + _w.text);
+        print("responce=" + _w.error);
         if (_w.error == null)
         {
 

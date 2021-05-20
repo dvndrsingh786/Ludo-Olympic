@@ -44,7 +44,8 @@ public enum EnumPhoton
     NeedDuration = 183,
     NeedSynchronize = 184,
     SynchronizeRecentPlayer = 185,
-    DisconnectPlayer = 186
+    DisconnectPlayer = 186,
+    SynchronizeScore = 187,
 }
 
 public enum EnumGame
