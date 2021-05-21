@@ -497,7 +497,7 @@ public class GameDiceController : PunBehaviour
             //Debug.LogError("2");
             if (CanIncAgain || true)
             {
-                Debug.LogError("Increasing score!!!" + incScore);
+                Debug.LogWarning("Increasing score!!!" + incScore);
                 //Debug.LogError("3");
                 CanIncAgain = false;
                 Invoke(nameof(Incc), 1.4f);

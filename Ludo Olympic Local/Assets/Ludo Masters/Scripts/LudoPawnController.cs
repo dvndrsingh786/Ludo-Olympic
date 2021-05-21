@@ -140,6 +140,7 @@ public class LudoPawnController : MonoBehaviour
             }
 
             //KILL
+            pathControl.CheckIfActuallyHasPawn();
             if (pathControl.pawns.Count > 0)
             {
                 for (int i = 0; i < pathControl.pawns.Count; i++)
@@ -244,6 +245,7 @@ public class LudoPawnController : MonoBehaviour
 
 
                 // joint
+                pathControl.CheckIfActuallyHasPawn();
                 if (pathControl.pawns.Count > 0)
                 {
                     for (int i = 0; i < pathControl.pawns.Count; i++)
@@ -386,7 +388,7 @@ public class LudoPawnController : MonoBehaviour
         rect.SetAsLastSibling();
         if (true)
         {
-            isOnBoard = true;
+            isOnBoard = false;
             currentPosition = 0;
         }
         else
@@ -411,9 +413,9 @@ public class LudoPawnController : MonoBehaviour
         Debug.Log("currentPosition   " + currentPosition);
         if (currentPosition == -1) return;
         LudoPathObjectController controller = path[currentPosition].GetComponent<LudoPathObjectController>();
+        controller.CheckIfActuallyHasPawn();
 
         controller.RemovePawn(this.gameObject);
-
         RepositionPawns(controller.pawns.Count, currentPosition);
 
         if (controller.pawns.Count == 1)
@@ -432,6 +434,7 @@ public class LudoPawnController : MonoBehaviour
     {
         LudoPathObjectController pathController = path[currentPosition].GetComponent<LudoPathObjectController>();
         Debug.Log("currentPosition   " + currentPosition + "   count  " + pathController.pawns.Count);
+        pathController.CheckIfActuallyHasPawn();
         if (pathController.pawns.Count > 1)
         {
             RepositionPawns(pathController.pawns.Count, currentPosition);
@@ -446,6 +449,10 @@ public class LudoPawnController : MonoBehaviour
 
     IEnumerator MoveStepsInBackSlowly(int steps)
     {
+        if (steps == 1 && currentPosition == 1)
+        {
+            StartCoroutine(MoveDelayedBackForth(1, path[currentPosition].anchoredPosition, path[currentPosition - 1].anchoredPosition, 0.0001f, false, true, path[currentPosition - 1]));
+        }
         for (int i = 0; i < steps; i++)
         {
             bool last = false;
@@ -684,7 +691,7 @@ public class LudoPawnController : MonoBehaviour
 
         rect.localScale = new Vector3(initScale.x * 1.15f, initScale.y * 1.15f, initScale.z);
         DavMaster.CopyRectTransform(targettransform, rect);
-
+        if (last) AddInJail();
         yield return new WaitForSeconds(0);
 
         if (false)
@@ -717,7 +724,6 @@ public class LudoPawnController : MonoBehaviour
         StopCoroutine("DeScalingAnimation");
         rect.localScale = new Vector3(1f, 1f, 1);
         DavMaster.CopyRectTransform(to, rect);
-        Debug.Log("DUHHHHHHHHHHHHHHH:::");
         //rect = to;
         //Debug.LogError(rect + "rect");
         //Debug.LogError(to + "to");
@@ -838,6 +844,7 @@ public class LudoPawnController : MonoBehaviour
             if (pawnInJoint == null || (pawnInJoint != null && mainInJoint))
             {
                 Debug.Log("Main in joint");
+                pathController.CheckIfActuallyHasPawn();
                 int otherCount = pathController.pawns.Count;
 
                 Debug.Log("Pawns count: " + otherCount);
@@ -913,12 +920,12 @@ public class LudoPawnController : MonoBehaviour
                         pawnInJoint = null;
                     }
                 }
-
+                pathController.CheckIfActuallyHasPawn();
                 otherCount = pathController.pawns.Count;
 
                 if (pawnInJoint == null && otherCount > 1)
                 {
-                    Debug.LogError("Repositioning pawns");
+                    Debug.LogWarning("Repositioning pawns");
                     RepositionPawns(otherCount, currentPosition);
                 }
                 if (currentPosition == path.Length - 1)

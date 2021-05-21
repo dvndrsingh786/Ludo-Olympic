@@ -253,9 +253,9 @@ public class GameGUIController : PunBehaviour
             myId = GameManager.Instance.playfabManager.PlayFabId;
             playerObjects = new List<PlayerObject>();
             //avatars = GameManager.Instance.opponentsAvatars;
-            Debug.LogError(GameManager.Instance.opponentsAvatars.Count);
+            Debug.LogWarning(GameManager.Instance.opponentsAvatars.Count);
             avatars = new List<Sprite>();
-            Debug.LogError(avatars.Count);
+            Debug.LogWarning(avatars.Count);
             avatars.AddRange(GameManager.Instance.opponentsAvatars);
             avatars.Insert(0, GameManager.Instance.avatarMy);
 
@@ -264,7 +264,7 @@ public class GameGUIController : PunBehaviour
             names.AddRange(GameManager.Instance.opponentsNames);
             names.Insert(0, GameManager.Instance.nameMy);
             PlayersIDs = new List<string>();
-            Debug.LogError("OPPONENTS IDS: " + GameManager.Instance.opponentsIDs.Count);
+            Debug.LogWarning("OPPONENTS IDS: " + GameManager.Instance.opponentsIDs.Count);
 
             for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
             {
@@ -707,7 +707,7 @@ public class GameGUIController : PunBehaviour
             else playersInfo += (timerr.timer.fillAmount + 0.1f) + ",";
             playersInfo += timerr.gameObject.activeInHierarchy.ToString() + ",";
             playersInfo += playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text;
-            Debug.LogError("SCORE::::::::::::::::::::::::::: " + playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text);
+            Debug.LogWarning("SCORE::::::::::::::::::::::::::: " + playerObjects[i].dice.GetComponent<GameDiceController>().myScore.text);
             for (int j = 0; j < 4; j++)
             {
                 playersInfo += "," + playerObjects[i].pawns[j].GetComponent<LudoPawnController>().mainInJoint.ToString() + ",";
@@ -2061,7 +2061,7 @@ public class GameGUIController : PunBehaviour
                     }
                     //Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
                     string[] tempInfo = content.ToString().Split(',');
-                    Debug.LogError("I received");
+                    Debug.LogWarning("I received");
                     playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(tempInfo[1]));
                     //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().score = int.Parse(tempInfo[2]);
                     //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text = tempInfo[2];
@@ -2454,7 +2454,7 @@ public class GameGUIController : PunBehaviour
 
     public void CheckPlayersIfShouldFinishGame()
     {
-        Debug.LogError("CheckPlayersIfShouldFinishGame");
+        Debug.LogWarning("CheckPlayersIfShouldFinishGame");
         if (!FinishWindowActive)
         {
             if ((ActivePlayersInRoom == 1 && !iFinished))

@@ -30,6 +30,19 @@ public class LudoPathObjectController : MonoBehaviour
         pawns.Remove(pawn);
     }
 
+    public void CheckIfActuallyHasPawn()
+    {
+        for (int i = 0; i < pawns.Count; i++)
+        {
+            LudoPawnController pawn = pawns[i].GetComponent<LudoPawnController>();
+            if (this != pawn.path[pawn.currentPosition].GetComponent<LudoPathObjectController>())
+            {
+                Debug.LogWarning("PATH BUG FIXED YAY!");
+                RemovePawn(pawn.gameObject);
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

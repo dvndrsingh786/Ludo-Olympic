@@ -348,7 +348,7 @@ public class BetScript : MonoBehaviour
 
     public void UpdateClock()
     {
-        Debug.LogError("Updating Clock");
+        Debug.LogWarning("Updating Clock");
         if (!isTablePlaying)
         {
             if (hr <= 0)

@@ -60,12 +60,12 @@ public class TempGameManager : MonoBehaviour
     {
         if (ReferenceManager.refMngr)
         {
-            Debug.LogError("Waiting panel closed");
+            Debug.LogWarning("Waiting panel closed");
             ReferenceManager.refMngr.onlineGameWaitingPanel.SetActive(false);
         }
         else
         {
-            Debug.LogError("Waiting panel closinggg");
+            Debug.LogWarning("Waiting panel closinggg");
             Invoke(nameof(HideWaitingPanel), 0.03f);
         }
     }

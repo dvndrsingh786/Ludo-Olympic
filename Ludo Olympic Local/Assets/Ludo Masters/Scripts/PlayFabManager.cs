@@ -269,7 +269,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         if (!GameManager.Instance.gameSceneStarted)
         {
             //SceneManager.LoadScene(GameManager.Instance.GameScene);
-            Debug.LogError("Loading Game Scene Using Photon");
+            Debug.LogWarning("Loading Game Scene Using Photon");
             GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime = true;
             if (GameManager.Instance.type == MyGameType.TwoPlayer)
             {
