@@ -264,6 +264,10 @@ public class BetDataScript : MonoBehaviour
                 //    }
                 //}
             }
+            if (betdataPublic.childCount < 1)
+            {
+                UIFlowHandler.uihandler.ShowError("No Opened Tables!", "Alert");
+            }
         }
     }
 

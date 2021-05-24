@@ -939,7 +939,10 @@ public class LudoPawnController : MonoBehaviour
                     Debug.Log("FINISHSSSS");
 
                     GameManager.Instance.currentPlayer.finishedPawns++;
-                    //ludoController.finishedPawns++;
+                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().score += 56;
+                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().myScore.text =
+                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().score.ToString();
+                        //ludoController.finishedPawns++;
                     if (GameManager.Instance.mode == MyGameMode.Quick)
                     {
                         if (GameManager.Instance.currentPlayer.finishedPawns == 1)

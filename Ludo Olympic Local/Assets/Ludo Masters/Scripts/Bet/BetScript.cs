@@ -197,12 +197,15 @@ public class BetScript : MonoBehaviour
         }
         else
         {
-            if (isTablePlaying || true)
+            if (isTablePlaying)
             {
                 if (PhotonNetwork.connectedAndReady)
                 {
                     ReferenceManager.refMngr.tableStartTime = startTime;
                     ReferenceManager.refMngr.gameDuration = gameDuration;
+                    GameManager.Instance.playfabManager.canStartWithBot = false;
+                    GameManager.Instance.playfabManager.canStartWithBotAgain = true;
+                    GameManager.Instance.playfabManager.allowNewNormalUser = true;
                     StartTable();
                 }
                 else
@@ -334,9 +337,9 @@ public class BetScript : MonoBehaviour
             {
                 if (FindObjectOfType<APIManager>().tables.tables[i] == gameId)
                 {
-                    Debug.LogError("Destroying table disabled here");
-                    break;
                     Destroy(gameObject);
+                    break;
+                    Debug.LogError("Destroying table disabled here");
                 }
             }
         }

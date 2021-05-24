@@ -869,6 +869,7 @@ public class APIManager : MonoBehaviour
                     FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
                     loadinPanel.SetActive(false);
                     UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+                    UIFlowHandler.uihandler.ShowError(results, "Error!");
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                 }
@@ -886,6 +887,7 @@ public class APIManager : MonoBehaviour
                 Debug.LogError("error: " + _w.error);
                 FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                 FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
+                UIFlowHandler.uihandler.ShowError(_w.error, "Error!");
                 loadinPanel.SetActive(false);
                 UIFlowHandler.uihandler.loadingPanel.SetActive(false);
                 StopCoroutine(ErrorClose());
@@ -1023,6 +1025,7 @@ public class APIManager : MonoBehaviour
                     errorMsg.text = "The username has already been taken";
                     FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                     FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
+                    UIFlowHandler.uihandler.ShowError(results, "Error!");
                     loadinPanel.SetActive(false);
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
@@ -1034,6 +1037,7 @@ public class APIManager : MonoBehaviour
                     errorMsg.text = results;
                     FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                     FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
+                    UIFlowHandler.uihandler.ShowError("Unable to Sinup!", "Error!");
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                 }
@@ -1047,11 +1051,14 @@ public class APIManager : MonoBehaviour
                     errorMsg.text = "The mobile has already been taken.";
                     loadinPanel.SetActive(false);
                     UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+                    UIFlowHandler.uihandler.ShowError(results, "Error!");
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                     //FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                     //FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
                 }
+                else
+                    UIFlowHandler.uihandler.ShowError(_w.error, "Error!");
                 Debug.Log("error");
                 Debug.Log(results);
                 if (_w.text != "" && _w.text != null)
@@ -1372,6 +1379,7 @@ public class APIManager : MonoBehaviour
                     loginerror.text = "Invalid Login";
                     Debug.Log("error");
                     UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+                    UIFlowHandler.uihandler.ShowError(results, "Error!");
                     FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                     FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
                     loadinPanel.SetActive(false);
@@ -1391,6 +1399,7 @@ public class APIManager : MonoBehaviour
                 Debug.LogError("error Text: " + _w.text);
                 Debug.LogError("error: " + _w.error);
                 UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+                UIFlowHandler.uihandler.ShowError(_w.error, "Error!");
                 FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                 FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
                 loadinPanel.SetActive(false);
@@ -1523,6 +1532,7 @@ public class APIManager : MonoBehaviour
                     errorMsg.text = "The username has already been taken";
                     FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                     FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
+                    UIFlowHandler.uihandler.ShowError(results, "Error!");
                     loadinPanel.SetActive(false);
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
@@ -1535,6 +1545,7 @@ public class APIManager : MonoBehaviour
                     errorMsg.text = results;
                     FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                     FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
+                    UIFlowHandler.uihandler.ShowError(results, "Error!");
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                 }
@@ -1546,6 +1557,7 @@ public class APIManager : MonoBehaviour
                     canRegisterPhone = true;
                     errorMsg.text = "The mobile has already been taken.";
                     loadinPanel.SetActive(false);
+                    UIFlowHandler.uihandler.ShowError(results, "Error!");
                     StopCoroutine(ErrorClose());
                     StartCoroutine(ErrorClose());
                     //FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
@@ -1568,6 +1580,7 @@ public class APIManager : MonoBehaviour
                 FindObjectOfType<GoogleSignInDemo>().SignOutFromGooglePublic1();
                 FindObjectOfType<FacebookScriptDav>().SignOutFromFacebookPublic1();
                 UIFlowHandler.uihandler.loadingPanel.SetActive(false);
+                UIFlowHandler.uihandler.ShowError("Unable to Sign you up.", "Error!");
                 StopCoroutine(ErrorClose());
                 StartCoroutine(ErrorClose());
             }
@@ -3179,11 +3192,11 @@ public class APIManager : MonoBehaviour
 
     [SerializeField]
     List<string> statesName = new List<string>() { "Andaman and Nicobar Islands",
-    "Andhra Pradesh","Arunachal Pradesh","Assam", "Bihar", "Chandigarh", "Chhattisgarh",
-    "Delhi","Gujarat", "Haryana","Himachal Pradesh"
+        "Arunachal Pradesh","Assam", "Bihar", "Chandigarh", "Chhattisgarh", "Daman and Diu",
+    "Delhi","Goa", "Gujarat", "Haryana","Himachal Pradesh"
     ,"Jammu and Kashmir", "Jharkhand", "Karnataka","Kerala", "Ladakh", "Lakshadweep",
     "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland",
-    "Odisha", "Puducherry", "Punjab", "Rajasthan", "Tamil Nadu", "Telangana",
+    "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Telangana",
     "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"};
 
     public void SetStates()
@@ -3374,8 +3387,10 @@ public class APIManager : MonoBehaviour
             {
                 kycDocumentNumber.text = KYCadharNumber;
             }
-            kycDocumentFront.text = KYCStatus;
-            kycDocumentBack.text = KYCStatus;
+            //kycDocumentFront.text = KYCStatus;
+            //kycDocumentBack.text = KYCStatus;
+            kycDocumentFront.text = "Adhaar Front";
+            kycDocumentBack.text = "Adhaar Back";
         }
         //If Pan Card Selected
         else
@@ -3388,7 +3403,7 @@ public class APIManager : MonoBehaviour
             {
                 kycDocumentNumber.text = KYCpanNumber;
             }
-            kycDocumentFront.text = KYCStatus;
+            kycDocumentFront.text = "Pan Card";
         }
     }
 
@@ -3417,8 +3432,8 @@ public class APIManager : MonoBehaviour
         {
             kycDocumentNumber.text = KYCadharNumber;
         }
-        kycDocumentFront.text = KYCStatus;
-        kycDocumentBack.text = KYCStatus;
+        kycDocumentFront.text = "Aadhar Front";
+        kycDocumentBack.text = "Aadhar Back";
         kycDocumentNumber.placeholder.gameObject.GetComponent<TextMeshProUGUI>().text = "Adhaar Number";
         newCompleteYourKYCPanel.SetActive(true);
     }

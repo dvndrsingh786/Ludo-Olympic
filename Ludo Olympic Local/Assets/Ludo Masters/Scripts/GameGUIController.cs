@@ -584,7 +584,6 @@ public class GameGUIController : PunBehaviour
                         Debug.Log(playerObjects[i].name);
                         if (PhotonNetwork.playerList[j].NickName.Equals(playerObjects[i].id))
                         {
-
                             contains = true;
                             break;
                         }
@@ -1288,17 +1287,29 @@ public class GameGUIController : PunBehaviour
     {
         if (pause)
         {
-            canRunTime = false;
-            CanSynchronize = true;
-            hasSynchronized = false;
+            if (PhotonNetwork.playerList.Length > 1)
+            {
+                canRunTime = false;
+                CanSynchronize = true;
+                hasSynchronized = false;
+            }
         }
         else
         {
-            hasSynchronized = false;
-            stopIncreasingScore = true;
-            canRunTime = false;
-            //PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedDuration, "No Content", true, null);
-            PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedSynchronize, "No Content", true, null);
+            if (PhotonNetwork.playerList.Length > 1)
+            {
+                hasSynchronized = false;
+                stopIncreasingScore = true;
+                canRunTime = false;
+                //PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedDuration, "No Content", true, null);
+                PhotonNetwork.RaiseEvent((int)EnumPhoton.NeedSynchronize, "No Content", true, null);
+            }
+            else
+            {
+                hasSynchronized = true;
+                stopIncreasingScore = false;
+                canRunTime = true;
+            }
         }
     }
 
@@ -1960,12 +1971,12 @@ public class GameGUIController : PunBehaviour
         //GameManager.Instance.currentPlayer = playerObjects[currentPlayerIndex];
         //SetTurn();
         //gameDuration.text = dataPiece[1];
-        SynchronizePlayerInfo(playerObjects[0], dataPiece, 2);
-        SynchronizePlayerInfo(playerObjects[1], dataPiece, 18);
+        SynchronizePlayerInfo(playerObjects[0], dataPiece, 2, true);
+        SynchronizePlayerInfo(playerObjects[1], dataPiece, 18, true);
         if (playerObjects.Count > 2)
         {
-            SynchronizePlayerInfo(playerObjects[2], dataPiece, 34);
-            SynchronizePlayerInfo(playerObjects[3], dataPiece, 50);
+            SynchronizePlayerInfo(playerObjects[2], dataPiece, 34, true);
+            SynchronizePlayerInfo(playerObjects[3], dataPiece, 50, true);
         }
     }
 
@@ -1976,12 +1987,12 @@ public class GameGUIController : PunBehaviour
         GameManager.Instance.currentPlayer = playerObjects[currentPlayerIndex];
         SetTurn();
         //gameDuration.text = dataPiece[1];
-        SynchronizePlayerInfo(playerObjects[0], dataPiece, 2);
-        SynchronizePlayerInfo(playerObjects[1], dataPiece, 18);
+        SynchronizePlayerInfo(playerObjects[0], dataPiece, 2, false);
+        SynchronizePlayerInfo(playerObjects[1], dataPiece, 18, false);
         if (playerObjects.Count > 2)
         {
-            SynchronizePlayerInfo(playerObjects[2], dataPiece, 34);
-            SynchronizePlayerInfo(playerObjects[3], dataPiece, 50);
+            SynchronizePlayerInfo(playerObjects[2], dataPiece, 34, false);
+            SynchronizePlayerInfo(playerObjects[3], dataPiece, 50, false);
         }
         //hasSynchronized = true;
         Invoke(nameof(Synchronize), 1);
@@ -1993,7 +2004,7 @@ public class GameGUIController : PunBehaviour
         hasSynchronized = true;
     }
 
-    void SynchronizePlayerInfo(PlayerObject obj, string[] data, int startIndex)
+    void SynchronizePlayerInfo(PlayerObject obj, string[] data, int startIndex, bool synchronizingScore)
     {
         obj.timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(data[startIndex]));
         obj.timer.SetActive(bool.Parse(data[startIndex + 2]));
@@ -2009,7 +2020,7 @@ public class GameGUIController : PunBehaviour
             obj.dice.GetComponent<GameDiceController>().score = int.Parse(data[startIndex + 3]);
             obj.dice.GetComponent<GameDiceController>().myScore.text = data[startIndex + 3];
         }
-        return;
+        if (synchronizingScore) return;
         for (int i = 0; i < 4; i++)
         {
             obj.pawns[i].GetComponent<LudoPawnController>().mainInJoint = bool.Parse(data[0 + startIndex + 3 + (i * 3) + 1]);

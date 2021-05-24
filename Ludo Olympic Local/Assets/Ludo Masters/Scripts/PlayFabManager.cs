@@ -1574,9 +1574,18 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         tempCount = 0;
         string newname = temp.CustomProperties["name"].ToString();
         int index = GetFirstFreeBotSlot(newname);
-        GameManager.Instance.opponentsIDs[index] = temp.NickName;
-        GameManager.Instance.opponentsNames[index] = temp.CustomProperties["name"].ToString();
-        GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(temp.CustomProperties["avatarId"].ToString())];
+        if (index != -1)
+        {
+            GameManager.Instance.opponentsIDs[index] = temp.NickName;
+            GameManager.Instance.opponentsNames[index] = temp.CustomProperties["name"].ToString();
+            GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(temp.CustomProperties["avatarId"].ToString())];
+        }
+        else
+        {
+            GameManager.Instance.opponentsIDs[index] = "_BOT_Rajeev";
+            GameManager.Instance.opponentsNames[index] = "_Sajeev";
+            GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.avatarMy;
+        }
         if (FindObjectOfType<GameGUIController>()) FindObjectOfType<GameGUIController>().SetDesigns(index);
     }
 
