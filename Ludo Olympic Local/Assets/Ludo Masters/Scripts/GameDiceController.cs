@@ -19,7 +19,7 @@ public class GameDiceController : PunBehaviour
     public GameObject LudoController;
     public LudoGameController controller;
     public int player = 1;
-    private Button button;
+    public Button button;
 
     public GameObject notInteractable;
 

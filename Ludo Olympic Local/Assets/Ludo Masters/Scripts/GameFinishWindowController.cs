@@ -98,7 +98,7 @@ public class GameFinishWindowController : MonoBehaviour
 
     public void showWindowManually(List<PlayerObject> playersFinished)
     {
-        Debug.LogError("showWindowManually");
+        Debug.LogError("showWindowManually: " + ReferenceManager.refMngr.onlineNoOfPlayer);
         if (GameManager.Instance.type == MyGameType.TwoPlayer)
         {
             prizeText[0].GetComponent<Text>().text = ReferenceManager.refMngr.firstPlacePrize;
@@ -119,6 +119,7 @@ public class GameFinishWindowController : MonoBehaviour
         }
 
         Window.SetActive(true);
+        Debug.LogError("End: " + playersFinished.Count);
         for (int i = 0; i < playersFinished.Count; i++)
         {
             AvatarsMain[i].SetActive(true);

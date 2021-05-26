@@ -715,7 +715,10 @@ public class GameGUIController : PunBehaviour
             }
         }
         string data = currentPlayerIndex.ToString() + "," + gameDuration.text + playersInfo;
-        PhotonNetwork.RaiseEvent((int)EnumPhoton.SynchronizeScore, data, true, null);
+        if (hasSynchronized)
+        {
+            PhotonNetwork.RaiseEvent((int)EnumPhoton.SynchronizeScore, data, true, null);
+        }
     }
 
     void SendSynchronization()
@@ -1136,6 +1139,8 @@ public class GameGUIController : PunBehaviour
         //if (secs == 1) { mns--; secs = 59; }
         //else if (secs == 0) { mns--; secs = 58; }
         //else secs -= 2;
+        stopIncreasingScore = false;
+        ReferenceManager.refMngr.loadingPanel.SetActive(false);
         if (!IsInvoking(nameof(UpdateGameDuration)))
         {
             canRunTime = true;
@@ -1298,6 +1303,7 @@ public class GameGUIController : PunBehaviour
         {
             if (PhotonNetwork.playerList.Length > 1)
             {
+                ReferenceManager.refMngr.loadingPanel.SetActive(true);
                 hasSynchronized = false;
                 stopIncreasingScore = true;
                 canRunTime = false;
@@ -1666,6 +1672,11 @@ public class GameGUIController : PunBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        Debug.LogError("Continuous: " + playersFinished.Count);
+    }
+
     private void SetFinishGameManually(string id, bool me, int position)
     {
         Debug.LogWarning("Set Finish Game Manually");
@@ -1766,8 +1777,9 @@ public class GameGUIController : PunBehaviour
             //{
             //    SendFinishTurn();
             //}
-            if (ActivePlayersInRoom == 0)
+            if (playerObjects.Count == playersFinished.Count)
             {
+                Debug.LogError("BRUHHH: " + playersFinished.Count);
                 StopTimers();
                 ShowGameFinishedWindowManually();
             }
@@ -2032,12 +2044,25 @@ public class GameGUIController : PunBehaviour
         }
     }
 
+
+    void SendScoreBro()
+    {
+        if (GameManager.Instance.roomOwner)
+        {
+            if (!IsInvoking(nameof(SendSynchronizationOfScore)))
+            {
+                Invoke(nameof(SendSynchronizationOfScore), 1.5f);
+            }
+            Invoke(nameof(SendScoreBro), 1.5f);
+        }
+    }
     private void OnEvent(byte eventcode, object content, int senderid)
     {
         Debug.Log("received event: " + eventcode);
-        if (GameManager.Instance.roomOwner)
+        if (!IsInvoking(nameof(SendSynchronizationOfScore)) && GameManager.Instance.roomOwner)
         {
-            if (!IsInvoking(nameof(SendSynchronizationOfScore))) Invoke(nameof(SendSynchronizationOfScore), 3);
+            Invoke(nameof(SendSynchronizationOfScore), 0.01f);
+            SendScoreBro();
         }
         if (eventcode == (int)EnumPhoton.NextPlayerTurn)
         {
@@ -2369,6 +2394,8 @@ public class GameGUIController : PunBehaviour
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
     {
         Debug.Log("Player disconnected: " + otherPlayer.NickName);
+
+        if (GameManager.Instance.type == MyGameType.TwoPlayer) return;
 
         for (int i = 0; i < playerObjects.Count; i++)
         {

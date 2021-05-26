@@ -13,6 +13,7 @@ public class OnlineWaitPanel : MonoBehaviour
 
     private void OnEnable()
     {
+        headText.text = "The Game Will Start In";
         timeLeft = timeToClose;
         secondsLeft.text = timeLeft.ToString() + " seconds";
         ReduceTime();

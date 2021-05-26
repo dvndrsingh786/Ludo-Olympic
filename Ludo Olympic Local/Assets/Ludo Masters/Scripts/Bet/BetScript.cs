@@ -197,7 +197,7 @@ public class BetScript : MonoBehaviour
         }
         else
         {
-            if (isTablePlaying)
+            if (isTablePlaying /*|| true*/)
             {
                 if (PhotonNetwork.connectedAndReady)
                 {

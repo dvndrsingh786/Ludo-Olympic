@@ -346,12 +346,15 @@ public class LudoGameController : PunBehaviour, IMiniGame
         }
         else if (eventcode == (int)EnumGame.PawnMove)
         {
-            string[] data = ((string)content).Split(';');
-            int index = int.Parse(data[0]);
-            int pl = int.Parse(data[1]);
-            steps = int.Parse(data[2]);
-            Debug.Log("data   " + data + "  pl  " + pl + "   index  " + index);
-            GameManager.Instance.playerObjects[pl].pawns[index].GetComponent<LudoPawnController>().MakeMovePC();
+            if (gUIController.hasSynchronized)
+            {
+                string[] data = ((string)content).Split(';');
+                int index = int.Parse(data[0]);
+                int pl = int.Parse(data[1]);
+                steps = int.Parse(data[2]);
+                Debug.Log("data   " + data + "  pl  " + pl + "   index  " + index);
+                GameManager.Instance.playerObjects[pl].pawns[index].GetComponent<LudoPawnController>().MakeMovePC();
+            }
             //GameManager.Instance.playerObjects[pl].dice.GetComponent<GameDiceController>().IncreaseScore(steps);
         }
         else if (eventcode == (int)EnumGame.PawnRemove)

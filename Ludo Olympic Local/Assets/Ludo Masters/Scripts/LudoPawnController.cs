@@ -934,14 +934,18 @@ public class LudoPawnController : MonoBehaviour
                     inHomeSound.Play();
                 }
 
+                if(currentPosition == path.Length - 1)
+                {
+                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().score += 56;
+                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().myScore.text =
+                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().score.ToString();
+                }
+
                 if ((myTurn || GameManager.Instance.currentPlayer.isBot) && currentPosition == path.Length - 1)
                 {
                     Debug.Log("FINISHSSSS");
 
                     GameManager.Instance.currentPlayer.finishedPawns++;
-                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().score += 56;
-                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().myScore.text =
-                    GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().score.ToString();
                         //ludoController.finishedPawns++;
                     if (GameManager.Instance.mode == MyGameMode.Quick)
                     {

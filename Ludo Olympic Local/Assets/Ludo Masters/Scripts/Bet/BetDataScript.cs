@@ -149,7 +149,7 @@ public class BetDataScript : MonoBehaviour
             for (int i = 0; i < jsonvale["result_push"].Count; i++)
             {
                 gameId = jsonvale["result_push"][i]["game_id"].ToString();
-                Debug.LogError(gameId);
+                //Debug.LogError(gameId);
                 noOfPlayer = jsonvale["result_push"][i]["no_of_player"].ToString();
                 startDate = jsonvale["result_push"][i]["game_start_date"].ToString();
                 startTime = jsonvale["result_push"][i]["game_start_time"].ToString();
@@ -165,7 +165,7 @@ public class BetDataScript : MonoBehaviour
                 playerCount = jsonvale["result_push"][i]["public_table_count"].ToString();
                 int durationToAddddd = ReferenceManager.refMngr.timeToSecondsMnsScs(gameDuration, ':');
                 BetScript betScript;
-                Debug.LogError("!!!!");
+                //Debug.LogError("!!!!");
                 if (true)
                 {
                     if (true)
@@ -183,7 +183,7 @@ public class BetDataScript : MonoBehaviour
                         //{
                         if (isLessThanADay)
                         {
-                            Debug.LogError("Less than a day");
+                            //Debug.LogError("Less than a day");
                             betScript = Instantiate(onlinebetdataPrefab, betdataPublic).GetComponent<BetScript>();
                             betdataPublic.GetComponent<RectTransform>().sizeDelta = new Vector2(betdataPublic.GetComponent<RectTransform>().sizeDelta.x, betdataPublic.childCount * 325);
                             //}
@@ -266,7 +266,7 @@ public class BetDataScript : MonoBehaviour
             }
             if (betdataPublic.childCount < 1)
             {
-                UIFlowHandler.uihandler.ShowError("No Opened Tables!", "Alert");
+                //UIFlowHandler.uihandler.ShowError("No Opened Tables!", "Alert");
             }
         }
     }

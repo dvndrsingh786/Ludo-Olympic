@@ -319,7 +319,7 @@ public class ReferenceManager : MonoBehaviour
         //TimeZoneInfo istZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         //DateTime datetime = TimeZoneInfo.ConvertTime(DateTime.Now, istZone);
         DateTime datetime = DateTime.Now;
-        Debug.LogError("FFFFFF" + datetime);
+        //Debug.LogError("FFFFFF" + datetime);
         hour = datetime.Hour.ToString();
         minutes = datetime.Minute.ToString();
         seconds = datetime.Second.ToString();

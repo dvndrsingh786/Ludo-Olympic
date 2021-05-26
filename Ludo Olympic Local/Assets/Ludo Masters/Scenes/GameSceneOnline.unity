@@ -12962,7 +12962,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.499999
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -15531,7 +15531,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500008
+      value: 9.50001
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -20093,7 +20093,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.499999
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -42747,7 +42747,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.499999
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -62412,7 +62412,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.499999
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -86211,6 +86211,7 @@ MonoBehaviour:
   - {fileID: 1154881623}
   playerObjects: []
   myIndex: 0
+  currentPlayerIndex: 0
   PawnColorsSprite:
   - {fileID: 21300000, guid: e301d32b8b00655458ad1f852b9c71e6, type: 3}
   - {fileID: 21300000, guid: 03362b53c90686a4493c34a5e674e582, type: 3}
@@ -86234,8 +86235,12 @@ MonoBehaviour:
   hr: 0
   mns: 0
   secs: 0
+  startSeconds: 0
   CanSynchronize: 1
+  stopIncreasingScore: 0
+  hasSynchronized: 1
   NextTurnSet: 0
+  canSendOther: 1
   StarAudioSource: {fileID: 806638582}
 --- !u!4 &1623801275
 Transform:
@@ -112606,7 +112611,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.499999
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}

@@ -24,6 +24,7 @@ public class WalletApiScript : MonoBehaviour
     int point;
     OfflineOnlineApiScript offlineOnlineApiScript;
     private string results;
+
     public string Results
     {
         get

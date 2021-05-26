@@ -319,6 +319,7 @@ public class UpdatePlayerTimer : MonoBehaviour
 
             if (!misschance)
             {
+                FindObjectOfType<GameGUIController>().playerObjects[FindObjectOfType<GameGUIController>().currentPlayerIndex].dice.GetComponent<GameDiceController>().button.interactable = false;
                 misschance = true;
                 turnCount++;
                 Debug.Log("TurnCount" + turnCount);
