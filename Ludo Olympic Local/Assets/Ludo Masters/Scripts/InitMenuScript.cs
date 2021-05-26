@@ -403,16 +403,20 @@ public class InitMenuScript : MonoBehaviour
                 FindObjectOfType<BetDataScript>().OnPlan(true);
                 break;
             case 1:
-                GameManager.Instance.type = MyGameType.FourPlayer;
-                GameManager.Instance.currentBettingIndex = 0;
-                GameManager.Instance.currentBetting = GameManager.Instance.initMenuScript.fourPlayerBetting[GameManager.Instance.currentBettingIndex];
-                GameManager.Instance.currentBetAmount = float.Parse(GameManager.Instance.initMenuScript.fourPlayerBetting[GameManager.Instance.currentBettingIndex].bettingValue.ToString());
+                try
+                {
+                    GameManager.Instance.type = MyGameType.FourPlayer;
+                    GameManager.Instance.currentBettingIndex = 0;
+                    GameManager.Instance.currentBetting = GameManager.Instance.initMenuScript.fourPlayerBetting[GameManager.Instance.currentBettingIndex];
+                    GameManager.Instance.currentBetAmount = float.Parse(GameManager.Instance.initMenuScript.fourPlayerBetting[GameManager.Instance.currentBettingIndex].bettingValue.ToString());
 
-                GameManager.Instance.currentWinningAmount = float.Parse(GameManager.Instance.initMenuScript.fourPlayerBetting[GameManager.Instance.currentBettingIndex].winningAmount.ToString());
-                GameManager.Instance.payoutCoins = GameManager.Instance.currentWinningAmount;
-                Debug.Log("index " + GameManager.Instance.currentBetAmount);
-                Debug.Log("index " + GameManager.Instance.currentWinningAmount);
-                FindObjectOfType<BetDataScript>().OnPlan(false);
+                    GameManager.Instance.currentWinningAmount = float.Parse(GameManager.Instance.initMenuScript.fourPlayerBetting[GameManager.Instance.currentBettingIndex].winningAmount.ToString());
+                    GameManager.Instance.payoutCoins = GameManager.Instance.currentWinningAmount;
+                    Debug.Log("index " + GameManager.Instance.currentBetAmount);
+                    Debug.Log("index " + GameManager.Instance.currentWinningAmount);
+                    FindObjectOfType<BetDataScript>().OnPlan(false);
+                }
+                catch { }
                 break;
         }
     }

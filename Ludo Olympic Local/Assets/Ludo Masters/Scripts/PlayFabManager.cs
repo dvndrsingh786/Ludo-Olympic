@@ -1518,7 +1518,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 GameManager.Instance.controlAvatars.startButtonPrivate.GetComponent<Button>().interactable = true;
             }
 
-            if (!canStartWithBot && allowNewNormalUser)
+            if ((!canStartWithBot && allowNewNormalUser) || GameManager.Instance.type == MyGameType.Private)
             {
                 int index = GetFirstFreeSlot();
 

@@ -200,11 +200,11 @@ public class ControlAvatars : MonoBehaviour
         string abc = "Your friend ";
         string jkl= " has invited you to play Ludo in Rs."; 
         string def = "private room on Ludo Cash Win.Please enter this code ";
-        string ghi = "to join your friend at http://ludocashwin.com/";
+        string ghi = "to join your friend at http://ludoolympic.com/";
         //Debug.LogError(GameManager.nam);
         //string shareText = StaticStrings.SharePrivateLinkMessage+" payout coins "+ GameManager.Instance.currentBetAmount + " " + RoomIDText.GetComponent<Text>().text;
         //string shareText = StaticStrings.SharePrivateLinkMessage +" " + RoomIDText.GetComponent<Text>().text;
-        string shareText = abc +GameManager.Instance.nameMy + jkl + GameManager.Instance.currentBetAmount + def + RoomIDText.GetComponent<Text>().text + ghi;
+        string shareText = abc +GameManager.playerName + jkl + GameManager.Instance.currentBetAmount + def + RoomIDText.GetComponent<Text>().text + ghi;
         // #if UNITY_ANDROID
         //         shareText += "https://play.google.com/store/apps/details?id=" + StaticStrings.AndroidPackageName;
         // #elif UNITY_IOS
