@@ -939,6 +939,8 @@ public class LudoPawnController : MonoBehaviour
                     GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().score += 56;
                     GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().myScore.text =
                     GameManager.Instance.currentPlayer.dice.GetComponent<GameDiceController>().score.ToString();
+                    guiCntrlr.addedScorePopup.SetActive(true);
+                    StartCoroutine(DavMaster.EnableDisableWithDelay(guiCntrlr.addedScorePopup, 2, false));
                 }
 
                 if ((myTurn || GameManager.Instance.currentPlayer.isBot) && currentPosition == path.Length - 1)

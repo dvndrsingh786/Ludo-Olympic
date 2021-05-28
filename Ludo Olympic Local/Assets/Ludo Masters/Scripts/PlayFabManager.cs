@@ -425,6 +425,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 GameManager.Instance.opponentsAvatars[i] = avatarSprites[UnityEngine.Random.Range(0, avatarSprites.Length - 1)];
                 GameManager.Instance.opponentsIDs[i] = "_BOT" + i;
                 GameManager.Instance.opponentsNames[i] = "Computer " + (i + 1);
+                GameManager.Instance.opponentsFullNames[i] = "Computer " + (i + 1);
             }
         }
         LoadGameScene();
@@ -448,6 +449,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 GameManager.Instance.opponentsAvatars[i] = avatarSprites[UnityEngine.Random.Range(0, avatarSprites.Length - 1)];
                 GameManager.Instance.opponentsIDs[i] = "_BOT" + i;
                 GameManager.Instance.opponentsNames[i] = "Player " + (i + 1);
+                GameManager.Instance.opponentsFullNames[i] = "Player " + (i + 1);
             }
         }
         LoadGameScene();
@@ -484,6 +486,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             Debug.LogError("Found: " + foundName + " " + botName);
         }
         GameManager.Instance.opponentsNames[i] = botName;
+        GameManager.Instance.opponentsFullNames[i] = botName;
     }
 
     int botCount = 0;
@@ -523,11 +526,13 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             if (GameManager.Instance.type == MyGameType.TwoPlayer && !GameManager.Instance.isLocalMultiplayer)
             {
                 GameManager.Instance.opponentsNames[i] = botName;
+                GameManager.Instance.opponentsFullNames[i] = botName;
                 Debug.LogError("BOT NAME: " + botName);
             }
             else
             {
                 GameManager.Instance.opponentsNames[i] = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];//"Guest" + UnityEngine.Random.Range (100000, 999999);
+                GameManager.Instance.opponentsFullNames[i] = staticGameVariables.Player_name[UnityEngine.Random.Range(0, 5)];//"Guest" + UnityEngine.Random.Range (100000, 999999);
                 Debug.LogError("BOT NAME: " + GameManager.Instance.opponentsNames[i]);
             }
             Debug.Log("Name: " + GameManager.Instance.opponentsNames[i]);
@@ -1074,6 +1079,8 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "m", GameManager.Instance.mode.ToString () + GameManager.Instance.type.ToString () + GameManager.Instance.payoutCoins.ToString () }
             };
         }
+        GameManager.Instance.playfabManager.roomOwner = true;
+        GameManager.Instance.roomOwner = true;
         PhotonNetwork.CreateRoom(ReferenceManager.refMngr.onlineRoomId, roomOptions, TypedLobby.Default);
     }
 
@@ -1288,7 +1295,11 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         {
             GameManager.Instance.firstPlayerInGame = 0;
         }
-
+        if (PhotonNetwork.room.CustomProperties.ContainsKey("FourPlayer"))
+        {
+            StaticStrings.isFourPlayerModeEnabled = bool.Parse(PhotonNetwork.room.CustomProperties["FourPlayer"].ToString());
+            FindObjectOfType<ControlAvatars>().SetGraphicsPrivateTable();
+        }
         GameManager.Instance.avatarOpponent = null;
 
         Debug.Log("Players in room " + PhotonNetwork.room.PlayerCount);
@@ -1299,6 +1310,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         if (PhotonNetwork.room.PlayerCount == 1)
         {
             GameManager.Instance.roomOwner = true;
+            GameManager.Instance.playfabManager.roomOwner = true;
             WaitForNewPlayer();
         }
         else if (PhotonNetwork.room.PlayerCount >= GameManager.Instance.requiredPlayers)
@@ -1324,6 +1336,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 int index = GetFirstFreeSlot();
                 GameManager.Instance.opponentsIDs[index] = PhotonNetwork.otherPlayers[ii].NickName;
                 GameManager.Instance.opponentsNames[index] = PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString();
+                GameManager.Instance.opponentsFullNames[index] = PhotonNetwork.otherPlayers[ii].CustomProperties["fullName"].ToString();
                 GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(PhotonNetwork.otherPlayers[ii].CustomProperties["avatarId"].ToString())];
                 ReferenceManager.refMngr.botsAdded.Add(PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
                 Debug.Log(" Name " + PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
@@ -1342,6 +1355,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             int index = GetFirstFreeSlot();
             GameManager.Instance.opponentsIDs[index] = PhotonNetwork.otherPlayers[ii].NickName;
             GameManager.Instance.opponentsNames[index] = PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString();
+            GameManager.Instance.opponentsFullNames[index] = PhotonNetwork.otherPlayers[ii].CustomProperties["fullName"].ToString();
             GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(PhotonNetwork.otherPlayers[ii].CustomProperties["avatarId"].ToString())];
             PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString();
             Debug.Log(" Name " + PhotonNetwork.otherPlayers[ii].CustomProperties["name"].ToString());
@@ -1372,7 +1386,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
             roomOptions.MaxPlayers = 4;
             Debug.Log(GameManager.Instance.payoutCoins);
             roomOptions.CustomRoomPropertiesForLobby = new String[] { "pc", "betAmount", "privateRoom" };
-            roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "pc", GameManager.Instance.payoutCoins }, {"betAmount",GameManager.Instance.currentBetAmount},{"privateRoom", true}
+            roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable() { { "pc", GameManager.Instance.payoutCoins }, {"betAmount",GameManager.Instance.currentBetAmount},{"privateRoom", true}, {"FourPlayer", StaticStrings.isFourPlayerModeEnabled.ToString() }
             };
             Debug.Log("Private room name: " + roomName);
             PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);
@@ -1399,7 +1413,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
                 ReferenceManager.refMngr.loadingPanelFullBlack.SetActive(false);
             }
         }
-        roomOwner = true;
+        roomOwner = true; 
         GameManager.Instance.roomOwner = true;
         GameManager.Instance.currentPlayersCount = 1;
         GameManager.Instance.controlAvatars.updateRoomID(PhotonNetwork.room.Name);
@@ -1464,6 +1478,8 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         Debug.Log("Failed to create room");
         if (GameManager.Instance.type != MyGameType.Private)
         {
+            GameManager.Instance.playfabManager.roomOwner = false;
+            GameManager.Instance.roomOwner = false;
             JoinOnlineRoom();
         }
         // CreatePrivateRoom();
@@ -1483,6 +1499,8 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         else
         {
             Debug.LogError(codeAndMsg[1].ToString());
+            GameManager.Instance.playfabManager.roomOwner = true;
+            GameManager.Instance.roomOwner = true;
             CreateOnlineRoom();
             //GameManager.Instance.facebookManager.startRandomGame();
         }
@@ -1524,6 +1542,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
                 GameManager.Instance.opponentsIDs[index] = newPlayer.NickName;
                 GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties["name"].ToString();
+                GameManager.Instance.opponentsFullNames[index] = newPlayer.CustomProperties["fullName"].ToString();
                 GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(newPlayer.CustomProperties["avatarId"].ToString())];
                 ReferenceManager.refMngr.botsAdded.Add(newPlayer.CustomProperties["name"].ToString());
                 //  GameManager.Instance.opponentsNames[index] = newPlayer.CustomProperties[];
@@ -1578,12 +1597,14 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
         {
             GameManager.Instance.opponentsIDs[index] = temp.NickName;
             GameManager.Instance.opponentsNames[index] = temp.CustomProperties["name"].ToString();
+            GameManager.Instance.opponentsFullNames[index] = temp.CustomProperties["fullName"].ToString();
             GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.playfabManager.staticGameVariables.avatars[int.Parse(temp.CustomProperties["avatarId"].ToString())];
         }
         else
         {
             GameManager.Instance.opponentsIDs[index] = "_BOT_Rajeev";
             GameManager.Instance.opponentsNames[index] = "_Sajeev";
+            GameManager.Instance.opponentsFullNames[index] = "_Sajeev";
             GameManager.Instance.opponentsAvatars[index] = GameManager.Instance.avatarMy;
         }
         if (FindObjectOfType<GameGUIController>()) FindObjectOfType<GameGUIController>().SetDesigns(index);
@@ -1644,7 +1665,7 @@ public class PlayFabManager : Photon.PunBehaviour, IChatClientListener {
 
     public void PrivacyPolicyLink()
     {
-        Application.OpenURL("http://ludoolympic.in/privacy-policy/");
+        Application.OpenURL("http://ludoolympic.com/privacy-policy/");
     }
 
     public void AboutUsLink()

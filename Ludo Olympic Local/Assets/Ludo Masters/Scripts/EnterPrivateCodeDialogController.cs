@@ -60,6 +60,12 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
 
     public void CreateRoom()
     {
+        GameManager.Instance.playfabManager.roomOwner = true;
+        GameManager.Instance.roomOwner = true;
+        GameManager.Instance.opponentsIDs = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsAvatars = new List<Sprite>() { null, null, null };
+        GameManager.Instance.opponentsNames = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsFullNames = new List<string>() { null, null, null };
         if (createAmount.text == "")
         {
             ReferenceManager.refMngr.ShowError("Amount should be more than zero", "Error");
@@ -101,7 +107,12 @@ public class EnterPrivateCodeDialogController : MonoBehaviour
     public void JoinByRoomID()
     {
         // GameManager.Instance.payoutCoins = 0;
-
+        GameManager.Instance.playfabManager.roomOwner = false;
+        GameManager.Instance.roomOwner = false;
+        GameManager.Instance.opponentsIDs = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsAvatars = new List<Sprite>() { null, null, null };
+        GameManager.Instance.opponentsNames = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsFullNames = new List<string>() { null, null, null };
         if (!PhotonNetwork.connectedAndReady)
         {
             PhotonNetwork.ConnectUsingSettings("1.0");

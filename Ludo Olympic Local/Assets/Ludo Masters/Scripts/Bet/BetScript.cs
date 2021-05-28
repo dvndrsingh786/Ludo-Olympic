@@ -197,15 +197,15 @@ public class BetScript : MonoBehaviour
         }
         else
         {
-            if (isTablePlaying /*|| true*/)
+            if (isTablePlaying)
             {
                 if (PhotonNetwork.connectedAndReady)
                 {
-                    ReferenceManager.refMngr.tableStartTime = startTime;
-                    ReferenceManager.refMngr.gameDuration = gameDuration;
-                    GameManager.Instance.playfabManager.canStartWithBot = false;
-                    GameManager.Instance.playfabManager.canStartWithBotAgain = true;
-                    GameManager.Instance.playfabManager.allowNewNormalUser = true;
+                    //ReferenceManager.refMngr.tableStartTime = startTime;
+                    //ReferenceManager.refMngr.gameDuration = gameDuration;
+                    //GameManager.Instance.playfabManager.canStartWithBot = false;
+                    //GameManager.Instance.playfabManager.canStartWithBotAgain = true;
+                    //GameManager.Instance.playfabManager.allowNewNormalUser = true;
                     StartTable();
                 }
                 else
@@ -227,6 +227,11 @@ public class BetScript : MonoBehaviour
     //[ContextMenu("Start Table Manually")]
     public void StartTable()
     {
+        ReferenceManager.refMngr.tableStartTime = startTime;
+        ReferenceManager.refMngr.gameDuration = gameDuration;
+        GameManager.Instance.playfabManager.canStartWithBot = false;
+        GameManager.Instance.playfabManager.canStartWithBotAgain = true;
+        GameManager.Instance.playfabManager.allowNewNormalUser = true;
         StartCoroutine(GetPlayerData());
     }
 
@@ -264,27 +269,47 @@ public class BetScript : MonoBehaviour
                 {
                     myRoomId = jsonvale1["result_push"][i]["game_room_id"].ToString();
                     bool foundSomeoneElse = false;
-                    if (jsonvale1["result_push"][i]["first_player"].ToString() != null)
+                    if (jsonvale1["result_push"][i]["first_player"].ToString() != null && jsonvale1["result_push"][i]["first_player"].ToString() != "")
                     {
-                        if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["first_player"].ToString()) foundSomeoneElse = true;
+                        if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["first_player"].ToString())
+                        {
+                            foundSomeoneElse = true;
+                            Debug.LogError(jsonvale1["result_push"][i]["first_player"].ToString());
+                        }
                         ReferenceManager.refMngr.onlinePlayersNames[0] = jsonvale1["result_push"][i]["first_player"].ToString();
                     }
-                    if (jsonvale1["result_push"][i]["second_player"].ToString() != null)
+                    if (jsonvale1["result_push"][i]["second_player"].ToString() != null && jsonvale1["result_push"][i]["second_player"].ToString() != "")
                     {
-                        if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["second_player"].ToString()) foundSomeoneElse = true;
+                        if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["second_player"].ToString())
+                        {
+                            Debug.LogError(jsonvale1["result_push"][i]["second_player"].ToString());
+                            foundSomeoneElse = true;
+                        }
                         ReferenceManager.refMngr.onlinePlayersNames[1] = jsonvale1["result_push"][i]["second_player"].ToString();
                     }
-                    if (jsonvale1["result_push"][i]["third_player"].ToString() != null)
+                    if (jsonvale1["result_push"][i]["third_player"].ToString() != null && jsonvale1["result_push"][i]["third_player"].ToString() != "")
                     {
                         if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["third_player"].ToString()) foundSomeoneElse = true;
                         ReferenceManager.refMngr.onlinePlayersNames[2] = jsonvale1["result_push"][i]["third_player"].ToString();
                     }
-                    if (jsonvale1["result_push"][i]["fourth_player"].ToString() != null)
+                    if (jsonvale1["result_push"][i]["fourth_player"].ToString() != null && jsonvale1["result_push"][i]["fourth_player"].ToString() != "")
                     {
                         if (GameManager.Instance.nameMy != jsonvale1["result_push"][i]["fourth_player"].ToString()) foundSomeoneElse = true;
                         ReferenceManager.refMngr.onlinePlayersNames[3] = jsonvale1["result_push"][i]["fourth_player"].ToString();
                     }
-                    ActuallyStartTable();
+                    if (foundSomeoneElse)
+                    {
+                        ActuallyStartTable();
+                    }
+                    else
+                    {
+                        ReferenceManager.refMngr.loadingPanel.SetActive(false);
+                        FindObjectOfType<APIManager>().AddStartedTable(gameId);
+                        UIFlowHandler.uihandler.ShowError("You will be refunded", "No Match found");
+                        FindObjectOfType<APIManager>().tablevalue = gameId;
+                        FindObjectOfType<APIManager>().AddCoins(float.Parse(gamePrice));
+                        Destroy(gameObject);
+                    }
                     break;
                 }
             }

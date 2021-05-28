@@ -102,6 +102,10 @@ public class InitMenuScript : MonoBehaviour
 
     void Start()
     {
+        GameManager.Instance.opponentsIDs = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsAvatars = new List<Sprite>() { null, null, null };
+        GameManager.Instance.opponentsNames = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsFullNames = new List<string>() { null, null, null };
         GameManager.Instance.playfabManager.apiManager.joinedOnlineOnTime = false;
         refferalCodeURL = GameManager.apiBase1 + "share-code";
         if (PlayerPrefs.HasKey("Logintoken"))
@@ -769,7 +773,7 @@ public class InitMenuScript : MonoBehaviour
 
     public void OpenPrivacyPolicy()
     {
-        GameManager.Instance.playfabManager.apiManager.newPrivacyPolicy.SetActive(true);
+        GameManager.Instance.playfabManager.PrivacyPolicyLink();
     }
 
     public void OpenSettings()

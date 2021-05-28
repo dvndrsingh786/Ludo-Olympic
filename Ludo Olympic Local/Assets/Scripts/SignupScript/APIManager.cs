@@ -332,8 +332,6 @@ public class APIManager : MonoBehaviour
                 //loginPanel.SetActive(false);
                 GameManager.Instance.avatarMyIndex = UnityEngine.Random.Range(0, 22);
                 GameManager.Instance.avatarMy = GameManager.Instance.playfabManager.staticGameVariables.avatars[GameManager.Instance.avatarMyIndex];
-                ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex } };
-                PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
                 Debug.Log("playername " + PhotonNetwork.player.CustomProperties["name"]);
                 GameManager.Instance.coinsCount = float.Parse(GetDataValue(msg, "coins:"));
                 GameManager.onlineAmount = GetDataValue(msg, "online_amount:");
@@ -370,6 +368,8 @@ public class APIManager : MonoBehaviour
                     Debug.LogError("Catch for version called");
                 }
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
+                ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex }, { "fullName", GameManager.playerName } };
+                PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
                 if (jsonvale["result_push"][0]["usertype"].ToString() == "1")
                 {
                     isEmployee = true;
@@ -602,8 +602,6 @@ public class APIManager : MonoBehaviour
                 //loginPanel.SetActive(false);
                 GameManager.Instance.avatarMyIndex = UnityEngine.Random.Range(0, 22);
                 GameManager.Instance.avatarMy = GameManager.Instance.playfabManager.staticGameVariables.avatars[GameManager.Instance.avatarMyIndex];
-                ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex } };
-                PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
                 Debug.Log("playername " + PhotonNetwork.player.CustomProperties["name"]);
                 GameManager.Instance.coinsCount = float.Parse(GetDataValue(msg, "coins:"));
                 GameManager.onlineAmount = GetDataValue(msg, "online_amount:");
@@ -640,6 +638,8 @@ public class APIManager : MonoBehaviour
                     Debug.LogError("Catch for version called");
                 }
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
+                ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex }, { "fullName", GameManager.playerName } };
+                PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
                 if (jsonvale["result_push"][0]["usertype"].ToString() == "1")
                 {
                     isEmployee = true;
@@ -1117,8 +1117,6 @@ public class APIManager : MonoBehaviour
                 //loginPanel.SetActive(false);
                 GameManager.Instance.avatarMyIndex = UnityEngine.Random.Range(0, 22);
                 GameManager.Instance.avatarMy = GameManager.Instance.playfabManager.staticGameVariables.avatars[GameManager.Instance.avatarMyIndex];
-                ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex } };
-                PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
                 Debug.Log("playername " + PhotonNetwork.player.CustomProperties["name"]);
                 GameManager.Instance.coinsCount = float.Parse(GetDataValue(msg, "coins:"));
                 GameManager.onlineAmount = GetDataValue(msg, "online_amount:");
@@ -1155,6 +1153,8 @@ public class APIManager : MonoBehaviour
                     Debug.LogError("Catch for version called");
                 }
                 GameManager.playerName = jsonvale["result_push"][0]["fullname"].ToString();
+                ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex }, { "fullName", GameManager.playerName } };
+                PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
                 if (jsonvale["result_push"][0]["usertype"].ToString() == "1")
                 {
                     isEmployee = true;
@@ -1991,7 +1991,7 @@ public class APIManager : MonoBehaviour
         GameManager.Instance.nameMy = userName;
         GameManager.Instance.avatarMyIndex = UnityEngine.Random.Range(0, 22);
         GameManager.Instance.avatarMy = GameManager.Instance.playfabManager.staticGameVariables.avatars[GameManager.Instance.avatarMyIndex];
-        ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex } };
+        ExitGames.Client.Photon.Hashtable someCustomPropertiesToSet = new ExitGames.Client.Photon.Hashtable() { { "name", GameManager.Instance.nameMy }, { "avatarId", GameManager.Instance.avatarMyIndex }, { "fullName", GameManager.playerName } };
         PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
         Debug.Log("playername " + PhotonNetwork.player.CustomProperties["name"]);
         GameManager.Instance.coinsCount = coin;
@@ -2176,7 +2176,8 @@ public class APIManager : MonoBehaviour
 
     public void AddStartedTable(string tableId)
     {
-        tables.tables.Add(tableId);
+        if (!tables.tables.Contains(tableId))
+            tables.tables.Add(tableId);
         PlayerPrefs.SetString("ABC", JsonUtility.ToJson(tables));
     }
 
@@ -2462,15 +2463,14 @@ public class APIManager : MonoBehaviour
         form.AddField("key", GameTableConfiguration.Instance.Key);
         Debug.Log("ValueTable" + tablevalue);
         WWW www = new WWW(url, form);
-
         yield return www;
         //        Debug.Log(www.text);
         JsonData jsonvale = JsonMapper.ToObject(www.text);
         status = jsonvale["result_push"][0]["status"].ToString();
         if (status == "True")
         {
-
             GameManager.Instance.coinsCount += amount;
+            FindObjectOfType<InitMenuScript>().coinsText.text = GameManager.Instance.coinsCount.ToString();
             Debug.Log("Add coins" + amount + " " + GameManager.Instance.coinsCount);
         }
     }

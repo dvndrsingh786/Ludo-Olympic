@@ -41,7 +41,6 @@ public class BetDataScript : MonoBehaviour
 
     public void ApplyFilter(int filterType)
     {
-        Debug.LogError("Applying filter: " + filterType);
         bool filterBool = true;
         if (filterType == (int)FilterEnum.oneWinnerFilter)
         {

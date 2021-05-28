@@ -330,7 +330,7 @@ public class UpdatePlayerTimer : MonoBehaviour
                 playerchnaceLeft.text = "Auto Move: " + turnCount.ToString();
                 if (turnCount == maxAutoMove)
                 {
-                    if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.type != MyGameType.Private)
+                    if (/*(!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.type != MyGameType.Private) ||*/ true)
                     {
                         FindObjectOfType<GameGUIController>().SetPlayerDisconnected(FindObjectOfType<GameGUIController>().playerObjects[FindObjectOfType<GameGUIController>().currentPlayerIndex].id);
                     }
@@ -363,7 +363,7 @@ public class UpdatePlayerTimer : MonoBehaviour
             }
             else
             {
-                Invoke(nameof(SendFinishTurnOtherSlow), 2);
+                Invoke(nameof(SendFinishTurnOtherSlow), 3f);
             }
             //StartCoroutine(autoMove());
         }

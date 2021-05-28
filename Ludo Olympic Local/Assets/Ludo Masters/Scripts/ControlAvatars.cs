@@ -179,6 +179,13 @@ public class ControlAvatars : MonoBehaviour
             InviteToJoinButtons[1].SetActive(false);
             InviteToJoinButtons[2].SetActive(false);
         }
+        else
+        {
+            OppoAvatar[1].SetActive(true);
+            OppoAvatar[2].SetActive(true);
+            InviteToJoinButtons[1].SetActive(true);
+            InviteToJoinButtons[2].SetActive(true);
+        }
         RoomIDText.GetComponent<Text>().text = GameManager.Instance.privateRoomjoiningId;
         matchPlayersCanvas.SetActive(true);
 
@@ -194,13 +201,38 @@ public class ControlAvatars : MonoBehaviour
         }
     }
 
+    public void SetGraphicsPrivateTable()
+    {
+        Debug.LogError("FOURRRR: " + StaticStrings.isFourPlayerModeEnabled);
+        OppoAvatar[0].SetActive(false);
+        OppoAvatar[1].SetActive(false);
+        OppoAvatar[2].SetActive(false);
+        InviteToJoinButtons[0].SetActive(false);
+        InviteToJoinButtons[1].SetActive(false);
+        InviteToJoinButtons[2].SetActive(false);
+        if (!StaticStrings.isFourPlayerModeEnabled)
+        {
+            for (int i = 1; i < 3; i++)
+            {
+                OppoProgressBar[i].SetActive(false);
+            }
+        }
+        else
+        {
+            for (int i = 1; i < 3; i++)
+            {
+                OppoProgressBar[i].SetActive(true);
+            }
+        }
+    }
+
     public void ShareCode()
     {
         NativeShare share = new NativeShare();
         string abc = "Your friend ";
         string jkl= " has invited you to play Ludo in Rs."; 
-        string def = "private room on Ludo Cash Win.Please enter this code ";
-        string ghi = "to join your friend at http://ludoolympic.com/";
+        string def = " private room on Ludo Olympic. Please enter this code ";
+        string ghi = " to join your friend at http://ludoolympic.com/";
         //Debug.LogError(GameManager.nam);
         //string shareText = StaticStrings.SharePrivateLinkMessage+" payout coins "+ GameManager.Instance.currentBetAmount + " " + RoomIDText.GetComponent<Text>().text;
         //string shareText = StaticStrings.SharePrivateLinkMessage +" " + RoomIDText.GetComponent<Text>().text;
@@ -333,6 +365,7 @@ public class ControlAvatars : MonoBehaviour
         GameManager.Instance.currentPlayersCount--;
         GameManager.Instance.opponentsIDs[index] = null;
         GameManager.Instance.opponentsNames[index] = null;
+        GameManager.Instance.opponentsFullNames[index] = null;
         GameManager.Instance.opponentsAvatars[index] = null;
         if (GameManager.Instance.type == MyGameType.Private && !GameManager.Instance.JoinedByID)
             InviteToJoinButtons[index].SetActive(true);

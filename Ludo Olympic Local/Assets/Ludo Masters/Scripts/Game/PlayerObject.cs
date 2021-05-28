@@ -18,6 +18,7 @@ public class PlayerObject
 
 
     public string name;
+    public string fullName;
     public Sprite avatar;
     public string id;
     public GameObject timer;
@@ -32,9 +33,10 @@ public class PlayerObject
 
     public int myPosition;
 
-    public PlayerObject(string name, string id, Sprite avatar)
+    public PlayerObject(string name, string id, Sprite avatar, string fullName)
     {
         this.name = name;
+        this.fullName = fullName;
         this.id = id;
         this.avatar = avatar;
         this.timer = timer;

@@ -86,6 +86,7 @@ public class GameGUIController : PunBehaviour
 
     private List<Sprite> avatars;
     private List<string> names;
+    private List<string> fullNames;
 
     public List<PlayerObject> playerObjects;
     public int myIndex;
@@ -123,6 +124,8 @@ public class GameGUIController : PunBehaviour
     public TextMeshProUGUI gameDuration;
 
     public bool canPlayGame = true;
+
+    public GameObject addedScorePopup;
 
     void AddPlayingTable()
     {
@@ -262,7 +265,10 @@ public class GameGUIController : PunBehaviour
             //names = GameManager.Instance.opponentsNames;
             names = new List<string>();
             names.AddRange(GameManager.Instance.opponentsNames);
+            fullNames = new List<string>();
+            fullNames.AddRange(GameManager.Instance.opponentsFullNames);
             names.Insert(0, GameManager.Instance.nameMy);
+            fullNames.Insert(0, GameManager.playerName);
             PlayersIDs = new List<string>();
             Debug.LogWarning("OPPONENTS IDS: " + GameManager.Instance.opponentsIDs.Count);
 
@@ -279,7 +285,7 @@ public class GameGUIController : PunBehaviour
             for (int i = 0; i < PlayersIDs.Count; i++)
             {
                 Debug.Log(PlayersIDs[i]);
-                playerObjects.Add(new PlayerObject(names[i], PlayersIDs[i], avatars[i]));
+                playerObjects.Add(new PlayerObject(names[i], PlayersIDs[i], avatars[i], fullNames[i]));
             }
 
             // Bubble sort
@@ -529,7 +535,7 @@ public class GameGUIController : PunBehaviour
                     }
                 }
                 playerObjects[i].AvatarObject = ActivePlayers[index];
-                ActivePlayers[index].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[i].name;
+                ActivePlayers[index].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[i].fullName;
                 if (playerObjects[i].avatar != null)
                 {
                     if (!GameManager.Instance.isLocalMultiplayer) { }
@@ -678,6 +684,7 @@ public class GameGUIController : PunBehaviour
     {
         PlayersIDs[index] = GameManager.Instance.opponentsIDs[index];
         names[index] = GameManager.Instance.opponentsNames[index];
+        fullNames[index] = GameManager.Instance.opponentsFullNames[index];
         avatars[index] = GameManager.Instance.opponentsAvatars[index];
         //Debug.LogError("PHAKKK: " + names[index]);
         //Debug.LogError("PHAKKK2: " + GameManager.Instance.opponentsNames[index]);
@@ -848,7 +855,10 @@ public class GameGUIController : PunBehaviour
         //names = GameManager.Instance.opponentsNames;
         names = new List<string>();
         names.AddRange(GameManager.Instance.opponentsNames);
+        fullNames = new List<string>();
+        fullNames.AddRange(GameManager.Instance.opponentsFullNames);
         names.Insert(0, GameManager.Instance.nameMy);
+        fullNames.Insert(0, GameManager.playerName);
         PlayersIDs = new List<string>();
 
         for (int i = 0; i < GameManager.Instance.opponentsIDs.Count; i++)
@@ -865,7 +875,7 @@ public class GameGUIController : PunBehaviour
         for (int i = 0; i < PlayersIDs.Count; i++)
         {
             Debug.Log(PlayersIDs[i]);
-            playerObjects.Add(new PlayerObject(names[i], PlayersIDs[i], avatars[i]));
+            playerObjects.Add(new PlayerObject(names[i], PlayersIDs[i], avatars[i], fullNames[i]));
         }
 
         Debug.LogError("NAMES: " + names.Count);
@@ -1024,7 +1034,7 @@ public class GameGUIController : PunBehaviour
                 }
             }
             playerObjects[i].AvatarObject = ActivePlayers[index];
-            ActivePlayers[index].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[i].name;
+            ActivePlayers[index].GetComponent<PlayerAvatarController>().Name.GetComponent<Text>().text = playerObjects[i].fullName;
             if (playerObjects[i].avatar != null)
             {
                 if (!GameManager.Instance.isLocalMultiplayer) { }
@@ -1674,7 +1684,7 @@ public class GameGUIController : PunBehaviour
 
     private void FixedUpdate()
     {
-        Debug.LogError("Continuous: " + playersFinished.Count);
+        //Debug.LogError("Continuous: " + playersFinished.Count);
     }
 
     private void SetFinishGameManually(string id, bool me, int position)
@@ -1895,7 +1905,7 @@ public class GameGUIController : PunBehaviour
             {
                 if (!GameManager.Instance.isLocalMultiplayer)
                 {
-                    if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                    if (/*GameManager.Instance.type == MyGameType.TwoPlayer*/ true)
                     {
                         string info = GetCurrentPlayerIndex(myIndex).ToString() + "," + playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().turnCount.ToString() + "," + playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text;
                         Debug.LogError("I sent");
@@ -1940,7 +1950,7 @@ public class GameGUIController : PunBehaviour
             {
                 if (!GameManager.Instance.isLocalMultiplayer)
                 {
-                    if (GameManager.Instance.type == MyGameType.TwoPlayer)
+                    if (/*GameManager.Instance.type == MyGameType.TwoPlayer*/ true)
                     {
                         string info = GetCurrentPlayerIndex(currentPlayerIndex).ToString() + "," + playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().turnCount.ToString() + "," + playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text;
                         Debug.LogError("I sent");
@@ -2056,13 +2066,20 @@ public class GameGUIController : PunBehaviour
             Invoke(nameof(SendScoreBro), 1.5f);
         }
     }
+    int oldIndex = -1;
+
+    void SetOldIndex()
+    {
+        oldIndex = -1;
+    }
+
     private void OnEvent(byte eventcode, object content, int senderid)
     {
         Debug.Log("received event: " + eventcode);
         if (!IsInvoking(nameof(SendSynchronizationOfScore)) && GameManager.Instance.roomOwner)
         {
             Invoke(nameof(SendSynchronizationOfScore), 0.01f);
-            SendScoreBro();
+            SendScoreBro(); 
         }
         if (eventcode == (int)EnumPhoton.NextPlayerTurn)
         {
@@ -2098,6 +2115,9 @@ public class GameGUIController : PunBehaviour
                     //Debug.LogError("NExt player turn with name: " + playerObjects[(int)content]);
                     string[] tempInfo = content.ToString().Split(',');
                     Debug.LogWarning("I received");
+                    if (oldIndex == int.Parse(tempInfo[0])) return;
+                    oldIndex = int.Parse(tempInfo[0]);
+                    Invoke(nameof(SetOldIndex), 1);
                     playerObjects[currentPlayerIndex].timer.GetComponent<UpdatePlayerTimer>().SetOnlineTurnCountGraphic(int.Parse(tempInfo[1]));
                     //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().score = int.Parse(tempInfo[2]);
                     //playerObjects[currentPlayerIndex].dice.GetComponent<GameDiceController>().myScore.text = tempInfo[2];
@@ -2395,7 +2415,7 @@ public class GameGUIController : PunBehaviour
     {
         Debug.Log("Player disconnected: " + otherPlayer.NickName);
 
-        if (GameManager.Instance.type == MyGameType.TwoPlayer) return;
+        if (GameManager.Instance.type == MyGameType.TwoPlayer || true) return;
 
         for (int i = 0; i < playerObjects.Count; i++)
         {
@@ -2455,7 +2475,7 @@ public class GameGUIController : PunBehaviour
     public void CheckToFinishGame()
     {
         Debug.LogError("CheckToFinishGame");
-        if (!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.isPlayingWithComputer)
+        if (/*!GameManager.Instance.isLocalMultiplayer && GameManager.Instance.isPlayingWithComputer*/true)
         {
             GameManager.exitedPlayers++;
             if (ReferenceManager.refMngr.onlineNoOfPlayer - GameManager.exitedPlayers == 1)
@@ -2579,7 +2599,7 @@ public class GameGUIController : PunBehaviour
 
     public void LeaveGame(bool finishWindow)
     {
-        Debug.LogError("Leave Game");
+        Debug.LogWarning("Leave Game");
         if (GameManager.Instance.isLocalMultiplayer && !GameManager.Instance.isPlayingWithComputer)
         {
 
@@ -2590,7 +2610,7 @@ public class GameGUIController : PunBehaviour
         {
             if (!iFinished || finishWindow)
             {
-                Debug.LogError("MAine Menu");
+                Debug.LogWarning("MAine Menu");
                 loadingPanel.SetActive(true);
                 PhotonNetwork.LeaveRoom();
                 LoadmenuScene();
@@ -2686,6 +2706,7 @@ public class GameGUIController : PunBehaviour
         GameManager.Instance.opponentsIDs = new List<string>() { null, null, null };
         GameManager.Instance.opponentsAvatars = new List<Sprite>() { null, null, null };
         GameManager.Instance.opponentsNames = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsFullNames = new List<string>() { null, null, null };
         SceneManager.LoadScene(1);
     }
     public void LoadGame(string key)

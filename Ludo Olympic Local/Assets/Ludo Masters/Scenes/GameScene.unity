@@ -362,6 +362,162 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 15335469}
   m_CullTransparentMesh: 0
+--- !u!1 &15452370
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 15452371}
+  - component: {fileID: 15452373}
+  - component: {fileID: 15452372}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &15452371
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15452370}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 829773264}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -6}
+  m_SizeDelta: {x: 50, y: 20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &15452372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15452370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: +56
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_outlineColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontSize: 17.9
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 10
+  m_fontSizeMax: 72
+  m_fontStyle: 1
+  m_textAlignment: 514
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 0
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 3
+  m_firstOverflowCharacterIndex: -1
+  m_linkedTextComponent: {fileID: 0}
+  m_isLinkedTextComponent: 0
+  m_isTextTruncated: 0
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_ignoreRectMaskCulling: 0
+  m_ignoreCulling: 1
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_VertexBufferAutoSizeReduction: 1
+  m_firstVisibleCharacter: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_textInfo:
+    textComponent: {fileID: 15452372}
+    characterCount: 3
+    spriteCount: 0
+    spaceCount: 0
+    wordCount: 2
+    linkCount: 0
+    lineCount: 1
+    pageCount: 1
+    materialCount: 1
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_spriteAnimator: {fileID: 0}
+  m_hasFontAssetChanged: 0
+  m_subTextObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &15452373
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 15452370}
+  m_CullTransparentMesh: 0
 --- !u!1 &16421426
 GameObject:
   m_ObjectHideFlags: 0
@@ -2520,7 +2676,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.5
+      value: 9.499994
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -4904,6 +5060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 117363654}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 117363656}
   GUIController: {fileID: 1623801273}
@@ -8487,6 +8644,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 219768019}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 219768024}
   GUIController: {fileID: 1623801273}
@@ -8849,6 +9007,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 232806796}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 232806798}
   GUIController: {fileID: 1623801273}
@@ -10133,7 +10292,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.5
+      value: 9.499994
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -10452,6 +10611,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 2000022389}
   highlightBoard: {fileID: 1837834795}
   steps: 0
@@ -10459,6 +10619,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &257599319
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12542,7 +12703,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.500005
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -12868,6 +13029,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 781076288}
   highlightBoard: {fileID: 734651399}
   steps: 0
@@ -12875,6 +13037,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &290223811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15110,7 +15273,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500004
+      value: 9.500006
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -15858,6 +16021,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 570159311}
   highlightBoard: {fileID: 608436306}
   steps: 0
@@ -15865,6 +16029,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &339170218
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17382,6 +17547,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 823966966}
   highlightBoard: {fileID: 1837834795}
   steps: 0
@@ -17389,6 +17555,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &361502451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18666,6 +18833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 384786992}
+  timer: {fileID: 0}
   audioSources: []
   GUIController: {fileID: 1623801273}
   myTimer: 1
@@ -19669,7 +19837,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.500005
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -21400,6 +21568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 439693588}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 439693590}
   GUIController: {fileID: 1623801273}
@@ -22343,6 +22512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 457314089}
+  timer: {fileID: 0}
   audioSources: []
   GUIController: {fileID: 1623801273}
   myTimer: 1
@@ -26700,6 +26870,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 903116084}
   highlightBoard: {fileID: 734651399}
   steps: 0
@@ -26707,6 +26878,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &521293008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27904,6 +28076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 545253512}
+  timer: {fileID: 0}
   audioSources: []
   GUIController: {fileID: 1623801273}
   myTimer: 1
@@ -31924,6 +32097,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 631480028}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 631480030}
   GUIController: {fileID: 1623801273}
@@ -32175,6 +32349,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 2
+  button: {fileID: 0}
   notInteractable: {fileID: 371821004}
   highlightBoard: {fileID: 1638214974}
   steps: 0
@@ -32182,6 +32357,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &631795993
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34203,7 +34379,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.499999
+      value: 9.499995
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -36171,6 +36347,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 335281611}
   highlightBoard: {fileID: 1837834795}
   steps: 0
@@ -36178,6 +36355,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &716152719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42160,7 +42338,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.500005
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -43343,6 +43521,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 223867918209461242, guid: a96b4e60d46284983ad609b03ccc8116,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 224011748470141486, guid: a96b4e60d46284983ad609b03ccc8116,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -44257,6 +44440,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 1489161373}
   highlightBoard: {fileID: 608436306}
   steps: 0
@@ -44268,6 +44452,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 1416551322}
   myScore: {fileID: 1951825470}
+  score: 0
 --- !u!114 &851839487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47532,6 +47717,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 1541625669}
   highlightBoard: {fileID: 608436306}
   steps: 0
@@ -47539,6 +47725,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &926303564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47943,6 +48130,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 2
+  button: {fileID: 0}
   notInteractable: {fileID: 2102608054}
   highlightBoard: {fileID: 1638214974}
   steps: 0
@@ -47950,6 +48138,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &928294503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48308,6 +48497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 933699688}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 933699693}
   GUIController: {fileID: 1623801273}
@@ -49292,6 +49482,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 1619918433}
   highlightBoard: {fileID: 734651399}
   steps: 0
@@ -49299,6 +49490,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &955801146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51035,6 +51227,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 1913762126}
   highlightBoard: {fileID: 1837834795}
   steps: 0
@@ -51042,6 +51235,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &984711324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53026,7 +53220,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.499999
+      value: 9.499995
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -53277,6 +53471,7 @@ MonoBehaviour:
   - {fileID: 2065667583}
   - {fileID: 1687955347}
   - {fileID: 285930483}
+  predictedDiceValues: []
 --- !u!4 &1011231415
 Transform:
   m_ObjectHideFlags: 0
@@ -54128,6 +54323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1034320914}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1034320916}
   GUIController: {fileID: 1623801273}
@@ -54613,6 +54809,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 331660983}
   highlightBoard: {fileID: 1837834795}
   steps: 0
@@ -54624,6 +54821,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 2111389856}
   myScore: {fileID: 980183915}
+  score: 0
 --- !u!114 &1040318660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56147,6 +56345,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 200671109}
   highlightBoard: {fileID: 1837834795}
   steps: 0
@@ -56154,6 +56353,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1063835730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57267,6 +57467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1079461497}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1079461499}
   GUIController: {fileID: 1623801273}
@@ -59031,6 +59232,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 1750868864}
   highlightBoard: {fileID: 608436306}
   steps: 0
@@ -59038,6 +59240,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1119497434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59281,6 +59484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1121003773}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1121003775}
   GUIController: {fileID: 1623801273}
@@ -61515,7 +61719,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.500005
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -61759,6 +61963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1159481503}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1159481508}
   GUIController: {fileID: 1623801273}
@@ -62317,6 +62522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1166291049}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1166291051}
   GUIController: {fileID: 1623801273}
@@ -66662,6 +66868,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 2
+  button: {fileID: 0}
   notInteractable: {fileID: 1648239769}
   highlightBoard: {fileID: 1638214974}
   steps: 0
@@ -66669,6 +66876,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1248299552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68412,6 +68620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1307838528}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1307838533}
   GUIController: {fileID: 1623801273}
@@ -69031,6 +69240,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 2
+  button: {fileID: 0}
   notInteractable: {fileID: 1341134728}
   highlightBoard: {fileID: 1638214974}
   steps: 0
@@ -69038,6 +69248,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1317923464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72297,6 +72508,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 524042282}
   highlightBoard: {fileID: 734651399}
   steps: 0
@@ -72304,6 +72516,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1366716104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73384,6 +73597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1378140935}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1378140937}
   GUIController: {fileID: 1623801273}
@@ -80322,6 +80536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1538279562}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1538279564}
   GUIController: {fileID: 1623801273}
@@ -81261,6 +81476,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1556257584}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1556257586}
   GUIController: {fileID: 1623801273}
@@ -82072,7 +82288,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500004
+      value: 9.500006
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -82669,6 +82885,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1571569874}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1571569876}
   GUIController: {fileID: 1623801273}
@@ -83690,7 +83907,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02264487, y: 0.17045516}
   m_AnchorMax: {x: 0.15158622, y: 0.7955608}
-  m_AnchoredPosition: {x: 0.039978027, y: 0}
+  m_AnchoredPosition: {x: 0.039916992, y: 0}
   m_SizeDelta: {x: 0.08231926, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1584460288
@@ -84886,7 +85103,9 @@ MonoBehaviour:
   - {fileID: 2040591274}
   - {fileID: 331758112}
   - {fileID: 1154881623}
+  playerObjects: []
   myIndex: 0
+  currentPlayerIndex: 0
   PawnColorsSprite:
   - {fileID: 21300000, guid: e301d32b8b00655458ad1f852b9c71e6, type: 3}
   - {fileID: 21300000, guid: 03362b53c90686a4493c34a5e674e582, type: 3}
@@ -84906,10 +85125,17 @@ MonoBehaviour:
   playerName4: {fileID: 1625212336}
   tempGame: {fileID: 1011231414}
   gameDuration: {fileID: 544743518}
+  canPlayGame: 1
+  addedScorePopup: {fileID: 15452370}
   hr: 0
   mns: 0
   secs: 0
+  startSeconds: 0
+  CanSynchronize: 1
+  stopIncreasingScore: 0
+  hasSynchronized: 1
   NextTurnSet: 0
+  canSendOther: 1
   StarAudioSource: {fileID: 806638582}
 --- !u!4 &1623801275
 Transform:
@@ -87080,6 +87306,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1650223332}
+  timer: {fileID: 0}
   audioSources: []
   GUIController: {fileID: 1623801273}
   myTimer: 1
@@ -88656,7 +88883,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.5
+      value: 9.499996
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -89058,6 +89285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1671071945}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1671071947}
   GUIController: {fileID: 1623801273}
@@ -90939,6 +91167,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 2
+  button: {fileID: 0}
   notInteractable: {fileID: 940730969}
   highlightBoard: {fileID: 1638214974}
   steps: 0
@@ -90950,6 +91179,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 1938923239}
   myScore: {fileID: 1801448230}
+  score: 0
 --- !u!114 &1695593074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91969,6 +92199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1716551994}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1716551996}
   GUIController: {fileID: 1623801273}
@@ -93019,6 +93250,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 940194396}
   highlightBoard: {fileID: 734651399}
   steps: 0
@@ -93026,6 +93258,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1731556367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94850,6 +95083,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 2135154447}
   highlightBoard: {fileID: 734651399}
   steps: 0
@@ -94861,6 +95095,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 1487556479}
   myScore: {fileID: 272616847}
+  score: 0
 --- !u!114 &1774499977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96141,6 +96376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1792801127}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1792801129}
   GUIController: {fileID: 1623801273}
@@ -100819,6 +101055,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 2
+  button: {fileID: 0}
   notInteractable: {fileID: 1847927294}
   highlightBoard: {fileID: 1638214974}
   steps: 0
@@ -100826,6 +101063,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1874406861
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100990,7 +101228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02264487, y: 0.17045516}
   m_AnchorMax: {x: 0.15158622, y: 0.7955608}
-  m_AnchoredPosition: {x: 0.039978027, y: 0}
+  m_AnchoredPosition: {x: 0.039916992, y: 0}
   m_SizeDelta: {x: 0.08231926, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1878121267
@@ -101587,7 +101825,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02264487, y: 0.17045516}
   m_AnchorMax: {x: 0.15158622, y: 0.7955608}
-  m_AnchoredPosition: {x: 0.039978027, y: 0}
+  m_AnchoredPosition: {x: 0.039916992, y: 0}
   m_SizeDelta: {x: 0.08231926, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1910782538
@@ -102311,7 +102549,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500004
+      value: 9.500006
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -103716,6 +103954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1946559118}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1946559120}
   GUIController: {fileID: 1623801273}
@@ -104249,6 +104488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 1951143012}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 1951143014}
   GUIController: {fileID: 1623801273}
@@ -104768,6 +105008,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 1819755631}
   highlightBoard: {fileID: 608436306}
   steps: 0
@@ -104775,6 +105016,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1966935345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105325,6 +105567,7 @@ MonoBehaviour:
   LudoController: {fileID: 649852568}
   controller: {fileID: 0}
   player: 1
+  button: {fileID: 0}
   notInteractable: {fileID: 425382703}
   highlightBoard: {fileID: 608436306}
   steps: 0
@@ -105332,6 +105575,7 @@ MonoBehaviour:
   timer: {fileID: 0}
   myScoreText: {fileID: 0}
   myScore: {fileID: 0}
+  score: 0
 --- !u!114 &1974149641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106839,6 +107083,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 2005963437}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 2005963439}
   GUIController: {fileID: 1623801273}
@@ -108401,6 +108646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 2022930626}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 2022930628}
   GUIController: {fileID: 1623801273}
@@ -109155,7 +109401,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.5
+      value: 9.499996
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
@@ -110073,6 +110319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerObject: {fileID: 2057457441}
+  timer: {fileID: 0}
   audioSources:
   - {fileID: 2057457443}
   GUIController: {fileID: 1623801273}
@@ -110186,7 +110433,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.02264487, y: 0.17045516}
   m_AnchorMax: {x: 0.15158622, y: 0.7955608}
-  m_AnchoredPosition: {x: 0.039978027, y: 0}
+  m_AnchoredPosition: {x: 0.039916992, y: 0}
   m_SizeDelta: {x: 0.08231926, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2064701974
@@ -110977,7 +111224,7 @@ PrefabInstance:
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 9.500001
+      value: 9.500005
       objectReference: {fileID: 0}
     - target: {fileID: 224706554748211490, guid: d8e91060be35244d295488de1cea9af7,
         type: 3}

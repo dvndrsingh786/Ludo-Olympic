@@ -315,6 +315,10 @@ public class GameConfigrationController : MonoBehaviour
 
     public void startGame()
     {
+        GameManager.Instance.opponentsIDs = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsAvatars = new List<Sprite>() { null, null, null };
+        GameManager.Instance.opponentsNames = new List<string>() { null, null, null };
+        GameManager.Instance.opponentsFullNames = new List<string>() { null, null, null };
         ReferenceManager.refMngr.loadingPanel.SetActive(true);
         betCoins = GameManager.Instance.currentBetAmount;
         if (betCoins <= GameManager.Instance.coinsCount || GameManager.Instance.type != MyGameType.Private)

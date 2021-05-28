@@ -21,6 +21,7 @@ public class GameManager
     private static GameManager instance;
     public List<Sprite> opponentsAvatars = new List<Sprite>() { null, null, null };
     public List<string> opponentsNames = new List<string>() { null, null, null };
+    public List<string> opponentsFullNames = new List<string>() { null, null, null };
     public List<string> opponentsIDs = new List<string>() { null, null, null };
     public GameObject myAvatarGameObject;
     public GameObject myNameGameObject;

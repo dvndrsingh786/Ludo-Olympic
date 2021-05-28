@@ -65,7 +65,7 @@ public class GameFinishWindowController : MonoBehaviour
         {
             AvatarsMain[i].SetActive(true);
             AvatarsImage[i].GetComponent<Image>().sprite = playersFinished[i].avatar;
-            Names[i].GetComponent<Text>().text = playersFinished[i].name;
+            Names[i].GetComponent<Text>().text = playersFinished[i].fullName;
             if (playersFinished[i].id.Equals(PhotonNetwork.player.NickName))
             {
                 Backgrounds[i].SetActive(true);
@@ -124,7 +124,7 @@ public class GameFinishWindowController : MonoBehaviour
         {
             AvatarsMain[i].SetActive(true);
             AvatarsImage[i].GetComponent<Image>().sprite = playersFinished[i].avatar;
-            Names[i].GetComponent<Text>().text = playersFinished[i].name;
+            Names[i].GetComponent<Text>().text = playersFinished[i].fullName;
             if (playersFinished[i].id.Equals(PhotonNetwork.player.NickName))
             {
                 //Backgrounds[i].SetActive(true);
@@ -132,7 +132,7 @@ public class GameFinishWindowController : MonoBehaviour
         }
         for (int i = 0; i < playersFinished.Count; i++)
         {
-            Debug.LogError("NAme::: " + playersFinished[i].name + " POSSS::: " + playersFinished[i].myPosition + " III::: " + i);
+            Debug.LogError("NAme::: " + playersFinished[i].fullName + " POSSS::: " + playersFinished[i].myPosition + " III::: " + i);
         }
         for (int i = 0; i < playersFinished.Count; i++)
         {
@@ -142,7 +142,7 @@ public class GameFinishWindowController : MonoBehaviour
                 {
                     AvatarsMain[j].SetActive(true);
                     AvatarsImage[j].GetComponent<Image>().sprite = playersFinished[i].avatar;
-                    Names[j].GetComponent<Text>().text = playersFinished[i].name;
+                    Names[j].GetComponent<Text>().text = playersFinished[i].fullName;
                 }
             }
         }
